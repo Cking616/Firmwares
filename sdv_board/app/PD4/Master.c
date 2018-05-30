@@ -32,7 +32,29 @@ extern xQueueHandle g_Slave_Queue;
 extern SemaphoreHandle_t g_SDO_Semaphore;
 extern SemaphoreHandle_t g_SDO_Mutex;
 
-//UNS8 __is_sending = 0;
+void CanOpen_setMaster(CO_Data* d, UNS8 nodeId)
+{
+	UNS32 PDO1_COBID = 0x0180 + nodeId;
+	UNS32 PDO2_COBID = 0x0200 + nodeId;
+	UNS32 size = sizeof(UNS32);
+
+	/*****************************************
+	* Define RPDOs to match slave ID=2 TPDOs*
+	*****************************************/
+	writeLocalDict(d, /*CO_Data* d*/
+		0x1400 + nodeId - 1, /*UNS16 index*/
+		0x01, /*UNS8 subind*/
+		&PDO1_COBID, /*void * pSourceData,*/
+		&size, /* UNS8 * pExpectedSize*/
+		RW);  /* UNS8 checkAccess */
+
+	writeLocalDict(d, /*CO_Data* d*/
+		0x1800 + nodeId - 1, /*UNS16 index*/
+		0x01, /*UNS8 subind*/
+		&PDO2_COBID, /*void * pSourceData,*/
+		&size, /* UNS8 * pExpectedSize*/
+		RW);  /* UNS8 checkAccess */
+}
 
 static void CheckSDOAndContinue(CO_Data* d, UNS8 nodeId)
 {
@@ -81,7 +103,7 @@ void CanOpen_Reset_TPDO(CO_Data* d, UNS8 nodeId)
 		&data8); /* use block mode */
 
 
-	data = (0x180 + 0x2) + 0x80000000;
+	data = (0x180 + nodeId) + 0x80000000;
 	PD4Master_writeSlaveParam(d, /*CO_Data* d*/
 		nodeId, /*UNS8 nodeId*/
 		0x1800, /*UNS16 index*/
@@ -127,7 +149,7 @@ void CanOpen_Reset_TPDO(CO_Data* d, UNS8 nodeId)
 		0, /*UNS8 dataType*/
 		&data8); /* use block mode */
 
-	data = 0x182;
+	data = 0x180 + nodeId;
 	PD4Master_writeSlaveParam(d, /*CO_Data* d*/
 		nodeId, /*UNS8 nodeId*/
 		0x1800, /*UNS16 index*/
@@ -142,9 +164,16 @@ void CanOpen_Change_Param(CO_Data* d, UNS8 nodeId)
 	UNS8 data8 = 0x01;
 	int32_t data = 0;
 
-	data = 3600;
+	if(nodeId == 2)
+	{
+	    data = 3600;
+	}
+	else
+	{
+	    data = 100;
+	}
 	PD4Master_writeSlaveParam(&TestMaster_Data, /*CO_Data* d*/
-		2, /*UNS8 nodeId*/
+		nodeId, /*UNS8 nodeId*/
 		0x6081, /*UNS16 index*/
 		0x00, /*UNS16 index*/
 		4, /*UNS8 count*/
@@ -153,7 +182,7 @@ void CanOpen_Change_Param(CO_Data* d, UNS8 nodeId)
 
     data = 800000;
     PD4Master_writeSlaveParam(&TestMaster_Data, /*CO_Data* d*/
-        2, /*UNS8 nodeId*/
+		nodeId, /*UNS8 nodeId*/
         0x607a, /*UNS16 index*/
         0x00, /*UNS16 index*/
         4, /*UNS8 count*/
@@ -162,7 +191,7 @@ void CanOpen_Change_Param(CO_Data* d, UNS8 nodeId)
 
 	data = 1;
 	PD4Master_writeSlaveParam(&TestMaster_Data, /*CO_Data* d*/
-		2, /*UNS8 nodeId*/
+		nodeId, /*UNS8 nodeId*/
 		0x3202, /*UNS16 index*/
 		0x00, /*UNS16 index*/
 		4, /*UNS8 count*/
@@ -171,7 +200,7 @@ void CanOpen_Change_Param(CO_Data* d, UNS8 nodeId)
 
 	data8 = 1;
 	PD4Master_writeSlaveParam(&TestMaster_Data, /*CO_Data* d*/
-		2, /*UNS8 nodeId*/
+		nodeId, /*UNS8 nodeId*/
 		0x6060, /*UNS16 index*/
 		0x00, /*UNS16 index*/
 		1, /*UNS8 count*/
@@ -186,7 +215,7 @@ void CanOpen_Reset_RPDO(CO_Data* d, UNS8 nodeId)
     const portTickType xDelay = pdMS_TO_TICKS(300);
 
     vTaskDelay(xDelay);
-	data = 0x0202;
+	data = 0x200 + +nodeId;
 	PD4Master_writeSlaveParam(d, /*CO_Data* d*/
 		nodeId, /*UNS8 nodeId*/
 		0x1400, /*UNS16 index*/
@@ -224,6 +253,7 @@ void PD4Master_initialisation(CO_Data* d)
 	 * Define RPDOs to match slave ID=2 TPDOs*
 	 *****************************************/
     masterSendNMTstateChange(&TestMaster_Data, 0x02, NMT_Enter_PreOperational);
+    masterSendNMTstateChange(&TestMaster_Data, 0x03, NMT_Enter_PreOperational);
 }
 
 /********************************************************
@@ -248,7 +278,7 @@ void PD4Master_confSlaveNode(CO_Data* d, UNS8 nodeId)
 	 * for slave node-id 0x02 by DCF concise */
 	 
 	//UARTprintf("Master : ConfigureSlaveNode %X\n", nodeId);
-
+	CanOpen_setMaster(d, nodeId);
 	CanOpen_Reset_TPDO(d, nodeId);
 	CanOpen_Change_Param(d, nodeId);
     CanOpen_Reset_RPDO(d, nodeId);
@@ -290,7 +320,7 @@ void PD4Master_post_TPDO(CO_Data* d)
 
 void PD4Master_post_SlaveStateChange(CO_Data* d, UNS8 nodeId, e_nodeState newNodeState)
 {
-    //UARTprintf("PD4Master_post_SlaveStateChange %x\n", nodeId);
+    //UARTprintf("slave %x, state %x\n", nodeId, newNodeState);
 	switch (newNodeState)
 	{
 	case Initialisation:

@@ -23,13 +23,13 @@
  // The stack size for the LED toggle task.
  //
  //*****************************************************************************
-#define PD4TASKSTACKSIZE        128        // Stack size in words
+#define PD4TASKSTACKSIZE        512        // Stack size in words
 
 
 xQueueHandle g_Slave_Queue;
 SemaphoreHandle_t g_SDO_Semaphore;
 SemaphoreHandle_t g_SDO_Mutex;
-bool g_trip_bit4 = 1;
+bool g_trip_bit4[4] = { 1, 1, 1, 1 };
 
 void PD4Master_set_speed(UNS8 nodeID, void* speed)
 {
@@ -51,7 +51,7 @@ void PD4Master_set_pos(UNS8 nodeID, void* pos)
                               4, /*UNS8 count*/
                               int32, /*UNS8 dataType*/
                               pos); /* use block mode */
-	g_trip_bit4 = 1;
+	g_trip_bit4[nodeID - 1] = 1;
 }
 //*****************************************************************************
 //
@@ -64,6 +64,9 @@ PD4Master_task(void *pvParameters)
 {
     portTickType ui32WakeTime;
     uint32_t ui32PD4ToggleDelay;
+	bool	 PD4_bConnected[4] = { 0, 0, 0, 0 };
+
+	//UARTprintf("PD4 init 1\n");
 
     TestMaster_Data.heartbeatError = PD4Master_heartbeatError;
     TestMaster_Data.initialisation = PD4Master_initialisation;
@@ -91,51 +94,72 @@ PD4Master_task(void *pvParameters)
     //
     // Loop forever.
     //
+    //UARTprintf("PD4 init 2\n");
     while(1)
     {
         UNS8 nodeId;
+		int _i = 0;
         if( xQueueReceive( g_Slave_Queue, &nodeId, 2 / portTICK_RATE_MS ) == pdPASS)
         {
+            //UARTprintf("conf %d\n", nodeId);
             PD4Master_confSlaveNode(&TestMaster_Data, nodeId);
             setState(&TestMaster_Data, Operational);
-            PD4_Contolword_2 = 0x86;
+
+            PD4_Controlword[nodeId - 1] = 0x86;
+			PD4_bConnected[nodeId - 1] = 1;
             /* Ask slave node to go in operational mode */
             //masterSendNMTstateChange (&TestMaster_Data, nodeId, NMT_Start_Node);
         }
-
-        if(PD4_Statusword_2 & 0x40)
-        {
-            PD4_Contolword_2 = 0x6;
-        }
-        else if(PD4_Statusword_2 & 0x20)
-        {
-            if(PD4_Statusword_2 & 0x2)
-            {
-                PD4_Contolword_2 = 0xF;
-            }
-            else
-            {
-                PD4_Contolword_2 = 0x7;
-            }
-        }
-
-        if((PD4_Statusword_2 & 0x67) == 0x27)
-        {
-			if (g_trip_bit4)
+		
+		for (_i = 0; _i < 4; _i++)
+		{
+			if (!PD4_bConnected[nodeId - 1])
 			{
-				PD4_Contolword_2 = 0x3F;
-				g_trip_bit4 = 0;
+				continue;
 			}
-			else
+
+			if (PD4_Status[_i] & 0x40)
 			{
-				PD4_Contolword_2 = 0x2F;
+				PD4_Controlword[_i] = 0x6;
 			}
-        }
+			else if (PD4_Status[_i] & 0x20)
+			{
+				if (PD4_Status[_i] & 0x2)
+				{
+					PD4_Controlword[_i] = 0xF;
+				}
+				else
+				{
+					PD4_Controlword[_i] = 0x7;
+				}
+			}
+
+			if ((PD4_Status[_i] & 0x67) == 0x27)
+			{
+				if (g_trip_bit4[_i])
+				{
+					PD4_Controlword[_i] = 0x3F;
+					g_trip_bit4[_i] = 0;
+				}
+				else
+				{
+					PD4_Controlword[_i] = 0x2F;
+				}
+			}
+		}
 
         if(getState(&TestMaster_Data) == Operational)
         {
             sendPDOevent(&TestMaster_Data);
-            sendPDOrequest(&TestMaster_Data, 0x1400);
+			for (_i = 0; _i < 4; _i++)
+			{
+				if (!PD4_bConnected[nodeId - 1])
+				{
+					continue;
+				}
+
+				sendPDOrequest(&TestMaster_Data, 0x1400 + _i);
+			}
         }
 
         //
@@ -156,7 +180,7 @@ PD4Master_taskInit(void)
     g_Slave_Queue = xQueueCreate( 4 , sizeof( UNS8 ) );
     g_SDO_Mutex = xSemaphoreCreateMutex();
     g_SDO_Semaphore = xSemaphoreCreateBinary();
-
+    //UARTprintf("Create PD4\n");
     //
     // Create the LED task.
     //

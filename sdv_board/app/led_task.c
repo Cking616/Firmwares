@@ -39,7 +39,6 @@
 static uint8_t g_pRgbColors = LIGHTS_RGB_RED;
 static uint8_t g_ui8red = 0;
 static uint8_t g_ui8green = 1;
-static uint8_t g_tickTime = 0;
 extern xSemaphoreHandle g_pUARTSemaphore;
 
 //*****************************************************************************
@@ -91,7 +90,8 @@ LEDTask(void *pvParameters)
 
         //speed_controller_print(0);
         //speed_controller_print(1);
-        //UARTprintf("s:0x%X,c:0x%X,p:%d\n", PD4_Statusword_2, PD4_Contolword_2, PD4_Position_2);
+        UARTprintf("1s:0x%X,c:0x%X,p:%d\n", PD4_Status[1], PD4_Controlword[1], PD4_Position[1]);
+        UARTprintf("3s:0x%X,c:0x%X,p:%d\n", PD4_Status[3], PD4_Controlword[3], PD4_Position[3]);
     }
 }
 

@@ -13,7 +13,7 @@ volatile pos_controller_state pos_state[2];
 void pos_controller_init(int num)
 {
     pos_state[num].kp = 0.0036;
-    pos_state[num].ki = 0.000008;
+    pos_state[num].ki = 0.000007;
     pos_state[num].kd = 0.000022;
     pos_state[num].last_err = 0;
     pos_state[num].last_speed = 0;
@@ -50,7 +50,7 @@ void pos_controller_period(int num)
     }
     else if(abs_err > 10 && abs_err <= 300)
     {
-        float increase = pos_state[num].ki * err +  pos_state[num].kp * (err - pos_state[num].last_err) / 4;
+        float increase = pos_state[num].ki * err +  pos_state[num].kp * (err - pos_state[num].last_err) / 5;
         speed = speed + increase;
     }
     else
