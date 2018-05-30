@@ -1,7 +1,7 @@
 /*
  * pos_controller.c
  *
- *  Created on: 2018Äê5ÔÂ18ÈÕ
+ *  Created on: 2018/5/18
  *      Author: cking
  */
 #include "pos_controller.h"

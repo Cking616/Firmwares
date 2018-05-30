@@ -30,7 +30,7 @@
 // Default LED toggle delay value. LED toggling frequency is twice this number.
 //
 //*****************************************************************************
-#define LED_TOGGLE_DELAY        1000
+#define LED_TOGGLE_DELAY        500
 
 
 //
@@ -91,7 +91,7 @@ LEDTask(void *pvParameters)
 
         //speed_controller_print(0);
         //speed_controller_print(1);
-        UARTprintf("s:0x%X,c:0x%X,p:%d\n", PD4_Statusword_2, PD4_Contolword_2, PD4_Position_2);
+        //UARTprintf("s:0x%X,c:0x%X,p:%d\n", PD4_Statusword_2, PD4_Contolword_2, PD4_Position_2);
     }
 }
 

@@ -19,7 +19,6 @@
 
 #define BLDCTASKSTACKSIZE        128         // Stack size in words
 
-int _ctrl_tick = 0;
 //*****************************************************************************
 //
 // This task toggles the user selected LED at a user selected frequency. User
@@ -31,7 +30,7 @@ static void BLDC_task(void *pvParameters)
     portTickType ui32WakeTime;
     //
     ui32WakeTime = xTaskGetTickCount();
-
+	int _ctrl_tick = 0;
     //
     // Loop forever.
     //
@@ -68,9 +67,6 @@ BLDC_taskInit(void)
     speed_controller_init(1);
     pos_controller_init(0);
     pos_controller_init(1);
-    //speed_controller_set_speed(0, 20);
-    //speed_controller_set_speed(1, 20);
-    //speed_controller_set_speed(0, -20);
     //
     // Create the LED task.
     //

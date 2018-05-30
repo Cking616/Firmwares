@@ -1,7 +1,7 @@
 /*
  * drv8308.c
  *
- *  Created on: 2018Äê5ÔÂ17ÈÕ
+ *  Created on: 2018/5/17
  *      Author: cking
  */
 #include <stdint.h>

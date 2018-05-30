@@ -121,14 +121,16 @@ PD4Master_task(void *pvParameters)
 
         if((PD4_Statusword_2 & 0x67) == 0x27)
         {
-            PD4_Contolword_2 = 0x2F;
+			if (g_trip_bit4)
+			{
+				PD4_Contolword_2 = 0x3F;
+				g_trip_bit4 = 0;
+			}
+			else
+			{
+				PD4_Contolword_2 = 0x2F;
+			}
         }
-
-		if (g_trip_bit4)
-		{
-			PD4_Contolword_2 = 0x3F;
-			g_trip_bit4 = 0;
-		}
 
         if(getState(&TestMaster_Data) == Operational)
         {
@@ -139,7 +141,6 @@ PD4Master_task(void *pvParameters)
         //
         // Wait for the required amount of time.
         //
-        //UARTprintf("s:0x%X,c:0x%X,p:%d\n", PD4_Statusword_2, PD4_Contolword_2, PD4_Position_2);
         vTaskDelayUntil(&ui32WakeTime, ui32PD4ToggleDelay / portTICK_RATE_MS);
     }
 }
