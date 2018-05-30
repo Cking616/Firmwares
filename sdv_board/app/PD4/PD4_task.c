@@ -29,6 +29,7 @@
 xQueueHandle g_Slave_Queue;
 SemaphoreHandle_t g_SDO_Semaphore;
 SemaphoreHandle_t g_SDO_Mutex;
+bool g_trip_bit4 = 1;
 
 void PD4Master_set_speed(UNS8 nodeID, void* speed)
 {
@@ -50,6 +51,7 @@ void PD4Master_set_pos(UNS8 nodeID, void* pos)
                               4, /*UNS8 count*/
                               int32, /*UNS8 dataType*/
                               pos); /* use block mode */
+	g_trip_bit4 = 1;
 }
 //*****************************************************************************
 //
@@ -62,7 +64,6 @@ PD4Master_task(void *pvParameters)
 {
     portTickType ui32WakeTime;
     uint32_t ui32PD4ToggleDelay;
-    //uint8_t i8Message;
 
     TestMaster_Data.heartbeatError = PD4Master_heartbeatError;
     TestMaster_Data.initialisation = PD4Master_initialisation;
@@ -120,22 +121,21 @@ PD4Master_task(void *pvParameters)
 
         if((PD4_Statusword_2 & 0x67) == 0x27)
         {
-            //PD4_Contolword_2 |= 0x30;
-            if((PD4_Statusword_2 & 0x400))
-            {
-                PD4_Contolword_2 = 0x0F;
-            }
-            else
-            {
-                PD4_Contolword_2 = 0x3F;
-            }
+            PD4_Contolword_2 = 0x2F;
         }
+
+		if (g_trip_bit4)
+		{
+			PD4_Contolword_2 = 0x3F;
+			g_trip_bit4 = 0;
+		}
 
         if(getState(&TestMaster_Data) == Operational)
         {
             sendPDOevent(&TestMaster_Data);
             sendPDOrequest(&TestMaster_Data, 0x1400);
         }
+
         //
         // Wait for the required amount of time.
         //

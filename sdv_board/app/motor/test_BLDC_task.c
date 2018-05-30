@@ -1,7 +1,7 @@
 /*
  * test_BLDC_task.c
  *
- *  Created on: 2018Äê5ÔÂ29ÈÕ
+ *  Created on: 2018/5/29
  *      Author: cking
  */
 #include <stdbool.h>
@@ -104,7 +104,7 @@ static void test_BLDC_task(void *pvParameters)
         {
             _i = 1;
             _pos = -_pos;
-            //PD4Master_set_pos(2, &_pos);
+            PD4Master_set_pos(2, &_pos);
         }
 
         vTaskDelayUntil(&ui32WakeTime, 10 / portTICK_RATE_MS);
