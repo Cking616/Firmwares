@@ -7,6 +7,7 @@
 #include "pos_controller.h"
 #include "speed_controller.h"
 #include "bps/encoder.h"
+#include "utils/uartstdio.h"
 
 volatile pos_controller_state pos_state[2];
 
@@ -18,14 +19,21 @@ void pos_controller_init(int num)
     pos_state[num].last_err = 0;
     pos_state[num].last_speed = 0;
     pos_state[num].target_pos = speed_controller_get_encoder(num);
-    pos_state[num].max_speed = 22;
+    pos_state[num].max_speed = 24;
     pos_state[num].max_acc = 0.74;
-
+	pos_state[num].flag = 1;
 }
 
 inline void pos_controller_set_pos(int num, int pos)
 {
-    pos_state[num].target_pos = pos;
+    if(num == 0)
+    {
+        pos_state[num].target_pos = pos;
+    }
+    else
+    {
+        pos_state[num].target_pos = -pos;
+    }
 }
 
 inline int  pos_controller_get_encoder(int num)
@@ -44,18 +52,22 @@ void pos_controller_period(int num)
     float speed =  pos_state[num].last_speed;
     int err = pos_state[num].target_pos - encoder_get_value(num);
     int abs_err = err > 0? err: -err;
+	
     if(abs_err > 300)
     {
         speed = pos_state[num].kp * err + pos_state[num].kd * (err - pos_state[num].last_err);
+		pos_state[num].flag = 0;
     }
     else if(abs_err > 10 && abs_err <= 300)
     {
         float increase = pos_state[num].ki * err +  pos_state[num].kp * (err - pos_state[num].last_err) / 5;
         speed = speed + increase;
+		pos_state[num].flag = 0;
     }
     else
     {
         speed = 0;
+		pos_state[num].flag = 1;
     }
 
     speed = a * speed + (1 - a) * pos_state[num].last_speed;
@@ -83,5 +95,10 @@ void pos_controller_period(int num)
 
 void pos_controller_print(int num)
 {
+    UARTprintf("ts:%d,err:%d\n", pos_state[num].target_pos, pos_state[num].last_err);
+}
 
+inline int pos_controller_get_flag(int num)
+{
+	return pos_state[num].flag;
 }

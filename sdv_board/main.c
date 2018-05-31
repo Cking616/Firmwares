@@ -8,7 +8,7 @@
 #include "app/led_task.h"
 #include "app/PD4/PD4_task.h"
 #include "app/motor/BLDC_task.h"
-#include "app/motor/test_BLDC_task.h"
+#include "app/motor/BLDC_Motion_task.h"
 
 //*****************************************************************************
 //
@@ -50,17 +50,6 @@ int main(void)
 
     driver_init_system();
 
-    //
-    // Create the LED task.
-    //
-    if(LEDTaskInit() != 0)
-    {
-
-        while(1)
-        {
-        }
-    }
-
     if(PD4Master_taskInit() != 0)
     {
 
@@ -77,14 +66,24 @@ int main(void)
         }
     }
 
-    //if(test_BLDC_taskInit() != 0)
-    //{
+    if(BLDC_Motion_taskInit() != 0)
+    {
 
-    //    while(1)
-    //    {
-    //    }
-    //}
+        while(1)
+        {
+        }
+    }
 
+    //
+    // Create the LED task.
+    //
+    if(LEDTaskInit() != 0)
+    {
+
+        while(1)
+        {
+        }
+    }
     //
     // Start the scheduler.  This should not return.
     //

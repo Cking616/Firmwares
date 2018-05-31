@@ -17,6 +17,8 @@
 #include "semphr.h"
 #include "PD4Master.h"
 #include "motor/speed_controller.h"
+#include "motor/BLDC_Motion_task.h"
+#include "motor/pos_controller.h"
 //*****************************************************************************
 //
 // The stack size for the LED toggle task.
@@ -47,6 +49,7 @@ extern xSemaphoreHandle g_pUARTSemaphore;
 // can make the selections by pressing the left and right buttons.
 //
 //*****************************************************************************
+int _pos = -200000;
 static void
 LEDTask(void *pvParameters)
 {
@@ -88,6 +91,12 @@ LEDTask(void *pvParameters)
             g_pRgbColors = LIGHTS_RGB_RED;
         }
 
+        if(BLDC_Motion_is_end())
+        {
+            _pos = -_pos;
+            BLDC_Motion_start(200, _pos, 3);
+        }
+        //pos_controller_print(0);
         //speed_controller_print(0);
         //speed_controller_print(1);
         //UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[1], PD4_Controlword[1], PD4_Position[1]);

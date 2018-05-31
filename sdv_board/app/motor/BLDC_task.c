@@ -17,7 +17,7 @@
 #include "pos_controller.h"
 
 
-#define BLDCTASKSTACKSIZE        128         // Stack size in words
+#define BLDCTASKSTACKSIZE        64         // Stack size in words
 
 //*****************************************************************************
 //
