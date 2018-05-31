@@ -82,8 +82,8 @@ void PD4Master_writeSlaveParam(CO_Data* d, UNS8 nodeId, UNS16 index,
 		data,/*void *data*/
 		CheckSDOAndContinue, /*SDOCallback_t Callback*/
 		0); /* use block mode */
-	xSemaphoreTake(g_SDO_Semaphore, 0xffff);
 
+	xSemaphoreTake(g_SDO_Semaphore, 0xffff);
 	xSemaphoreGive(g_SDO_Mutex);
 }
 
@@ -93,6 +93,7 @@ void CanOpen_Reset_TPDO(CO_Data* d, UNS8 nodeId)
 	UNS8 data8 = 0x01;
 	int32_t data = 0;
 
+	vTaskDelay(xDelay);
 	data8 = 0x0;
 	PD4Master_writeSlaveParam(d, /*CO_Data* d*/
 		nodeId, /*UNS8 nodeId*/
@@ -101,7 +102,6 @@ void CanOpen_Reset_TPDO(CO_Data* d, UNS8 nodeId)
 		1, /*UNS8 count*/
 		0, /*UNS8 dataType*/
 		&data8); /* use block mode */
-
 
 	data = (0x180 + nodeId) + 0x80000000;
 	PD4Master_writeSlaveParam(d, /*CO_Data* d*/
@@ -164,14 +164,7 @@ void CanOpen_Change_Param(CO_Data* d, UNS8 nodeId)
 	UNS8 data8 = 0x01;
 	int32_t data = 0;
 
-	if(nodeId == 2)
-	{
-	    data = 3600;
-	}
-	else
-	{
-	    data = 100;
-	}
+	data = 3000;
 	PD4Master_writeSlaveParam(&TestMaster_Data, /*CO_Data* d*/
 		nodeId, /*UNS8 nodeId*/
 		0x6081, /*UNS16 index*/
@@ -252,8 +245,8 @@ void PD4Master_initialisation(CO_Data* d)
 	/*****************************************
 	 * Define RPDOs to match slave ID=2 TPDOs*
 	 *****************************************/
-    masterSendNMTstateChange(&TestMaster_Data, 0x02, NMT_Enter_PreOperational);
-    masterSendNMTstateChange(&TestMaster_Data, 0x03, NMT_Enter_PreOperational);
+    //masterSendNMTstateChange(&TestMaster_Data, 0x02, NMT_Enter_PreOperational);
+    //masterSendNMTstateChange(&TestMaster_Data, 0x03, NMT_Enter_PreOperational);
 }
 
 /********************************************************
@@ -324,7 +317,7 @@ void PD4Master_post_SlaveStateChange(CO_Data* d, UNS8 nodeId, e_nodeState newNod
 	switch (newNodeState)
 	{
 	case Initialisation:
-		masterSendNMTstateChange(&TestMaster_Data, 0x02, NMT_Enter_PreOperational);
+		masterSendNMTstateChange(&TestMaster_Data, nodeId, NMT_Enter_PreOperational);
 		break;
 	case Pre_operational:
 	    xQueueSend( g_Slave_Queue, ( void* )&nodeId, 0 );

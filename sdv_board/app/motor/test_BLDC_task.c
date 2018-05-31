@@ -104,7 +104,8 @@ static void test_BLDC_task(void *pvParameters)
         {
             _i = 1;
             _pos = -_pos;
-            PD4Master_set_pos(2, &_pos);
+            //PD4Master_set_pos(2, &_pos);
+            PD4Master_set_pos(3, &_pos);
         }
 
         vTaskDelayUntil(&ui32WakeTime, 10 / portTICK_RATE_MS);

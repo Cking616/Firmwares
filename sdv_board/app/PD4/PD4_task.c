@@ -23,13 +23,13 @@
  // The stack size for the LED toggle task.
  //
  //*****************************************************************************
-#define PD4TASKSTACKSIZE        512        // Stack size in words
+#define PD4TASKSTACKSIZE        256        // Stack size in words
 
 
 xQueueHandle g_Slave_Queue;
 SemaphoreHandle_t g_SDO_Semaphore;
 SemaphoreHandle_t g_SDO_Mutex;
-bool g_trip_bit4[4] = { 1, 1, 1, 1 };
+bool g_trip_bit4[4] = { 0, 0, 0, 0 };
 
 void PD4Master_set_speed(UNS8 nodeID, void* speed)
 {
@@ -103,50 +103,18 @@ PD4Master_task(void *pvParameters)
         {
             //UARTprintf("conf %d\n", nodeId);
             PD4Master_confSlaveNode(&TestMaster_Data, nodeId);
-            setState(&TestMaster_Data, Operational);
+
 
             PD4_Controlword[nodeId - 1] = 0x86;
 			PD4_bConnected[nodeId - 1] = 1;
+			if(PD4_bConnected[1] && PD4_bConnected[2])
+			{
+				//UARTprintf("op mode\n");
+				setState(&TestMaster_Data, Operational);
+			}
             /* Ask slave node to go in operational mode */
             //masterSendNMTstateChange (&TestMaster_Data, nodeId, NMT_Start_Node);
         }
-		
-		for (_i = 0; _i < 4; _i++)
-		{
-			if (!PD4_bConnected[nodeId - 1])
-			{
-				continue;
-			}
-
-			if (PD4_Status[_i] & 0x40)
-			{
-				PD4_Controlword[_i] = 0x6;
-			}
-			else if (PD4_Status[_i] & 0x20)
-			{
-				if (PD4_Status[_i] & 0x2)
-				{
-					PD4_Controlword[_i] = 0xF;
-				}
-				else
-				{
-					PD4_Controlword[_i] = 0x7;
-				}
-			}
-
-			if ((PD4_Status[_i] & 0x67) == 0x27)
-			{
-				if (g_trip_bit4[_i])
-				{
-					PD4_Controlword[_i] = 0x3F;
-					g_trip_bit4[_i] = 0;
-				}
-				else
-				{
-					PD4_Controlword[_i] = 0x2F;
-				}
-			}
-		}
 
         if(getState(&TestMaster_Data) == Operational)
         {
@@ -160,6 +128,43 @@ PD4Master_task(void *pvParameters)
 
 				sendPDOrequest(&TestMaster_Data, 0x1400 + _i);
 			}
+
+	        for (_i = 0; _i < 4; _i++)
+	        {
+	            if (!PD4_bConnected[nodeId - 1])
+	            {
+	                continue;
+	            }
+
+	            if (PD4_Status[_i] & 0x40)
+	            {
+	                PD4_Controlword[_i] = 0x6;
+	            }
+	            else if (PD4_Status[_i] & 0x20)
+	            {
+	                if (PD4_Status[_i] & 0x2)
+	                {
+	                    PD4_Controlword[_i] = 0xF;
+	                }
+	                else
+	                {
+	                    PD4_Controlword[_i] = 0x7;
+	                }
+	            }
+
+	            if ((PD4_Status[_i] & 0x67) == 0x27)
+	            {
+	                if (g_trip_bit4[_i])
+	                {
+	                    PD4_Controlword[_i] = 0x3F;
+	                    g_trip_bit4[_i] = 0;
+	                }
+	                else
+	                {
+	                    PD4_Controlword[_i] = 0x2F;
+	                }
+	            }
+	        }
         }
 
         //

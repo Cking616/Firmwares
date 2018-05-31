@@ -77,13 +77,14 @@ int main(void)
         }
     }
 
-    if(test_BLDC_taskInit() != 0)
-    {
+    //if(test_BLDC_taskInit() != 0)
+    //{
 
-        while(1)
-        {
-        }
-    }
+    //    while(1)
+    //    {
+    //    }
+    //}
+
     //
     // Start the scheduler.  This should not return.
     //

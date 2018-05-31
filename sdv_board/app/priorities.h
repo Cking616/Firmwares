@@ -31,8 +31,8 @@
 //
 //*****************************************************************************
 #define PRIORITY_TEST_TASK       4
-#define PRIORITY_MCTRL_TASK       3
-#define PRIORITY_PD4_TASK       2
+#define PRIORITY_MCTRL_TASK     2
+#define PRIORITY_PD4_TASK       3
 #define PRIORITY_LED_TASK       1
 
 
