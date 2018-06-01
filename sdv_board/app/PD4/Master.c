@@ -320,7 +320,7 @@ void PD4Master_post_SlaveStateChange(CO_Data* d, UNS8 nodeId, e_nodeState newNod
 		masterSendNMTstateChange(&TestMaster_Data, nodeId, NMT_Enter_PreOperational);
 		break;
 	case Pre_operational:
-	    xQueueSend( g_Slave_Queue, ( void* )&nodeId, 0 );
+		xQueueSendToBackFromISR( g_Slave_Queue, ( void* )&nodeId, 0 );
 	    break;
 	default:
 		break;
