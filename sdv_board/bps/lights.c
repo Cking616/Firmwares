@@ -1,7 +1,7 @@
 /*
  * lights.c
  *
- *  Created on: 2018Äê5ÔÂ14ÈÕ
+ *  Created on: 2018/5/14
  *      Author: cking
  */
 #include <stdint.h>

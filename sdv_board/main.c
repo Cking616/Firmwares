@@ -7,7 +7,6 @@
 #include "semphr.h"
 #include "app/led_task.h"
 #include "app/PD4/PD4_task.h"
-#include "app/motor/BLDC_task.h"
 #include "app/motor/BLDC_Motion_task.h"
 
 //*****************************************************************************
@@ -51,14 +50,6 @@ int main(void)
     driver_init_system();
 
     if(PD4Master_taskInit() != 0)
-    {
-
-        while(1)
-        {
-        }
-    }
-
-    if(BLDC_taskInit() != 0)
     {
 
         while(1)

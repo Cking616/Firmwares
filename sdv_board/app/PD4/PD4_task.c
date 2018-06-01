@@ -29,28 +29,33 @@
 xQueueHandle g_Slave_Queue;
 SemaphoreHandle_t g_SDO_Semaphore;
 SemaphoreHandle_t g_SDO_Mutex;
+SemaphoreHandle_t g_PD4_Semaphore;
 bool g_trip_bit4[4] = { 0, 0, 0, 0 };
 
-void PD4Master_set_speed(UNS8 nodeID, void* speed)
+int _PD4_speed_tmp = 0;
+int _PD4_pos_tmp = 0;
+void PD4Master_set_speed(UNS8 nodeID, int speed)
 {
+    _PD4_speed_tmp = speed;
     PD4Master_writeSlaveParam(&TestMaster_Data, /*CO_Data* d*/
                               nodeID, /*UNS8 nodeId*/
                               0x6081, /*UNS16 index*/
                               0x00, /*UNS16 index*/
                               4, /*UNS8 count*/
                               uint32, /*UNS8 dataType*/
-                              speed); /* use block mode */
+                              &_PD4_speed_tmp); /* use block mode */
 }
 
-void PD4Master_set_pos(UNS8 nodeID, void* pos)
+void PD4Master_set_pos(UNS8 nodeID, int pos)
 {
+    _PD4_pos_tmp = pos;
     PD4Master_writeSlaveParam(&TestMaster_Data, /*CO_Data* d*/
                               nodeID, /*UNS8 nodeId*/
                               0x607a, /*UNS16 index*/
                               0x00, /*UNS16 index*/
                               4, /*UNS8 count*/
                               int32, /*UNS8 dataType*/
-                              pos); /* use block mode */
+                              &_PD4_pos_tmp); /* use block mode */
 	g_trip_bit4[nodeID - 1] = 1;
 }
 //*****************************************************************************
@@ -101,9 +106,9 @@ PD4Master_task(void *pvParameters)
 		int _i = 0;
         if( xQueueReceive( g_Slave_Queue, &nodeId, 2 / portTICK_RATE_MS ) == pdPASS)
         {
-            //UARTprintf("conf %d\n", nodeId);
+            UARTprintf("conf %d\n", nodeId);
             PD4Master_confSlaveNode(&TestMaster_Data, nodeId);
-
+            UARTprintf("conf end\n");
 
             PD4_Controlword[nodeId - 1] = 0x86;
 			PD4_bConnected[nodeId - 1] = 1;
@@ -111,6 +116,7 @@ PD4Master_task(void *pvParameters)
 			{
 				//UARTprintf("op mode\n");
 				setState(&TestMaster_Data, Operational);
+				xSemaphoreGive(g_PD4_Semaphore);
 			}
             /* Ask slave node to go in operational mode */
             //masterSendNMTstateChange (&TestMaster_Data, nodeId, NMT_Start_Node);
@@ -185,6 +191,7 @@ PD4Master_taskInit(void)
     g_Slave_Queue = xQueueCreate( 4 , sizeof( UNS8 ) );
     g_SDO_Mutex = xSemaphoreCreateMutex();
     g_SDO_Semaphore = xSemaphoreCreateBinary();
+    g_PD4_Semaphore = xSemaphoreCreateBinary();
     //UARTprintf("Create PD4\n");
     //
     // Create the LED task.

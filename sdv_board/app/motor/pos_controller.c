@@ -60,7 +60,7 @@ void pos_controller_period(int num)
     }
     else if(abs_err > 10 && abs_err <= 300)
     {
-        float increase = pos_state[num].ki * err +  pos_state[num].kp * (err - pos_state[num].last_err) / 5;
+        float increase = pos_state[num].ki * err +  pos_state[num].kp * (err - pos_state[num].last_err) / 5.0;
         speed = speed + increase;
 		pos_state[num].flag = 0;
     }
@@ -68,6 +68,7 @@ void pos_controller_period(int num)
     {
         speed = 0;
 		pos_state[num].flag = 1;
+		err = 0;
     }
 
     speed = a * speed + (1 - a) * pos_state[num].last_speed;

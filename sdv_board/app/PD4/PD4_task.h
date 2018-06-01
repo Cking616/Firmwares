@@ -10,6 +10,6 @@
 
 
 uint32_t PD4Master_taskInit(void);
-void PD4Master_set_speed(unsigned char nodeID, void* speed);
-void PD4Master_set_pos(unsigned char nodeID,void* pos);
+void PD4Master_set_speed(unsigned char nodeID, int speed);
+void PD4Master_set_pos(unsigned char nodeID,int pos);
 #endif /* APP_PD4_TASK_H_ */

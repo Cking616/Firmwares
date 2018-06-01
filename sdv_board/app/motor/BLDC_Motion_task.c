@@ -14,8 +14,10 @@
 #include "semphr.h"
 #include "pos_controller.h"
 #include "BLDC_Motion_task.h"
+#include "speed_controller.h"
+#include "pos_controller.h"
 
-#define TESTTASKSTACKSIZE        128         // Stack size in words
+#define TESTTASKSTACKSIZE        256         // Stack size in words
 
 int g_speed = 150;
 int g_inc_acc_tick = 0;
@@ -108,32 +110,64 @@ static void BLDC_Motion_task(void *pvParameters)
     portTickType ui32WakeTime;
     //
     ui32WakeTime = xTaskGetTickCount();
-	g_cur_ol_encoder = pos_controller_get_encoder(0);
+
 	int _i = 1;
+	int _ctrl_tick = 1;
+	int _start_motion = 0;
     while(1)
     {
-		if (xSemaphoreTake(g_BLDC_Semaphore, 0xffff) == pdTRUE)
-		{
-			while (1)
-			{
-				if (_i == g_end_tick + 3)
-				{
-					xSemaphoreGive(g_BLDC_Mutex);
-					g_BLDC_flag = 1;
-					_i = 1;
-					break;
-				}
-				_motion_function(_i);
-				vTaskDelayUntil(&ui32WakeTime, 10 / portTICK_RATE_MS);
-				_i++;
-			}
-		}
+        if (xSemaphoreTake(g_BLDC_Semaphore, 0) == pdTRUE)
+        {
+            _start_motion = 1;
+        }
+
+        speed_controller_period(0);
+        speed_controller_period(1);
+        if(_ctrl_tick % 5 == 0)
+        {
+            pos_controller_period(0);
+            pos_controller_period(1);
+        }
+
+        if(_ctrl_tick % 10 == 0)
+        {
+            if(_start_motion)
+            {
+                if (_i == g_end_tick + 3)
+                {
+                    _start_motion = 0;
+                    g_BLDC_flag = 1;
+                    _i = 1;
+                    xSemaphoreGive(g_BLDC_Mutex);
+                }
+                _motion_function(_i);
+                _i++;
+            }
+        }
+
+        vTaskDelayUntil(&ui32WakeTime, 1 / portTICK_RATE_MS);
+        if(_ctrl_tick == 999)
+        {
+            _ctrl_tick = 0;
+        }
+        else
+        {
+            _ctrl_tick ++;
+        }
     }
 }
 
 uint32_t
 BLDC_Motion_taskInit(void)
 {
+
+    speed_controller_init(0);
+    speed_controller_init(1);
+    pos_controller_init(0);
+    pos_controller_init(1);
+
+    g_cur_ol_encoder = pos_controller_get_encoder(0);
+
 	g_BLDC_Mutex = xSemaphoreCreateMutex();
 	g_BLDC_Semaphore = xSemaphoreCreateBinary();
     //

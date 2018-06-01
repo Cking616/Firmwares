@@ -19,6 +19,7 @@
 #include "motor/speed_controller.h"
 #include "motor/BLDC_Motion_task.h"
 #include "motor/pos_controller.h"
+#include "PD4/PD4_task.h"
 //*****************************************************************************
 //
 // The stack size for the LED toggle task.
@@ -42,7 +43,7 @@ static uint8_t g_pRgbColors = LIGHTS_RGB_RED;
 static uint8_t g_ui8red = 0;
 static uint8_t g_ui8green = 1;
 extern xSemaphoreHandle g_pUARTSemaphore;
-
+extern SemaphoreHandle_t g_PD4_Semaphore;
 //*****************************************************************************
 //
 // This task toggles the user selected LED at a user selected frequency. User
@@ -66,6 +67,9 @@ LEDTask(void *pvParameters)
     // Get the current tick count.
     //
     ui32WakeTime = xTaskGetTickCount();
+    int _step = 0;
+
+    xSemaphoreTake(g_PD4_Semaphore, 0xffff);
 
     //
     // Loop forever.
@@ -91,10 +95,57 @@ LEDTask(void *pvParameters)
             g_pRgbColors = LIGHTS_RGB_RED;
         }
 
-        if(BLDC_Motion_is_end())
+        switch(_step)
         {
+        case 0:
             _pos = -_pos;
             BLDC_Motion_start(200, _pos, 3);
+            vTaskDelay(100 / portTICK_RATE_MS);
+            _step++;
+            break;
+        case 1:
+            if(BLDC_Motion_is_end())
+            {
+                _step++;
+                break;
+            }
+            else
+            {
+                break;
+            }
+        case 2:
+            PD4Master_set_pos(2, _pos);
+            vTaskDelay(100 / portTICK_RATE_MS);
+            _step++;
+            break;
+        case 3:
+            if(PD4_Status[1] & 0x400)
+            {
+                _step++;
+                break;
+            }
+            else
+            {
+                break;
+            }
+        case 4:
+            PD4Master_set_pos(3, _pos);
+            vTaskDelay(100 / portTICK_RATE_MS);
+            _step++;
+            break;
+        case 5:
+            if(PD4_Status[2] & 0x400)
+            {
+                _step++;
+                break;
+            }
+            else
+            {
+                break;
+            }
+        default:
+            _step = 0;
+            break;
         }
         //pos_controller_print(0);
         //speed_controller_print(0);
