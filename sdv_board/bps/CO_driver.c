@@ -21,6 +21,10 @@
 #include "driverlib/interrupt.h"
 #include "driverlib/timer.h"
 #include "canfestival.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+#include "semphr.h"
 #include "utils/uartstdio.h"
 
 extern CO_Data TestMaster_Data;
@@ -63,10 +67,12 @@ void can_init()
     MAP_CANInit(CAN0_BASE);     // Initialize the CAN controller
     MAP_CANBitRateSet(CAN0_BASE, MAP_SysCtlClockGet(), 1000000);  // Set up the bit rate for the CAN bus.
     MAP_CANIntEnable(CAN0_BASE, CAN_INT_MASTER | CAN_INT_ERROR | CAN_INT_STATUS);  // Enable interrupts on the CAN peripheral. Name of the handler is in the vector table of startup code.
+    IntPrioritySet(INT_CAN0, 0xB0);
     IntEnable(INT_CAN0);   // Enable the CAN interrupt on the processor (NVIC).
     MAP_CANEnable(CAN0_BASE);   // Enable the CAN for operation.
 	CANIntRegister(CAN0_BASE, CAN0IntHandler);
 }
+
 //*****************************************************************************
 //
 // Can ERROR handling. When a message is received if there is an erro it is
@@ -340,7 +346,9 @@ void can_write(uint32_t id, uint32_t len,  uint8_t mode, uint8_t* data )
 
 unsigned char canSend(CAN_PORT notused, Message *m)
 {
+    taskDISABLE_INTERRUPTS();
 	can_write(m->cob_id, m->len, m->rtr, m->data);
+	taskENABLE_INTERRUPTS();
 	return 0x00;
 }
 
@@ -402,7 +410,7 @@ void CO_Timerinit(void)
 	//
 	// Enable processor interrupts.
 	//
-	MAP_IntMasterEnable();
+	IntMasterEnable();
 
 	//
 	// Configure the two 32-bit periodic timers.
@@ -413,6 +421,7 @@ void CO_Timerinit(void)
 	//
 	// Setup the interrupts for the timer timeouts.
 	//
+    IntPrioritySet(INT_TIMER0A, 0xC0);
 	MAP_IntEnable(INT_TIMER0A);
 	MAP_TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
 

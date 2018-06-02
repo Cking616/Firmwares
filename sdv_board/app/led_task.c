@@ -114,26 +114,11 @@ LEDTask(void *pvParameters)
                 break;
             }
         case 2:
-            PD4Master_set_pos(2, _pos);
-            vTaskDelay(100 / portTICK_RATE_MS);
-            _step++;
-            break;
-        case 3:
-            if(PD4_Status[1] & 0x400)
-            {
-                _step++;
-                break;
-            }
-            else
-            {
-                break;
-            }
-        case 4:
             PD4Master_set_pos(3, _pos);
             vTaskDelay(100 / portTICK_RATE_MS);
             _step++;
             break;
-        case 5:
+        case 3:
             if(PD4_Status[2] & 0x400)
             {
                 _step++;
@@ -141,6 +126,39 @@ LEDTask(void *pvParameters)
             }
             else
             {
+                //_step++;
+                break;
+            }
+        case 4:
+            PD4Master_set_pos(1, _pos);
+            vTaskDelay(100 / portTICK_RATE_MS);
+            _step++;
+            break;
+        case 5:
+            if(PD4_Status[0] & 0x400)
+            {
+                _step++;
+                break;
+            }
+            else
+            {
+                //_step++;
+                break;
+            }
+        case 6:
+            PD4Master_set_pos(4, _pos);
+            vTaskDelay(100 / portTICK_RATE_MS);
+            _step++;
+            break;
+        case 7:
+            if(PD4_Status[3] & 0x400)
+            {
+                _step++;
+                break;
+            }
+            else
+            {
+                //_step++;
                 break;
             }
         default:
@@ -150,8 +168,9 @@ LEDTask(void *pvParameters)
         //pos_controller_print(0);
         //speed_controller_print(0);
         //speed_controller_print(1);
-        //UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[1], PD4_Controlword[1], PD4_Position[1]);
         //UARTprintf("3s:0x%X,c:0x%X,p:%d\n", PD4_Status[2], PD4_Controlword[2], PD4_Position[2]);
+        //UARTprintf("1s:0x%X,c:0x%X,p:%d\n", PD4_Status[0], PD4_Controlword[0], PD4_Position[0]);
+        UARTprintf("4s:0x%X,c:0x%X,p:%d\n", PD4_Status[3], PD4_Controlword[3], PD4_Position[3]);
     }
 }
 

@@ -31,6 +31,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 extern xQueueHandle g_Slave_Queue;
 extern SemaphoreHandle_t g_SDO_Semaphore;
 extern SemaphoreHandle_t g_SDO_Mutex;
+static int __init_step;
 
 void CanOpen_setMaster(CO_Data* d, UNS8 nodeId)
 {
@@ -60,7 +61,7 @@ static void CheckSDOAndContinue(CO_Data* d, UNS8 nodeId)
 {
 	UNS32 abortCode;
 	if (getWriteResultNetworkDict(d, nodeId, &abortCode) != SDO_FINISHED)
-		UARTprintf("Master : Failed in initializing slave %X, AbortCode :%X \n", nodeId, abortCode);
+		UARTprintf("Master : Failed in initializing slave %X, AbortCode :%X, Step:%d\n", nodeId, abortCode, __init_step);
 
 	/* Finalise last SDO transfer with this node */
 	closeSDOtransfer(&TestMaster_Data, nodeId, SDO_CLIENT);
@@ -73,6 +74,7 @@ void PD4Master_writeSlaveParam(CO_Data* d, UNS8 nodeId, UNS16 index,
 							UNS8 dataType, void *data)
 {
 	xSemaphoreTake(g_SDO_Mutex, 0xffff);
+	taskDISABLE_INTERRUPTS();
 	writeNetworkDictCallBack(d, /*CO_Data* d*/
 		nodeId, /*UNS8 nodeId*/
 		index, /*UNS16 index*/
@@ -82,7 +84,8 @@ void PD4Master_writeSlaveParam(CO_Data* d, UNS8 nodeId, UNS16 index,
 		data,/*void *data*/
 		CheckSDOAndContinue, /*SDOCallback_t Callback*/
 		0); /* use block mode */
-
+	taskENABLE_INTERRUPTS();
+	__init_step++;
 	xSemaphoreTake(g_SDO_Semaphore, 0xffff);
 	xSemaphoreGive(g_SDO_Mutex);
 }
@@ -92,53 +95,6 @@ void CanOpen_Reset_TPDO(CO_Data* d, UNS8 nodeId)
 	const portTickType xDelay = pdMS_TO_TICKS(10);
 	UNS8 data8 = 0x01;
 	int32_t data = 0;
-
-	vTaskDelay(xDelay);
-	data8 = 0x0;
-	PD4Master_writeSlaveParam(d, /*CO_Data* d*/
-		nodeId, /*UNS8 nodeId*/
-		0x1a00, /*UNS16 index*/
-		0x00, /*UNS16 index*/
-		1, /*UNS8 count*/
-		0, /*UNS8 dataType*/
-		&data8); /* use block mode */
-
-	data = (0x180 + nodeId) + 0x80000000;
-	PD4Master_writeSlaveParam(d, /*CO_Data* d*/
-		nodeId, /*UNS8 nodeId*/
-		0x1800, /*UNS16 index*/
-		0x01, /*UNS16 index*/
-		4, /*UNS8 count*/
-		uint32, /*UNS8 dataType*/
-		&data); /* use block mode */
-
-	vTaskDelay(xDelay);
-	data = 0x60410010;
-	PD4Master_writeSlaveParam(d, /*CO_Data* d*/
-		nodeId, /*UNS8 nodeId*/
-		0x1a00, /*UNS16 index*/
-		0x01, /*UNS16 index*/
-		4, /*UNS8 count*/
-		uint32, /*UNS8 dataType*/
-		&data); /* use block mode */
-
-	data = 0x60640020;
-	PD4Master_writeSlaveParam(d, /*CO_Data* d*/
-		nodeId, /*UNS8 nodeId*/
-		0x1a00, /*UNS16 index*/
-		0x02, /*UNS16 index*/
-		4, /*UNS8 count*/
-		uint32, /*UNS8 dataType*/
-		&data); /* use block mode */
-
-	data8 = 0x2;
-	PD4Master_writeSlaveParam(d, /*CO_Data* d*/
-		nodeId, /*UNS8 nodeId*/
-		0x1a00, /*UNS16 index*/
-		0x00, /*UNS16 index*/
-		1, /*UNS8 count*/
-		0, /*UNS8 dataType*/
-		&data8); /* use block mode */
 
 	data8 = 0x1;
 	PD4Master_writeSlaveParam(d, /*CO_Data* d*/
@@ -208,7 +164,7 @@ void CanOpen_Reset_RPDO(CO_Data* d, UNS8 nodeId)
     const portTickType xDelay = pdMS_TO_TICKS(300);
 
     vTaskDelay(xDelay);
-	data = 0x200 + +nodeId;
+	data = 0x200 + nodeId;
 	PD4Master_writeSlaveParam(d, /*CO_Data* d*/
 		nodeId, /*UNS8 nodeId*/
 		0x1400, /*UNS16 index*/
@@ -245,7 +201,7 @@ void PD4Master_initialisation(CO_Data* d)
 	/*****************************************
 	 * Define RPDOs to match slave ID=2 TPDOs*
 	 *****************************************/
-    //masterSendNMTstateChange(&TestMaster_Data, 0x02, NMT_Enter_PreOperational);
+    //masterSendNMTstateChange(&TestMaster_Data, 0x04, NMT_Enter_PreOperational);
     //masterSendNMTstateChange(&TestMaster_Data, 0x03, NMT_Enter_PreOperational);
 }
 
@@ -269,17 +225,20 @@ void PD4Master_confSlaveNode(CO_Data* d, UNS8 nodeId)
 {
 	/* Master configure heartbeat producer time at 1000 ms 
 	 * for slave node-id 0x02 by DCF concise */
-	 
+    __init_step = 0;
 	//UARTprintf("Master : ConfigureSlaveNode %X\n", nodeId);
 	CanOpen_setMaster(d, nodeId);
-	CanOpen_Reset_TPDO(d, nodeId);
-	CanOpen_Change_Param(d, nodeId);
-    CanOpen_Reset_RPDO(d, nodeId);
+	if(nodeId == 3)
+	{
+	    CanOpen_Reset_TPDO(d, nodeId);
+	    CanOpen_Change_Param(d, nodeId);
+	    CanOpen_Reset_RPDO(d, nodeId);
+	}
 	/* Put the master in operational mode */
 	//setState(d, Operational);
 	//Contolword2 = 0x86;
 	/* Ask slave node to go in operational mode */
-	masterSendNMTstateChange (d, nodeId, NMT_Start_Node);
+	//masterSendNMTstateChange (d, nodeId, NMT_Start_Node);
 }
 
 

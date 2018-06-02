@@ -34,6 +34,7 @@ bool g_trip_bit4[4] = { 0, 0, 0, 0 };
 
 int _PD4_speed_tmp = 0;
 int _PD4_pos_tmp = 0;
+
 void PD4Master_set_speed(UNS8 nodeID, int speed)
 {
     _PD4_speed_tmp = speed;
@@ -46,9 +47,22 @@ void PD4Master_set_speed(UNS8 nodeID, int speed)
                               &_PD4_speed_tmp); /* use block mode */
 }
 
+void PD4Master_set_ctrl(UNS8 nodeID, UNS16 word)
+{
+    PD4_Controlword[nodeID - 1] = word;
+    PD4Master_writeSlaveParam(&TestMaster_Data, /*CO_Data* d*/
+                              nodeID, /*UNS8 nodeId*/
+                              0x6040, /*UNS16 index*/
+                              0x00, /*UNS16 index*/
+                              2, /*UNS8 count*/
+                              uint16, /*UNS8 dataType*/
+                              & PD4_Controlword[nodeID - 1]); /* use block mode */
+}
+
 void PD4Master_set_pos(UNS8 nodeID, int pos)
 {
     _PD4_pos_tmp = pos;
+    UARTprintf("set id:%d, pos:%d\n", nodeID, pos);
     PD4Master_writeSlaveParam(&TestMaster_Data, /*CO_Data* d*/
                               nodeID, /*UNS8 nodeId*/
                               0x607a, /*UNS16 index*/
@@ -56,8 +70,11 @@ void PD4Master_set_pos(UNS8 nodeID, int pos)
                               4, /*UNS8 count*/
                               int32, /*UNS8 dataType*/
                               &_PD4_pos_tmp); /* use block mode */
+    PD4Master_set_ctrl(nodeID, 0x3F);
 	g_trip_bit4[nodeID - 1] = 1;
 }
+
+
 //*****************************************************************************
 //
 // This task toggles the user selected LED at a user selected frequency. User
@@ -90,7 +107,7 @@ PD4Master_task(void *pvParameters)
     //
     // Initialize the LED Toggle Delay to default value.
     //
-    ui32PD4ToggleDelay = 10;
+    ui32PD4ToggleDelay = 20;
 
     //
     // Get the current tick count.
@@ -100,83 +117,102 @@ PD4Master_task(void *pvParameters)
     // Loop forever.
     //
     //UARTprintf("PD4 init 2\n");
+    vTaskDelayUntil(&ui32WakeTime, 500 / portTICK_RATE_MS);
+
     while(1)
     {
         UNS8 nodeId;
-		int _i = 0;
-        if( xQueueReceive( g_Slave_Queue, &nodeId, 2 / portTICK_RATE_MS ) == pdPASS)
-        {
-            UARTprintf("conf %d\n", nodeId);
-            PD4Master_confSlaveNode(&TestMaster_Data, nodeId);
-            UARTprintf("conf end\n");
 
+        if( xQueueReceive( g_Slave_Queue, &nodeId, 0xffff ) == pdPASS)
+        {
+            UARTprintf("cf:%d\n",nodeId);
+            PD4Master_confSlaveNode(&TestMaster_Data, nodeId);
+            PD4_bConnected[nodeId - 1] = 1;
             PD4_Controlword[nodeId - 1] = 0x86;
-			PD4_bConnected[nodeId - 1] = 1;
-			if(PD4_bConnected[1] && PD4_bConnected[2])
+            UARTprintf("cf end\n");
+
+			if(PD4_bConnected[3] && PD4_bConnected[0] && PD4_bConnected[2])
 			{
-				//UARTprintf("op mode\n");
+				UARTprintf("op mode\n");
+			    masterSendNMTstateChange (&TestMaster_Data, 1, NMT_Start_Node);
+			    vTaskDelay(10);
+			    masterSendNMTstateChange (&TestMaster_Data, 4, NMT_Start_Node);
+			    vTaskDelay(10);
+			    masterSendNMTstateChange (&TestMaster_Data, 3, NMT_Start_Node);
+			    vTaskDelay(10);
 				setState(&TestMaster_Data, Operational);
 				xSemaphoreGive(g_PD4_Semaphore);
+				break;
 			}
-            /* Ask slave node to go in operational mode */
-            //masterSendNMTstateChange (&TestMaster_Data, nodeId, NMT_Start_Node);
         }
+    }
 
-        if(getState(&TestMaster_Data) == Operational)
+    while(1)
+    {
+        int _i = 0;
+
+        //sendPDOevent(&TestMaster_Data);
+        for (_i = 0; _i < 4; _i++)
         {
-            sendPDOevent(&TestMaster_Data);
-			for (_i = 0; _i < 4; _i++)
-			{
-				if (!PD4_bConnected[nodeId - 1])
-				{
-					continue;
-				}
+            if (!PD4_bConnected[_i])
+            {
+                continue;
+            }
 
-				sendPDOrequest(&TestMaster_Data, 0x1400 + _i);
-			}
-
-	        for (_i = 0; _i < 4; _i++)
-	        {
-	            if (!PD4_bConnected[nodeId - 1])
-	            {
-	                continue;
-	            }
-
-	            if (PD4_Status[_i] & 0x40)
-	            {
-	                PD4_Controlword[_i] = 0x6;
-	            }
-	            else if (PD4_Status[_i] & 0x20)
-	            {
-	                if (PD4_Status[_i] & 0x2)
-	                {
-	                    PD4_Controlword[_i] = 0xF;
-	                }
-	                else
-	                {
-	                    PD4_Controlword[_i] = 0x7;
-	                }
-	            }
-
-	            if ((PD4_Status[_i] & 0x67) == 0x27)
-	            {
-	                if (g_trip_bit4[_i])
-	                {
-	                    PD4_Controlword[_i] = 0x3F;
-	                    g_trip_bit4[_i] = 0;
-	                }
-	                else
-	                {
-	                    PD4_Controlword[_i] = 0x2F;
-	                }
-	            }
-	        }
+            taskDISABLE_INTERRUPTS();
+            sendPDOrequest(&TestMaster_Data, 0x1400 + _i);
+            taskENABLE_INTERRUPTS();
         }
 
-        //
-        // Wait for the required amount of time.
-        //
+        for (_i = 0; _i < 4; _i++)
+        {
+            if (!PD4_bConnected[_i])
+            {
+                continue;
+            }
+
+            if (PD4_Status[_i] & 0x40)
+            {
+                PD4_Controlword[_i] = 0x6;
+            }
+            else if (PD4_Status[_i] & 0x20)
+            {
+                if (PD4_Status[_i] & 0x2)
+                {
+                    PD4_Controlword[_i] = 0xF;
+                }
+                else
+                {
+                    PD4_Controlword[_i] = 0x7;
+                }
+            }
+
+            if ((PD4_Status[_i] & 0x67) == 0x27)
+            {
+                if (g_trip_bit4[_i])
+                {
+                    PD4_Controlword[_i] = 0x3F;
+                    g_trip_bit4[_i] = 0;
+                }
+                else
+                {
+                    PD4_Controlword[_i] = 0x2F;
+                }
+            }
+        }
+
         vTaskDelayUntil(&ui32WakeTime, ui32PD4ToggleDelay / portTICK_RATE_MS);
+
+        for (_i = 0; _i < 4; _i++)
+        {
+            if (!PD4_bConnected[_i])
+            {
+                continue;
+            }
+            taskDISABLE_INTERRUPTS();
+            sendOnePDOevent(&TestMaster_Data, _i);
+            taskENABLE_INTERRUPTS();
+        }
     }
 }
 
