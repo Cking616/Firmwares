@@ -48,7 +48,7 @@ inline void pos_controller_set_max_speed(int num, int max_speed)
 
 void pos_controller_period(int num)
 {
-    static float a = 0.626;
+    static float a = 0.63;
     float speed =  pos_state[num].last_speed;
     int err = pos_state[num].target_pos - encoder_get_value(num);
     int abs_err = err > 0? err: -err;
@@ -81,7 +81,7 @@ void pos_controller_period(int num)
 
     if(acc < -pos_state[num].max_acc)
     {
-        acc =  pos_state[num].last_speed - pos_state[num].max_acc;
+        acc = -pos_state[num].max_acc;
     }
 
     speed = pos_state[num].last_speed + acc;

@@ -42,7 +42,6 @@
 static uint8_t g_pRgbColors = LIGHTS_RGB_RED;
 static uint8_t g_ui8red = 0;
 static uint8_t g_ui8green = 1;
-extern xSemaphoreHandle g_pUARTSemaphore;
 extern SemaphoreHandle_t g_PD4_Semaphore;
 //*****************************************************************************
 //
@@ -50,7 +49,6 @@ extern SemaphoreHandle_t g_PD4_Semaphore;
 // can make the selections by pressing the left and right buttons.
 //
 //*****************************************************************************
-int _pos = -200000;
 static void
 LEDTask(void *pvParameters)
 {
@@ -67,9 +65,6 @@ LEDTask(void *pvParameters)
     // Get the current tick count.
     //
     ui32WakeTime = xTaskGetTickCount();
-    int _step = 0;
-
-    xSemaphoreTake(g_PD4_Semaphore, 0xffff);
 
     //
     // Loop forever.
@@ -95,82 +90,12 @@ LEDTask(void *pvParameters)
             g_pRgbColors = LIGHTS_RGB_RED;
         }
 
-        switch(_step)
-        {
-        case 0:
-            _pos = -_pos;
-            BLDC_Motion_start(200, _pos, 3);
-            vTaskDelay(100 / portTICK_RATE_MS);
-            _step++;
-            break;
-        case 1:
-            if(BLDC_Motion_is_end())
-            {
-                _step++;
-                break;
-            }
-            else
-            {
-                break;
-            }
-        case 2:
-            PD4Master_set_pos(3, _pos);
-            vTaskDelay(100 / portTICK_RATE_MS);
-            _step++;
-            break;
-        case 3:
-            if(PD4_Status[2] & 0x400)
-            {
-                _step++;
-                break;
-            }
-            else
-            {
-                //_step++;
-                break;
-            }
-        case 4:
-            PD4Master_set_pos(1, _pos);
-            vTaskDelay(100 / portTICK_RATE_MS);
-            _step++;
-            break;
-        case 5:
-            if(PD4_Status[0] & 0x400)
-            {
-                _step++;
-                break;
-            }
-            else
-            {
-                //_step++;
-                break;
-            }
-        case 6:
-            PD4Master_set_pos(4, _pos);
-            vTaskDelay(100 / portTICK_RATE_MS);
-            _step++;
-            break;
-        case 7:
-            if(PD4_Status[3] & 0x400)
-            {
-                _step++;
-                break;
-            }
-            else
-            {
-                //_step++;
-                break;
-            }
-        default:
-            _step = 0;
-            break;
-        }
         //pos_controller_print(0);
         //speed_controller_print(0);
         //speed_controller_print(1);
         //UARTprintf("3s:0x%X,c:0x%X,p:%d\n", PD4_Status[2], PD4_Controlword[2], PD4_Position[2]);
         //UARTprintf("1s:0x%X,c:0x%X,p:%d\n", PD4_Status[0], PD4_Controlword[0], PD4_Position[0]);
-        UARTprintf("4s:0x%X,c:0x%X,p:%d\n", PD4_Status[3], PD4_Controlword[3], PD4_Position[3]);
+        //UARTprintf("4s:0x%X,c:0x%X,p:%d\n", PD4_Status[3], PD4_Controlword[3], PD4_Position[3]);
     }
 }
 

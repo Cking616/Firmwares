@@ -29,6 +29,7 @@ int g_target_pos = 0;
 int g_cur_ol_encoder = 0;
 int g_BLDC_flag = 1;
 int g_dir = 1;
+int g_stop = 0;
 SemaphoreHandle_t g_BLDC_Semaphore;
 SemaphoreHandle_t g_BLDC_Mutex;
 
@@ -60,20 +61,23 @@ void _motion_function(int _tick)
 	}
 }
 
-int BLDC_Motion_is_end()
+int BLDC_Motion_get_flag()
 {
 	int _encoder = pos_controller_get_encoder(0);
-	if (g_target_pos - _encoder < 20)
+	int flag = 0;
+	if (g_target_pos - _encoder < 20 && g_target_pos - _encoder > -20)
 	{
-		return pos_controller_get_flag(0) && g_BLDC_flag;
+	    flag =  1;
 	}
-	return 0;
+	flag |= g_BLDC_flag ? 0x10 : 0;
+	return flag;
 }
 
 int BLDC_Motion_start(unsigned int speed, int _pos, unsigned int a_mol)
 {
-	if (xSemaphoreTake(g_BLDC_Mutex, 0xffff) == pdTRUE)
+	if (xSemaphoreTake(g_BLDC_Mutex, 5) == pdTRUE)
 	{
+	    taskDISABLE_INTERRUPTS();
 		g_a_mol = a_mol;
 		int _acc_pos = speed * speed * g_a_den / a_mol;
 		int _dis = _pos - g_cur_ol_encoder;
@@ -98,6 +102,7 @@ int BLDC_Motion_start(unsigned int speed, int _pos, unsigned int a_mol)
 		g_dec_acc_tick = g_inc_acc_tick + (_dis - _acc_pos) / speed;
 		g_end_tick = g_dec_acc_tick + g_inc_acc_tick;
 		g_BLDC_flag = 0;
+		taskENABLE_INTERRUPTS();
 		//UARTprintf("S:%d,dir:%d,p:%d,inc:%d,dec:%d,end:%d,op:%d\n", g_speed, g_dir, g_target_pos,g_inc_acc_tick,g_dec_acc_tick,g_end_tick,g_cur_ol_encoder);
 		xSemaphoreGive(g_BLDC_Semaphore);
 		return 1;
@@ -105,10 +110,21 @@ int BLDC_Motion_start(unsigned int speed, int _pos, unsigned int a_mol)
 	return 0;
 }
 
+void BLDC_Motion_stop()
+{
+    taskDISABLE_INTERRUPTS();
+    g_stop = 1;
+    taskENABLE_INTERRUPTS();
+}
+
+int BLDC_Motion_get_encoder(void)
+{
+	return pos_controller_get_encoder(0);
+}
+
 static void BLDC_Motion_task(void *pvParameters)
 {
     portTickType ui32WakeTime;
-    //
     ui32WakeTime = xTaskGetTickCount();
 
 	int _i = 1;
@@ -118,9 +134,13 @@ static void BLDC_Motion_task(void *pvParameters)
     {
         if (xSemaphoreTake(g_BLDC_Semaphore, 0) == pdTRUE)
         {
+            taskDISABLE_INTERRUPTS();
             _start_motion = 1;
+            g_stop = 0;
+            taskENABLE_INTERRUPTS();
         }
 
+        taskDISABLE_INTERRUPTS();
         speed_controller_period(0);
         speed_controller_period(1);
         if(_ctrl_tick % 5 == 0)
@@ -128,16 +148,20 @@ static void BLDC_Motion_task(void *pvParameters)
             pos_controller_period(0);
             pos_controller_period(1);
         }
+        taskENABLE_INTERRUPTS();
 
         if(_ctrl_tick % 10 == 0)
         {
             if(_start_motion)
             {
-                if (_i == g_end_tick + 3)
+                if (_i == g_end_tick + 3 || g_stop)
                 {
+                    taskDISABLE_INTERRUPTS();
                     _start_motion = 0;
                     g_BLDC_flag = 1;
                     _i = 1;
+                    taskENABLE_INTERRUPTS();
+
                     xSemaphoreGive(g_BLDC_Mutex);
                 }
                 _motion_function(_i);

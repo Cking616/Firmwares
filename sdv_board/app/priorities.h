@@ -31,7 +31,7 @@
 //
 //*****************************************************************************
 #define PRIORITY_MOT_TASK       4
-#define PRIORITY_MCTRL_TASK     2
+#define PRIORITY_CMD_TASK       8
 #define PRIORITY_PD4_TASK       3
 #define PRIORITY_LED_TASK       1
 

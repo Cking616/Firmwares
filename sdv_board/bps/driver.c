@@ -23,6 +23,7 @@
 #include "encoder.h"
 #include "lights.h"
 #include "sonar.h"
+#include "cmdUart.h"
 
 volatile int _address = 0x7F;
 
@@ -103,6 +104,7 @@ void driver_init_hardware(void)
 
     CO_driver_init();
     drv8308_init();
+    cmd_uart_init();
     // ************************************************************************************************************
     //MAP_SysTickPeriodSet(80000);  // every 1mSec, @ 80Mhz
 }

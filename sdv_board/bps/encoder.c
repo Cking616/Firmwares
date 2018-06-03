@@ -84,12 +84,12 @@ inline int encoder_get_value(int num)
 {
     if(num == 1)
     {
-        int reslv =  MAP_QEIPositionGet( QEI0_BASE );
+        int reslv =  (int)QEIPositionGet( QEI0_BASE );
         return _encoder_dir1 * reslv;
     }
     else
     {
-        int reslv =  MAP_QEIPositionGet( QEI1_BASE );
+        int reslv =  (int)QEIPositionGet( QEI1_BASE );
         return _encoder_dir2 * reslv;
     }
 }

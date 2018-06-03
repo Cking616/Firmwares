@@ -25,9 +25,9 @@
 #include "semphr.h"
 
 char g_cmd_uart_fifo[12];
-char _tmp_fifo[12];
 char _start_flag = 0;
 char _cur_pos = 0;
+char _len = 0;
 
 extern xQueueHandle g_cmd_Queue;
 //*****************************************************************************
@@ -58,36 +58,45 @@ void cmd_uart_init_handler(void)
         _temp = UARTCharGetNonBlocking(UART4_BASE);
         if(_start_flag)
         {
-            if(_temp == '\r')
-            {
-                g_cmd_uart_fifo[_cur_pos] = 0;
-                _cur_pos = 0;
-                _start_flag = 0;
-                xQueueSendToFrontFromISR( g_cmd_Queue, ( void* )g_cmd_uart_fifo, NULL);
-                break;
-            }
-            else
-            {
-                g_cmd_uart_fifo[_cur_pos] = _temp;
-                _cur_pos++;
-                if(_cur_pos > 11)
-                {
-                    _cur_pos = 0;
-                    _start_flag = 0;
-                    break;
-                }
-            }
+			if (_cur_pos == 0)
+			{
+				_len = _temp;
+				g_cmd_uart_fifo[_cur_pos] = _temp;
+				_cur_pos++;
+				if (_len > 12)
+				{
+					_len = 0;
+					_cur_pos = 0;
+					_start_flag = 0;
+				}
+			}
+			else
+			{
+				g_cmd_uart_fifo[_cur_pos] = _temp;
+				_cur_pos++;
+				if (_cur_pos == _len)
+				{
+					_len = 0;
+					_cur_pos = 0;
+					_start_flag = 0;
+					xQueueSendToFrontFromISR(g_cmd_Queue, (void*)g_cmd_uart_fifo, NULL);
+					//break;
+				}
+			}
         }
-
-        if(_temp == '#')
-        {
-            _start_flag = 1;
-        }
+		else
+		{
+			if (_temp == '#')
+			{
+				_start_flag = 1;
+			}
+		}
     }
 }
 
 void cmd_uart_send(const uint8_t *pui8Buffer, uint32_t ui32Count)
 {
+    MAP_UARTCharPutNonBlocking(UART4_BASE, '#');
     //
     // Loop while there are more characters to send.
     //
@@ -96,6 +105,7 @@ void cmd_uart_send(const uint8_t *pui8Buffer, uint32_t ui32Count)
         //
         // Write the next character to the UART.
         //
+
         MAP_UARTCharPutNonBlocking(UART4_BASE, *pui8Buffer++);
     }
 }
@@ -130,6 +140,7 @@ void cmd_uart_init(void)
     //
     // Enable the UART interrupt.
     //
+    IntPrioritySet(INT_UART4, 0xD0);
     MAP_IntEnable(INT_UART4);
     MAP_UARTIntEnable(UART4_BASE, UART_INT_RX | UART_INT_RT);
 }

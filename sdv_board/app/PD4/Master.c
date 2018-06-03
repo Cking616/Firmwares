@@ -60,8 +60,8 @@ void CanOpen_setMaster(CO_Data* d, UNS8 nodeId)
 static void CheckSDOAndContinue(CO_Data* d, UNS8 nodeId)
 {
 	UNS32 abortCode;
-	if (getWriteResultNetworkDict(d, nodeId, &abortCode) != SDO_FINISHED)
-		UARTprintf("Master : Failed in initializing slave %X, AbortCode :%X, Step:%d\n", nodeId, abortCode, __init_step);
+	//if (getWriteResultNetworkDict(d, nodeId, &abortCode) != SDO_FINISHED)
+		//UARTprintf("Master : Failed in initializing slave %X, AbortCode :%X, Step:%d\n", nodeId, abortCode, __init_step);
 
 	/* Finalise last SDO transfer with this node */
 	closeSDOtransfer(&TestMaster_Data, nodeId, SDO_CLIENT);
@@ -186,7 +186,7 @@ void CanOpen_Reset_RPDO(CO_Data* d, UNS8 nodeId)
 /*****************************************************************************/
 void PD4Master_heartbeatError(CO_Data* d, UNS8 heartbeatID)
 {
-	UARTprintf("PD4Master_heartbeatError %d\n", heartbeatID);
+	//UARTprintf("PD4Master_heartbeatError %d\n", heartbeatID);
 }
 
 /********************************************************
@@ -263,7 +263,7 @@ void PD4Master_post_sync(CO_Data* d)
 
 void PD4Master_post_emcy(CO_Data* d, UNS8 nodeID, UNS16 errCode, UNS8 errReg)
 {
-	UARTprintf("Master received EMCY message. Node: %X  ErrorCode: %X  ErrorRegister: %X\n", nodeID, errCode, errReg);
+	//UARTprintf("Master received EMCY message. Node: %X  ErrorCode: %X  ErrorRegister: %X\n", nodeID, errCode, errReg);
 }
 
 void PD4Master_post_TPDO(CO_Data* d)

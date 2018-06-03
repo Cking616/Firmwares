@@ -70,11 +70,30 @@ void PD4Master_set_pos(UNS8 nodeID, int pos)
                               4, /*UNS8 count*/
                               int32, /*UNS8 dataType*/
                               &_PD4_pos_tmp); /* use block mode */
+    taskDISABLE_INTERRUPTS();
     PD4Master_set_ctrl(nodeID, 0x3F);
 	g_trip_bit4[nodeID - 1] = 1;
+	taskENABLE_INTERRUPTS();
 }
 
+unsigned char PD4Master_get_flag(unsigned char nodeID)
+{
+    unsigned char _flag = ((PD4_Status[nodeID - 1] & 0x67) == 0x27) ? 0x10 : 0;
+    _flag |= (PD4_Status[nodeID - 1] & 0x400) ? 0x1 : 0;
+    return _flag;
+}
 
+void PD4Master_stop(unsigned char nodeID)
+{
+    taskDISABLE_INTERRUPTS();
+    PD4Master_set_ctrl(nodeID, 0x2);
+    taskENABLE_INTERRUPTS();
+}
+
+inline int PD4Master_get_encoder(unsigned char nodeID)
+{
+	return PD4_Position[nodeID - 1];
+}
 //*****************************************************************************
 //
 // This task toggles the user selected LED at a user selected frequency. User
@@ -125,15 +144,15 @@ PD4Master_task(void *pvParameters)
 
         if( xQueueReceive( g_Slave_Queue, &nodeId, 0xffff ) == pdPASS)
         {
-            UARTprintf("cf:%d\n",nodeId);
+            //UARTprintf("cf:%d\n",nodeId);
             PD4Master_confSlaveNode(&TestMaster_Data, nodeId);
             PD4_bConnected[nodeId - 1] = 1;
             PD4_Controlword[nodeId - 1] = 0x86;
-            UARTprintf("cf end\n");
+            //UARTprintf("cf end\n");
 
 			if(PD4_bConnected[3] && PD4_bConnected[0] && PD4_bConnected[2])
 			{
-				UARTprintf("op mode\n");
+				//UARTprintf("op mode\n");
 			    masterSendNMTstateChange (&TestMaster_Data, 1, NMT_Start_Node);
 			    vTaskDelay(10);
 			    masterSendNMTstateChange (&TestMaster_Data, 4, NMT_Start_Node);
@@ -192,7 +211,9 @@ PD4Master_task(void *pvParameters)
                 if (g_trip_bit4[_i])
                 {
                     PD4_Controlword[_i] = 0x3F;
+                    taskDISABLE_INTERRUPTS();
                     g_trip_bit4[_i] = 0;
+                    taskENABLE_INTERRUPTS();
                 }
                 else
                 {

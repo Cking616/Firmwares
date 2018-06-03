@@ -8,7 +8,7 @@
 #include "app/led_task.h"
 #include "app/PD4/PD4_task.h"
 #include "app/motor/BLDC_Motion_task.h"
-
+#include "app/CMD/cmd_task.h"
 //*****************************************************************************
 //
 // The error routine that is called if the driver library encounters an error.
@@ -69,6 +69,14 @@ int main(void)
     // Create the LED task.
     //
     if(LEDTaskInit() != 0)
+    {
+
+        while(1)
+        {
+        }
+    }
+
+    if(cmd_taskInit() != 0)
     {
 
         while(1)
