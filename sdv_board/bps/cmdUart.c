@@ -128,7 +128,7 @@ void cmd_uart_init(void)
     MAP_GPIOPinConfigure(GPIO_PJ0_U4RX);
     MAP_GPIOPinConfigure(GPIO_PJ1_U4TX);
     MAP_GPIOPinTypeUART(GPIO_PORTJ_BASE, GPIO_PIN_0 | GPIO_PIN_1);
-
+    UARTFIFOEnable(UART4_BASE);
     //
     // Configure the UART for 115,200, 8-N-1 operation.
     //
@@ -142,6 +142,6 @@ void cmd_uart_init(void)
     //
     IntPrioritySet(INT_UART4, 0xD0);
     MAP_IntEnable(INT_UART4);
-    MAP_UARTIntEnable(UART4_BASE, UART_INT_RX | UART_INT_RT);
+    MAP_UARTIntEnable(UART4_BASE, UART_INT_RX);
 }
 

@@ -103,7 +103,6 @@ int BLDC_Motion_start(unsigned int speed, int _pos, unsigned int a_mol)
 		g_end_tick = g_dec_acc_tick + g_inc_acc_tick;
 		g_BLDC_flag = 0;
 		taskENABLE_INTERRUPTS();
-		//UARTprintf("S:%d,dir:%d,p:%d,inc:%d,dec:%d,end:%d,op:%d\n", g_speed, g_dir, g_target_pos,g_inc_acc_tick,g_dec_acc_tick,g_end_tick,g_cur_ol_encoder);
 		xSemaphoreGive(g_BLDC_Semaphore);
 		return 1;
 	}

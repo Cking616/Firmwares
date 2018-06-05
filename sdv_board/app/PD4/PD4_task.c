@@ -62,7 +62,7 @@ void PD4Master_set_ctrl(UNS8 nodeID, UNS16 word)
 void PD4Master_set_pos(UNS8 nodeID, int pos)
 {
     _PD4_pos_tmp = pos;
-    UARTprintf("set id:%d, pos:%d\n", nodeID, pos);
+    //UARTprintf("set id:%d, pos:%d\n", nodeID, pos);
     PD4Master_writeSlaveParam(&TestMaster_Data, /*CO_Data* d*/
                               nodeID, /*UNS8 nodeId*/
                               0x607a, /*UNS16 index*/

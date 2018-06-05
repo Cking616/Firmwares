@@ -36,18 +36,18 @@ inline void _send_cmd(_cmd_message* cmd_)
     taskENABLE_INTERRUPTS();
 }
 
-inline void _send_error()
+inline void _send_error(char dat)
 {
     _cmd_message _t_cmd;
-    _t_cmd.cmd = 'e';
-    _t_cmd.len = 3;
+    _t_cmd.cmd = '?';
+    _t_cmd.len = 4;
+    _t_cmd.data[0] = dat;
     _send_cmd(&_t_cmd);
 }
 
 static void
 cmd_task(void *pvParameters)
 {
-    cmd_uart_send("CMD\n", 6);
     _cmd_message _t_cmd;
     xSemaphoreTake(g_PD4_Semaphore, 0xffff);
     _t_cmd.cmd = '&';
@@ -69,7 +69,7 @@ cmd_task(void *pvParameters)
             {
                 if( _t_cmd.len < 8)
                 {
-                    _send_error();
+                    _send_error(_r_cmd.cmd);
                     break;
                 }
                 int _pos = *(int*) _r_cmd.data;
@@ -99,13 +99,11 @@ cmd_task(void *pvParameters)
             {
                 if( _t_cmd.len < 7)
                 {
-                    _send_error();
+                    _send_error(_r_cmd.cmd);
                     break;
                 }
                 char _nodeId = _r_cmd.data[0];
                 int _pos = *(int*) (_r_cmd.data + 1);
-                //int _speed = *(int*) (_r_cmd.data + 5);
-                //PD4Master_set_speed(_nodeId, _speed);
                 PD4Master_set_pos(_nodeId, _pos);
                 break;
             }
@@ -114,14 +112,15 @@ cmd_task(void *pvParameters)
             {
                 if( _t_cmd.len < 3)
                 {
-                    _send_error();
+                    _send_error(_r_cmd.cmd);
                     break;
                 }
                 char _nodeId = _r_cmd.data[0];
 				int _encoder = PD4Master_get_encoder(_nodeId);
-				_t_cmd.cmd = 'E';
-				_t_cmd.len = 6;
-				*(int*)_t_cmd.data = _encoder;
+				_t_cmd.cmd = 'e';
+				_t_cmd.len = 7;
+				_t_cmd.data[0] = _nodeId;
+				*(int*)(_t_cmd.data + 1) = _encoder;
 				_send_cmd(&_t_cmd);
 				break;
             }
@@ -130,7 +129,7 @@ cmd_task(void *pvParameters)
 			{
 				if (_t_cmd.len < 7)
 				{
-					_send_error();
+					_send_error(_r_cmd.cmd);
 					break;
 				}
 				char _nodeId = _r_cmd.data[0];
@@ -143,7 +142,7 @@ cmd_task(void *pvParameters)
 			{
 				if (_t_cmd.len < 3)
 				{
-					_send_error();
+					_send_error(_r_cmd.cmd);
 					break;
 				}
 				char _nodeId = _r_cmd.data[0];
@@ -153,14 +152,14 @@ cmd_task(void *pvParameters)
 
             default:
             {
-                _send_error();
+                //_send_error(_r_cmd.cmd);
                 break;
             }
 
             }
         }
 
-        _t_cmd.cmd = 'f';
+        _t_cmd.cmd = '%';
         _t_cmd.len = 8;
         for(_i = 0; _i < 4; _i++)
         {

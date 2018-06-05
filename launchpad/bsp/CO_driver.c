@@ -9,25 +9,22 @@
 #include <stdbool.h>
 #include "can.h"
 #include "inc/hw_memmap.h"
+#include "inc/hw_gpio.h"
 #include "inc/hw_can.h"
 #include "inc/hw_types.h"
 #include "inc/hw_ints.h"
+#include "driverlib/gpio.h"
 #include "driverlib/rom.h"
 #include "driverlib/rom_map.h"
 #include "driverlib/can.h"
-#include "driverlib/gpio.h"
 #include "driverlib/sysctl.h"
 #include "driverlib/pin_map.h"
 #include "driverlib/interrupt.h"
 #include "driverlib/timer.h"
 #include "canfestival.h"
-#include "FreeRTOS.h"
-#include "task.h"
-#include "queue.h"
-#include "semphr.h"
 #include "utils/uartstdio.h"
 
-extern CO_Data TestMaster_Data;
+extern CO_Data TestSlave_Data;
 
 // window ID:3  ID:0  ID:1  ID:2 door
 // wheels: F:  0   2
@@ -54,15 +51,18 @@ void can_init()
 {
     // ************************************************************************************************************
     // Init CAN
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_CAN0);     // The GPIO port and pins have been set up for CAN.
+    MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_CAN0);     // The GPIO port and pins have been set up for CAN.
+    MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);     // The GPIO port and pins have been set up for CAN.
 
-    MAP_GPIOPinTypeGPIOOutput( CANS_PORT, CANS_PIN );
-    MAP_GPIOPinWrite(CANS_PORT, CANS_PIN, 0 );  // S = LOW
+    HWREG(GPIO_PORTF_BASE + GPIO_O_LOCK) = GPIO_LOCK_KEY;   // unlock port F
+    HWREG(GPIO_PORTF_BASE + GPIO_O_CR) = 0xFF;
+    //MAP_GPIOPinTypeGPIOOutput( CANS_PORT, CANS_PIN );
+    //MAP_GPIOPinWrite(CANS_PORT, CANS_PIN, 0 );  // S = LOW
 
     IntMasterEnable();   // Enable processor interrupts.
-    MAP_GPIOPinConfigure(GPIO_PB4_CAN0RX);      // Configure the GPIO pin muxing to select CAN0 functions for these pins.
-    MAP_GPIOPinConfigure(GPIO_PB5_CAN0TX);
-    MAP_GPIOPinTypeCAN(GPIO_PORTB_BASE, GPIO_PIN_4 | GPIO_PIN_5);  // Enable the alternate function on the GPIO pins.
+    MAP_GPIOPinConfigure(GPIO_PF0_CAN0RX);      // Configure the GPIO pin muxing to select CAN0 functions for these pins.
+    MAP_GPIOPinConfigure(GPIO_PF3_CAN0TX);
+    MAP_GPIOPinTypeCAN(GPIO_PORTF_BASE, GPIO_PIN_0 | GPIO_PIN_3);  // Enable the alternate function on the GPIO pins.
 
     MAP_CANInit(CAN0_BASE);     // Initialize the CAN controller
     MAP_CANBitRateSet(CAN0_BASE, MAP_SysCtlClockGet(), 1000000);  // Set up the bit rate for the CAN bus.
@@ -71,6 +71,10 @@ void can_init()
     IntEnable(INT_CAN0);   // Enable the CAN interrupt on the processor (NVIC).
     MAP_CANEnable(CAN0_BASE);   // Enable the CAN for operation.
 	CANIntRegister(CAN0_BASE, CAN0IntHandler);
+
+    HWREG(GPIO_PORTF_BASE + GPIO_O_LOCK) = GPIO_LOCK_KEY;  // relock port F
+    HWREG(GPIO_PORTF_BASE + GPIO_O_CR) = 0x00;
+    HWREG(GPIO_PORTF_BASE + GPIO_O_LOCK) = 0;
 }
 
 //*****************************************************************************
@@ -247,7 +251,7 @@ void CAN0IntHandler(void)
 
         g_RxMessage.cob_id = g_sCAN0RxMessage.ui32MsgID;
 
-        canDispatch(&TestMaster_Data, &g_RxMessage);
+        canDispatch(&TestSlave_Data, &g_RxMessage);
         // Clear the message object interrupt.
         while(HWREG(CAN0_BASE + CAN_O_IF2CRQ) & CAN_IF1CRQ_BUSY) { }
         // Only change the interrupt pending state by setting only the CAN_IF1CMSK_CLRINTPND bit.
@@ -324,6 +328,14 @@ void CO_start_listening()
     MAP_CANMessageSet(CAN0_BASE, RXOBJECT, &g_sCAN0RxMessage, MSG_OBJ_TYPE_RX);
 }
 
+#define DISABLE_INTERRUPTS()                                        \
+{                                                                       \
+    _set_interrupt_priority( 0xA0 );    \
+    __asm( "    dsb" );                                                 \
+    __asm( "    isb" );                                                 \
+}
+
+#define ENABLE_INTERRUPTS()                 _set_interrupt_priority( 0 )
 
 //*****************************************************************************
 //*****************************************************************************
@@ -347,9 +359,9 @@ void can_write(uint32_t id, uint32_t len,  uint8_t mode, uint8_t* data )
 
 unsigned char canSend(CAN_PORT notused, Message *m)
 {
-    taskDISABLE_INTERRUPTS();
+    DISABLE_INTERRUPTS();
 	can_write(m->cob_id, m->len, m->rtr, m->data);
-	taskENABLE_INTERRUPTS();
+    ENABLE_INTERRUPTS();
 	return 0x00;
 }
 

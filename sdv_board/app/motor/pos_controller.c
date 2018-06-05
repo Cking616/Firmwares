@@ -38,7 +38,7 @@ inline void pos_controller_set_pos(int num, int pos)
 
 inline int  pos_controller_get_encoder(int num)
 {
-    return speed_controller_get_encoder(num);
+    return encoder_get_value(num);
 }
 
 inline void pos_controller_set_max_speed(int num, int max_speed)
