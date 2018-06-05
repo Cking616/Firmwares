@@ -6,6 +6,11 @@
 /**************************************************************************/
 /* Declaration of mapped variables                                        */
 /**************************************************************************/
+UNS8 Input1 = 0x0;		/* Mapped at index 0x2000, subindex 0x00 */
+UNS8 Output1 = 0x0;		/* Mapped at index 0x2001, subindex 0x00 */
+UNS32 Bumper1 = 0x0;		/* Mapped at index 0x2002, subindex 0x00 */
+UNS32 Bumper2 = 0x0;		/* Mapped at index 0x2004, subindex 0x00 */
+INTEGER32 YEncoder = 0x0;		/* Mapped at index 0x2006, subindex 0x00 */
 
 /**************************************************************************/
 /* Declaration of value range types                                       */
@@ -217,98 +222,34 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                        { RO, uint32, sizeof (UNS32), (void*)&TestSlave_obj1200_COB_ID_Server_to_Client_Transmit_SDO }
                      };
 
-/* index 0x1800 :   Transmit PDO 1 Parameter. */
-                    UNS8 TestSlave_highestSubIndex_obj1800 = 5; /* number of subindex - 1*/
-                    UNS32 TestSlave_obj1800_COB_ID_used_by_PDO = 0x180;	/* 384 */
-                    UNS8 TestSlave_obj1800_Transmission_Type = 0x0;	/* 0 */
-                    UNS16 TestSlave_obj1800_Inhibit_Time = 0x0;	/* 0 */
-                    UNS8 TestSlave_obj1800_Compatibility_Entry = 0x0;	/* 0 */
-                    UNS16 TestSlave_obj1800_Event_Timer = 0x0;	/* 0 */
-                    ODCallback_t TestSlave_Index1800_callbacks[] = 
+/* index 0x2000 :   Mapped variable Input1 */
+                    subindex TestSlave_Index2000[] = 
                      {
-                       NULL,
-                       NULL,
-                       NULL,
-                       NULL,
-                       NULL,
-                       NULL,
-                     };
-                    subindex TestSlave_Index1800[] = 
-                     {
-                       { RO, uint8, sizeof (UNS8), (void*)&TestSlave_highestSubIndex_obj1800 },
-                       { RW, uint32, sizeof (UNS32), (void*)&TestSlave_obj1800_COB_ID_used_by_PDO },
-                       { RW|TO_BE_SAVE, uint8, sizeof (UNS8), (void*)&TestSlave_obj1800_Transmission_Type },
-                       { RW|TO_BE_SAVE, uint16, sizeof (UNS16), (void*)&TestSlave_obj1800_Inhibit_Time },
-                       { RW, uint8, sizeof (UNS8), (void*)&TestSlave_obj1800_Compatibility_Entry },
-                       { RW, uint16, sizeof (UNS16), (void*)&TestSlave_obj1800_Event_Timer }
+                       { RW, uint8, sizeof (UNS8), (void*)&Input1 }
                      };
 
-/* index 0x1801 :   Transmit PDO 2 Parameter. */
-                    UNS8 TestSlave_highestSubIndex_obj1801 = 5; /* number of subindex - 1*/
-                    UNS32 TestSlave_obj1801_COB_ID_used_by_PDO = 0x280;	/* 640 */
-                    UNS8 TestSlave_obj1801_Transmission_Type = 0x0;	/* 0 */
-                    UNS16 TestSlave_obj1801_Inhibit_Time = 0x0;	/* 0 */
-                    UNS8 TestSlave_obj1801_Compatibility_Entry = 0x0;	/* 0 */
-                    UNS16 TestSlave_obj1801_Event_Timer = 0x0;	/* 0 */
-                    ODCallback_t TestSlave_Index1801_callbacks[] = 
+/* index 0x2001 :   Mapped variable Output1 */
+                    subindex TestSlave_Index2001[] = 
                      {
-                       NULL,
-                       NULL,
-                       NULL,
-                       NULL,
-                       NULL,
-                       NULL,
-                     };
-                    subindex TestSlave_Index1801[] = 
-                     {
-                       { RO, uint8, sizeof (UNS8), (void*)&TestSlave_highestSubIndex_obj1801 },
-                       { RW, uint32, sizeof (UNS32), (void*)&TestSlave_obj1801_COB_ID_used_by_PDO },
-                       { RW, uint8, sizeof (UNS8), (void*)&TestSlave_obj1801_Transmission_Type },
-                       { RW, uint16, sizeof (UNS16), (void*)&TestSlave_obj1801_Inhibit_Time },
-                       { RW, uint8, sizeof (UNS8), (void*)&TestSlave_obj1801_Compatibility_Entry },
-                       { RW, uint16, sizeof (UNS16), (void*)&TestSlave_obj1801_Event_Timer }
+                       { RW, uint8, sizeof (UNS8), (void*)&Output1 }
                      };
 
-/* index 0x1A00 :   Transmit PDO 1 Mapping. */
-                    UNS8 TestSlave_highestSubIndex_obj1A00 = 10; /* number of subindex - 1*/
-                    UNS32 TestSlave_obj1A00[] = 
-                    {
-                      0x0,	/* 0 */
-                      0x0,	/* 0 */
-                      0x0,	/* 0 */
-                      0x0,	/* 0 */
-                      0x0,	/* 0 */
-                      0x0,	/* 0 */
-                      0x0,	/* 0 */
-                      0x0,	/* 0 */
-                      0x0,	/* 0 */
-                      0x0	/* 0 */
-                    };
-                    subindex TestSlave_Index1A00[] = 
+/* index 0x2002 :   Mapped variable Bumper1 */
+                    subindex TestSlave_Index2002[] = 
                      {
-                       { RW, uint8, sizeof (UNS8), (void*)&TestSlave_highestSubIndex_obj1A00 },
-                       { RW, uint32, sizeof (UNS32), (void*)&TestSlave_obj1A00[0] },
-                       { RW, uint32, sizeof (UNS32), (void*)&TestSlave_obj1A00[1] },
-                       { RW, uint32, sizeof (UNS32), (void*)&TestSlave_obj1A00[2] },
-                       { RW, uint32, sizeof (UNS32), (void*)&TestSlave_obj1A00[3] },
-                       { RW, uint32, sizeof (UNS32), (void*)&TestSlave_obj1A00[4] },
-                       { RW, uint32, sizeof (UNS32), (void*)&TestSlave_obj1A00[5] },
-                       { RW, uint32, sizeof (UNS32), (void*)&TestSlave_obj1A00[6] },
-                       { RW, uint32, sizeof (UNS32), (void*)&TestSlave_obj1A00[7] },
-                       { RW, uint32, sizeof (UNS32), (void*)&TestSlave_obj1A00[8] },
-                       { RW, uint32, sizeof (UNS32), (void*)&TestSlave_obj1A00[9] }
+                       { RW, uint32, sizeof (UNS32), (void*)&Bumper1 }
                      };
 
-/* index 0x1A01 :   Transmit PDO 2 Mapping. */
-                    UNS8 TestSlave_highestSubIndex_obj1A01 = 1; /* number of subindex - 1*/
-                    UNS32 TestSlave_obj1A01[] = 
-                    {
-                      0x0	/* 0 */
-                    };
-                    subindex TestSlave_Index1A01[] = 
+/* index 0x2004 :   Mapped variable Bumper2 */
+                    subindex TestSlave_Index2004[] = 
                      {
-                       { RW, uint8, sizeof (UNS8), (void*)&TestSlave_highestSubIndex_obj1A01 },
-                       { RW, uint32, sizeof (UNS32), (void*)&TestSlave_obj1A01[0] }
+                       { RW, uint32, sizeof (UNS32), (void*)&Bumper2 }
+                     };
+
+/* index 0x2006 :   Mapped variable YEncoder */
+                    subindex TestSlave_Index2006[] = 
+                     {
+                       { RW, int32, sizeof (INTEGER32), (void*)&YEncoder }
                      };
 
 /**************************************************************************/
@@ -328,10 +269,11 @@ const indextable TestSlave_objdict[] =
   { (subindex*)TestSlave_Index1017,sizeof(TestSlave_Index1017)/sizeof(TestSlave_Index1017[0]), 0x1017},
   { (subindex*)TestSlave_Index1018,sizeof(TestSlave_Index1018)/sizeof(TestSlave_Index1018[0]), 0x1018},
   { (subindex*)TestSlave_Index1200,sizeof(TestSlave_Index1200)/sizeof(TestSlave_Index1200[0]), 0x1200},
-  { (subindex*)TestSlave_Index1800,sizeof(TestSlave_Index1800)/sizeof(TestSlave_Index1800[0]), 0x1800},
-  { (subindex*)TestSlave_Index1801,sizeof(TestSlave_Index1801)/sizeof(TestSlave_Index1801[0]), 0x1801},
-  { (subindex*)TestSlave_Index1A00,sizeof(TestSlave_Index1A00)/sizeof(TestSlave_Index1A00[0]), 0x1A00},
-  { (subindex*)TestSlave_Index1A01,sizeof(TestSlave_Index1A01)/sizeof(TestSlave_Index1A01[0]), 0x1A01},
+  { (subindex*)TestSlave_Index2000,sizeof(TestSlave_Index2000)/sizeof(TestSlave_Index2000[0]), 0x2000},
+  { (subindex*)TestSlave_Index2001,sizeof(TestSlave_Index2001)/sizeof(TestSlave_Index2001[0]), 0x2001},
+  { (subindex*)TestSlave_Index2002,sizeof(TestSlave_Index2002)/sizeof(TestSlave_Index2002[0]), 0x2002},
+  { (subindex*)TestSlave_Index2004,sizeof(TestSlave_Index2004)/sizeof(TestSlave_Index2004[0]), 0x2004},
+  { (subindex*)TestSlave_Index2006,sizeof(TestSlave_Index2006)/sizeof(TestSlave_Index2006[0]), 0x2006},
 };
 
 const indextable * TestSlave_scanIndexOD (UNS16 wIndex, UNS32 * errorCode, ODCallback_t **callbacks)
@@ -350,10 +292,11 @@ const indextable * TestSlave_scanIndexOD (UNS16 wIndex, UNS32 * errorCode, ODCal
 		case 0x1017: i = 8;*callbacks = TestSlave_Index1017_callbacks; break;
 		case 0x1018: i = 9;break;
 		case 0x1200: i = 10;break;
-		case 0x1800: i = 11;*callbacks = TestSlave_Index1800_callbacks; break;
-		case 0x1801: i = 12;*callbacks = TestSlave_Index1801_callbacks; break;
-		case 0x1A00: i = 13;break;
-		case 0x1A01: i = 14;break;
+		case 0x2000: i = 11;break;
+		case 0x2001: i = 12;break;
+		case 0x2002: i = 13;break;
+		case 0x2004: i = 14;break;
+		case 0x2006: i = 15;break;
 		default:
 			*errorCode = OD_NO_SUCH_OBJECT;
 			return NULL;
@@ -367,15 +310,15 @@ const indextable * TestSlave_scanIndexOD (UNS16 wIndex, UNS32 * errorCode, ODCal
  * Even if no pdoTransmit are defined, at least one entry is computed
  * for compilations issues.
  */
-s_PDO_status TestSlave_PDO_status[2] = {s_PDO_status_Initializer,s_PDO_status_Initializer};
+s_PDO_status TestSlave_PDO_status[1] = {s_PDO_status_Initializer};
 
 const quick_index TestSlave_firstIndex = {
   10, /* SDO_SVR */
   0, /* SDO_CLT */
   0, /* PDO_RCV */
   0, /* PDO_RCV_MAP */
-  11, /* PDO_TRS */
-  13 /* PDO_TRS_MAP */
+  0, /* PDO_TRS */
+  0 /* PDO_TRS_MAP */
 };
 
 const quick_index TestSlave_lastIndex = {
@@ -383,8 +326,8 @@ const quick_index TestSlave_lastIndex = {
   0, /* SDO_CLT */
   0, /* PDO_RCV */
   0, /* PDO_RCV_MAP */
-  12, /* PDO_TRS */
-  14 /* PDO_TRS_MAP */
+  0, /* PDO_TRS */
+  0 /* PDO_TRS_MAP */
 };
 
 const UNS16 TestSlave_ObjdictSize = sizeof(TestSlave_objdict)/sizeof(TestSlave_objdict[0]); 

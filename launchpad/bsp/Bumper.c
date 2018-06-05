@@ -1,7 +1,7 @@
 /*
  * Bumper.c
  *
- *  Created on: 2018Äê6ÔÂ1ÈÕ
+ *  Created on: 2018/6/1
  *      Author: cking
  */
 
@@ -13,6 +13,7 @@
 #include "driverlib/pin_map.h"
 #include "driverlib/sysctl.h"
 #include "utils/uartstdio.h"
+#include "PG2Slave.h"
 
 void bumper_init()
 {
@@ -65,4 +66,36 @@ void bumper_print()
     //
     UARTprintf("AIN0 = %4d\r", pui32ADC0Value[0]);
     UARTprintf("AIN3 = %4d\r", pui32ADC0Value[1]);
+}
+
+void bumper_process()
+{
+	uint32_t pui32ADC0Value[2];
+	//
+	// Trigger the ADC conversion.
+	//
+	ADCProcessorTrigger(ADC0_BASE, 0);
+
+	//
+	// Wait for conversion to be completed.
+	//
+	while (!ADCIntStatus(ADC0_BASE, 0, false))
+	{
+	}
+
+	//
+	// Clear the ADC interrupt flag.
+	//
+	ADCIntClear(ADC0_BASE, 0);
+
+	//
+	// Read ADC Value.
+	//
+	ADCSequenceDataGet(ADC0_BASE, 0, pui32ADC0Value);
+
+	//
+	// Display the AIN0 (PE3) digital value on the console.
+	//
+	Bumper1 = pui32ADC0Value[0];
+	Bumper2 = pui32ADC0Value[1];
 }

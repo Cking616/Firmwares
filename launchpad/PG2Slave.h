@@ -12,5 +12,10 @@ const indextable * TestSlave_scanIndexOD (UNS16 wIndex, UNS32 * errorCode, ODCal
 
 /* Master node data struct */
 extern CO_Data TestSlave_Data;
+extern UNS8 Input1;		/* Mapped at index 0x2000, subindex 0x00*/
+extern UNS8 Output1;		/* Mapped at index 0x2001, subindex 0x00*/
+extern UNS32 Bumper1;		/* Mapped at index 0x2002, subindex 0x00*/
+extern UNS32 Bumper2;		/* Mapped at index 0x2004, subindex 0x00*/
+extern INTEGER32 YEncoder;		/* Mapped at index 0x2006, subindex 0x00*/
 
 #endif // PG2SLAVE_H

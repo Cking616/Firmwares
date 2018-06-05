@@ -1,7 +1,7 @@
 /*
  * io.c
  *
- *  Created on: 2018Äê5ÔÂ15ÈÕ
+ *  Created on: 2018/5/15ï¿½
  *      Author: cking
  */
 #include <stdbool.h>
@@ -81,4 +81,33 @@ void io_manager_test()
     UARTprintf("LockY:%d\n",  data);
     data = GPIOPinRead(GPIO_PORTC_BASE, GPIO_PIN_5);
     UARTprintf("zero odom:%d\n",  data);
+}
+
+void io_manager_process()
+{
+	int data;
+	data = (Output1 & 0x1) ? GPIO_PIN_0 : 0;
+	GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_0, data);
+	data = (Output1 & 0x2) ? GPIO_PIN_1 : 0;
+	GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_1, data);
+	data = (Output1 & 0x4) ? GPIO_PIN_0 : 0;
+	GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_0, data);
+	data = (Output1 & 0x8) ? GPIO_PIN_1 : 0;
+	GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_1, data);
+	data = (Output1 & 0x10) ? GPIO_PIN_2 : 0;
+	GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_2, data);
+
+	Input1 = 0;
+	data = GPIOPinRead(GPIO_PORTA_BASE, GPIO_PIN_2);
+	Input1 |= data ? 0x1: 0;
+	data = GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_4);
+	Input1 |= data ? 0x2 : 0;
+	data = GPIOPinRead(GPIO_PORTD_BASE, GPIO_PIN_7);
+	Input1 |= data ? 0x4 : 0;
+	data = GPIOPinRead(GPIO_PORTA_BASE, GPIO_PIN_4);
+	Input1 |= data ? 0x8 : 0;
+	data = GPIOPinRead(GPIO_PORTB_BASE, GPIO_PIN_7);
+	Input1 |= data ? 0x10 : 0;
+	data = GPIOPinRead(GPIO_PORTC_BASE, GPIO_PIN_5);
+	Input1 |= data ? 0x20 : 0;
 }

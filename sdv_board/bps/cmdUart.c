@@ -80,7 +80,6 @@ void cmd_uart_init_handler(void)
 					_cur_pos = 0;
 					_start_flag = 0;
 					xQueueSendToFrontFromISR(g_cmd_Queue, (void*)g_cmd_uart_fifo, NULL);
-					//break;
 				}
 			}
         }
@@ -96,6 +95,7 @@ void cmd_uart_init_handler(void)
 
 void cmd_uart_send(const uint8_t *pui8Buffer, uint32_t ui32Count)
 {
+	taskDISABLE_INTERRUPTS();
     MAP_UARTCharPutNonBlocking(UART4_BASE, '#');
     //
     // Loop while there are more characters to send.
@@ -108,6 +108,7 @@ void cmd_uart_send(const uint8_t *pui8Buffer, uint32_t ui32Count)
 
         MAP_UARTCharPutNonBlocking(UART4_BASE, *pui8Buffer++);
     }
+	taskENABLE_INTERRUPTS();
 }
 
 void cmd_uart_init(void)

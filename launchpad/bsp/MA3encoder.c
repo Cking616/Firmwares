@@ -1,7 +1,7 @@
 /*
  * MA3encoder.c
  *
- *  Created on: 2018Äê5ÔÂ15ÈÕ
+ *  Created on: 2018/5/15
  *      Author: cking
  */
 #include <stdint.h>
@@ -24,14 +24,16 @@
 #include "driverlib/rom.h"
 #include "utils/uartstdio.h"
 #include "MA3encoder.h"
+#include "PG2Slave.h"
 
 void inputInt();
 void Captureinit();
 
 //Stores the pulse length
-volatile uint32_t pulse=0;
-volatile uint32_t last_pulse=0;
-
+volatile int pulse=0;
+volatile int last_pulse=0;
+volatile int circle = 0;
+volatile int  dir = 1;
 volatile uint32_t ton=0;
 volatile uint32_t toff=0;
 
@@ -65,6 +67,31 @@ void inputInt(){
     {
         pulse = ((ton * 4098) / (ton + toff)) - 1;
         last_pulse = pulse;
+		int inc = pulse - last_pulse;
+		if (inc > 0)
+		{
+			if (inc < 2048)
+			{
+				dir = 1;
+			}
+			else
+			{
+				dir = -1;
+				circle--;
+			}
+		}
+		else
+		{
+			if (inc > -2048)
+			{
+				dir = -1;
+			}
+			else
+			{
+				dir = 1;
+				circle++;
+			}
+		}
     }
 
     ROM_TimerEnable(TIMER2_BASE,TIMER_A);
@@ -97,7 +124,7 @@ void Captureinit(){
 
 int MA3_encoder_get_value(void)
 {
-    return pulse;
+	return pulse + circle * 4096;
 }
 
 void MA3_encoder_print_value(void)
@@ -106,4 +133,9 @@ void MA3_encoder_print_value(void)
     //int   deg = angle;
     //int   Min = (angle - deg) * 100 * 100 / 60;
     UARTprintf("angle:%d deg\n",  angle);
+}
+
+void MA3_encoder_process(void)
+{
+	YEncoder = pulse + circle * 4096;
 }

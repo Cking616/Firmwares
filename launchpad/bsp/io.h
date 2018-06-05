@@ -1,7 +1,7 @@
 /*
  * io.h
  *
- *  Created on: 2018Äê5ÔÂ15ÈÕ
+ *  Created on: 2018/5/15
  *      Author: cking
  */
 
@@ -11,4 +11,6 @@
 void io_manager_init();
 
 void io_manager_test();
+
+void io_manager_process();
 #endif /* BSP_IO_H_ */

@@ -330,7 +330,7 @@ void CO_start_listening()
 
 #define DISABLE_INTERRUPTS()                                        \
 {                                                                       \
-    _set_interrupt_priority( 0xA0 );    \
+    _set_interrupt_priority( 0x70 );    \
     __asm( "    dsb" );                                                 \
     __asm( "    isb" );                                                 \
 }

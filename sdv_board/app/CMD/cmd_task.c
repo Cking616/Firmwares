@@ -22,7 +22,7 @@
 typedef struct {
     unsigned char len;
     char cmd;
-    unsigned char data[10];
+    unsigned char data[10]; // data[len - 3] = crc
 }_cmd_message;
 #pragma pack()
 
