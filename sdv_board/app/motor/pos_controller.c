@@ -6,7 +6,7 @@
  */
 #include "pos_controller.h"
 #include "speed_controller.h"
-#include "bps/encoder.h"
+#include "bsp/encoder.h"
 #include "utils/uartstdio.h"
 
 volatile pos_controller_state pos_state[2];

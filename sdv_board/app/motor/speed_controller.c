@@ -6,8 +6,8 @@
  */
 
 #include "speed_controller.h"
-#include "bps/encoder.h"
-#include "bps/drv8308.h"
+#include "bsp/encoder.h"
+#include "bsp/drv8308.h"
 #include "utils/uartstdio.h"
 
 #define MOTOR_MAX_SPEED 3970

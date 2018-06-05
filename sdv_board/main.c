@@ -1,6 +1,6 @@
 #include <stdbool.h>
 #include <stdint.h>
-#include "bps/driver.h"
+#include "bsp/driver.h"
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"

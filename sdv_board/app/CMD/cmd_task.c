@@ -12,7 +12,7 @@
 #include "task.h"
 #include "queue.h"
 #include "semphr.h"
-#include "bps/cmdUart.h"
+#include "bsp/cmdUart.h"
 #include "../motor/BLDC_Motion_task.h"
 #include "../PD4/PD4_task.h"
 

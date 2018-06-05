@@ -7,7 +7,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "bps/lights.h"
+#include "bsp/lights.h"
 #include "utils/uartstdio.h"
 #include "led_task.h"
 #include "priorities.h"
