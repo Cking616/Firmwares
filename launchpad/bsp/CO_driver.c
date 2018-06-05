@@ -406,7 +406,6 @@ void CO_TimerIntHandler(void)
 	}
 	if (TimeCNT == NextTime)
 	{
-	    //UARTprintf("OnTimer\n");
 		TimeDispatch();
 	}
 

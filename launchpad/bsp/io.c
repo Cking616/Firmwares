@@ -1,7 +1,7 @@
 /*
  * io.c
  *
- *  Created on: 2018/5/15�
+ *  Created on: 2018/5/15
  *      Author: cking
  */
 #include <stdbool.h>
@@ -19,6 +19,7 @@
 #include "driverlib/systick.h"
 #include "driverlib/rom.h"
 #include "utils/uartstdio.h"
+#include "PG2Slave.h"
 
 void io_manager_init()
 {
@@ -63,11 +64,6 @@ void io_manager_test()
     GPIOPinWrite( GPIO_PORTD_BASE,   GPIO_PIN_0, 0);
     GPIOPinWrite( GPIO_PORTD_BASE,   GPIO_PIN_1, 0);
     GPIOPinWrite( GPIO_PORTD_BASE,   GPIO_PIN_2, 0);
-    //GPIOPinWrite( GPIO_PORTB_BASE,   GPIO_PIN_0, GPIO_PIN_0);
-    //GPIOPinWrite( GPIO_PORTB_BASE,   GPIO_PIN_1, GPIO_PIN_1);
-    //GPIOPinWrite( GPIO_PORTD_BASE,   GPIO_PIN_0, GPIO_PIN_0);
-    //GPIOPinWrite( GPIO_PORTD_BASE,   GPIO_PIN_1, GPIO_PIN_1);
-    //GPIOPinWrite( GPIO_PORTD_BASE,   GPIO_PIN_2, GPIO_PIN_2);
 
     data = GPIOPinRead(GPIO_PORTA_BASE, GPIO_PIN_2);
     UARTprintf("TB8:%d\n",  data);

@@ -152,7 +152,6 @@ cmd_task(void *pvParameters)
 
             default:
             {
-                //_send_error(_r_cmd.cmd);
                 break;
             }
 
@@ -180,7 +179,7 @@ cmd_task(void *pvParameters)
 uint32_t
 cmd_taskInit(void)
 {
-    g_cmd_Queue = xQueueCreate( 4 , sizeof( _cmd_message ) );
+    g_cmd_Queue = xQueueCreate( 8 , sizeof( _cmd_message ) );
 
     //
     // Create the LED task.
