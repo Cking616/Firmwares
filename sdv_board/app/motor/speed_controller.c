@@ -79,7 +79,6 @@ void speed_controller_period(int num)
     if(pid_state[num].target_speed == 0 && pid_state[num].rel_speed2 == 0)
     {
         drv8308_set_brake(num, 1);
-        //drv8308_set_pwm(10);
         pid_state[num].last_pwm = 0;
     }
 
@@ -99,11 +98,11 @@ inline void speed_controller_set_speed(int num, int speed)
     {
         if(speed > 0)
         {
-            pid_state[num].last_pwm = 15;
+            pid_state[num].last_pwm = 1;
         }
         else
         {
-            pid_state[num].last_pwm = -15;
+            pid_state[num].last_pwm = -1;
         }
     }
 
@@ -124,4 +123,15 @@ void speed_controller_print(int num)
 {
     int pwm = pid_state[num].last_pwm;
     UARTprintf("Pid:\nS:%d,ts:%d,E:%d,PWM:%d,err:%d\n", pid_state[num].rel_speed,pid_state[num].target_speed,pid_state[num].last_encoder,pwm,pid_state[num].last_err);
+}
+inline void  speed_controller_set_kp(int kp)
+{
+    pid_state[0].kp = (float)kp / 100;
+    pid_state[1].kp = (float)kp / 100;
+}
+
+inline void  speed_controller_set_ki(int ki)
+{
+    pid_state[0].ki = (float)ki /1000;
+    pid_state[1].ki = (float)ki /1000;
 }

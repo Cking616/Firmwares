@@ -60,7 +60,7 @@ void pos_controller_period(int num)
     }
     else if(abs_err > 10 && abs_err <= 300)
     {
-        float increase = pos_state[num].ki * err +  pos_state[num].kp * (err - pos_state[num].last_err) / 5.0;
+        float increase = pos_state[num].ki * err +  pos_state[num].kp * (err - pos_state[num].last_err) / 4;
         speed = speed + increase;
 		pos_state[num].flag = 0;
     }
@@ -102,4 +102,24 @@ void pos_controller_print(int num)
 inline int pos_controller_get_flag(int num)
 {
 	return pos_state[num].flag;
+}
+
+inline void pos_controller_set_kp(int kp)
+{
+    pos_state[0].kp = (float)kp / 10000;
+    pos_state[1].kp = (float)kp / 10000;
+
+}
+
+inline void pos_controller_set_ki(int ki)
+{
+    pos_state[0].ki = (float)ki / 1000000;
+    pos_state[1].ki = (float)ki / 1000000;
+}
+
+
+inline void pos_controller_set_kd(int kd)
+{
+    pos_state[0].kd = (float)kd / 1000000;
+    pos_state[1].kd = (float)kd / 1000000;
 }

@@ -153,6 +153,7 @@ static void BLDC_Motion_task(void *pvParameters)
         {
             if(_start_motion)
             {
+                _motion_function(_i);
                 if (_i == g_end_tick + 3 || g_stop)
                 {
                     taskDISABLE_INTERRUPTS();
@@ -163,7 +164,6 @@ static void BLDC_Motion_task(void *pvParameters)
 
                     xSemaphoreGive(g_BLDC_Mutex);
                 }
-                _motion_function(_i);
                 _i++;
             }
         }
@@ -183,7 +183,6 @@ static void BLDC_Motion_task(void *pvParameters)
 uint32_t
 BLDC_Motion_taskInit(void)
 {
-
     speed_controller_init(0);
     speed_controller_init(1);
     pos_controller_init(0);

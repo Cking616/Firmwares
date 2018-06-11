@@ -36,5 +36,6 @@ inline int  speed_controller_get_speed(int num);
 inline int  speed_controller_get_encoder(int num);
 void speed_controller_period(int num);
 void speed_controller_print(int num);
-
+void  speed_controller_set_kp(int kp);
+void  speed_controller_set_ki(int ki);
 #endif /* speed_controller_H_ */

@@ -14,6 +14,8 @@
 #include "semphr.h"
 #include "bsp/cmdUart.h"
 #include "../motor/BLDC_Motion_task.h"
+#include "../motor/speed_controller.h"
+#include "../motor/pos_controller.h"
 #include "../PD4/PD4_task.h"
 
 #define TESTTASKSTACKSIZE        256         // Stack size in words
@@ -31,9 +33,7 @@ extern SemaphoreHandle_t g_PD4_Semaphore;
 
 inline void _send_cmd(_cmd_message* cmd_)
 {
-    taskDISABLE_INTERRUPTS();
     cmd_uart_send(( unsigned char *)cmd_, cmd_->len);
-    taskENABLE_INTERRUPTS();
 }
 
 inline void _send_error(char dat)
@@ -49,7 +49,7 @@ static void
 cmd_task(void *pvParameters)
 {
     _cmd_message _t_cmd;
-    xSemaphoreTake(g_PD4_Semaphore, 0xffff);
+    xSemaphoreTake(g_PD4_Semaphore, 3000);
     _t_cmd.cmd = '&';
     _t_cmd.len = 3;
     _send_cmd(&_t_cmd);
@@ -150,6 +150,37 @@ cmd_task(void *pvParameters)
 				break;
 			}
 
+            case 'S':
+            {
+                if (_t_cmd.len < 7)
+                {
+                    _send_error(_r_cmd.cmd);
+                    break;
+                }
+                char _Id = _r_cmd.data[0];
+                int data = *(int*) (_r_cmd.data + 1);
+                switch(_Id)
+                {
+                case 1:
+                    pos_controller_set_kp(data);
+                    break;
+                case 2:
+                    pos_controller_set_ki(data);
+                    break;
+                case 3:
+                    pos_controller_set_kd(data);
+                    break;
+                case 4:
+                    speed_controller_set_kp(data);
+                    break;
+                case 5:
+                    speed_controller_set_ki(data);
+                    break;
+                default:
+                    break;
+                }
+                break;
+            }
             default:
             {
                 break;
@@ -179,7 +210,7 @@ cmd_task(void *pvParameters)
 uint32_t
 cmd_taskInit(void)
 {
-    g_cmd_Queue = xQueueCreate( 8 , sizeof( _cmd_message ) );
+    g_cmd_Queue = xQueueCreate( 10 , sizeof( _cmd_message ) );
 
     //
     // Create the LED task.

@@ -30,8 +30,8 @@ void inputInt();
 void Captureinit();
 
 //Stores the pulse length
-volatile int pulse=0;
-volatile int last_pulse=0;
+volatile int pulse = 0;
+volatile int last_pulse = 0;
 volatile int circle = 0;
 volatile int  dir = 1;
 volatile uint32_t ton=0;

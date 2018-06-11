@@ -32,7 +32,9 @@ inline void pos_controller_set_max_speed(int num, int max_speed);
 inline int pos_controller_get_flag(int num);
 void pos_controller_period(int num);
 void pos_controller_print(int num);
-
+void pos_controller_set_kp(int kp);
+void pos_controller_set_ki(int ki);
+void pos_controller_set_kd(int kd);
 
 
 #endif /* TASK_POS_CONTROLLER_H_ */
