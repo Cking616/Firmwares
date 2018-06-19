@@ -3,7 +3,7 @@
 #include <string.h>
 #include "bsp/driver.h"
 #include "bsp/delay.h"
-
+#include "bsp/stepmotor.h"
 #include "task/distance.h"
 
 #include "utils/uartstdio.h"

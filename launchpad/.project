@@ -31,9 +31,14 @@
 			<locationURI>SW_ROOT/examples/boards/ek-tm4c123gxl/timers/timers_ccs.cmd</locationURI>
 		</link>
 		<link>
-			<name>utils/uartstdio.c</name>
+			<name>utils/cmdline.c</name>
 			<type>1</type>
-			<locationURI>SW_ROOT/utils/uartstdio.c</locationURI>
+			<location>C:/ti/TivaWare_C_Series-2.1.4.178/utils/cmdline.c</location>
+		</link>
+		<link>
+			<name>utils/ustdlib.c</name>
+			<type>1</type>
+			<location>C:/ti/TivaWare_C_Series-2.1.4.178/utils/ustdlib.c</location>
 		</link>
 	</linkedResources>
 	<variableList>

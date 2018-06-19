@@ -33,6 +33,19 @@ extern SemaphoreHandle_t g_SDO_Semaphore;
 extern SemaphoreHandle_t g_SDO_Mutex;
 static int __init_step;
 
+UNS32 CanOpen_Read_Param(CO_Data* d, UNS8 nodeId, UNS16 index, UNS8 subindex, UNS8 datatype)
+{
+    UNS32 data;
+    UNS32 size;
+    UNS32 abortCode;
+    readNetworkDict(d, nodeId, index, subindex, datatype, 0);
+    while (getReadResultNetworkDict (d, nodeId, &data, &size, &abortCode) == SDO_UPLOAD_IN_PROGRESS)
+    {
+        vTaskDelay(10);
+    }
+    return data;
+}
+
 void CanOpen_setMaster(CO_Data* d, UNS8 nodeId)
 {
 	UNS32 PDO1_COBID = 0x0180 + nodeId;
@@ -161,7 +174,7 @@ void CanOpen_Reset_RPDO(CO_Data* d, UNS8 nodeId)
 {
 	int32_t data;
 	UNS8 data8;
-    const portTickType xDelay = pdMS_TO_TICKS(300);
+    const portTickType xDelay = pdMS_TO_TICKS(30);
 
     vTaskDelay(xDelay);
 	data = 0x200 + nodeId;

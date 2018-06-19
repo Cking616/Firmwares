@@ -33,7 +33,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #define TIMEVAL_MAX       70000
 
 // The timer is incrementing every 1 ms.
-#define MS_TO_TIMEVAL(ms) ((ms) * 2)
-#define US_TO_TIMEVAL(us) ((us) / 500)
+#define MS_TO_TIMEVAL(ms) ((ms) * 1)
+#define US_TO_TIMEVAL(us) ((us) / 1000)
 
 #endif

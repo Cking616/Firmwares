@@ -22,6 +22,7 @@
 #include "delay.h"
 
 int _count = 0;
+int _end_step = 0;
 //*****************************************************************************
 //
 // The interrupt handler for the for PWM0 interrupts.
@@ -34,9 +35,13 @@ PWM1IntHandler(void)
     // Clear the PWM1 LOAD interrupt flag.  This flag gets set when the PWM
     // counter gets reloaded.
     //
-    PWMGenIntClear(PWM1_BASE, PWM_GEN_1, PWM_INT_CNT_LOAD);
+    ROM_PWMGenIntClear(PWM1_BASE, PWM_GEN_1, PWM_INT_CNT_LOAD);
 
     _count++;
+    if(_end_step == _count)
+    {
+        ROM_PWMGenDisable(PWM1_BASE, PWM_GEN_1);
+    }
 }
 
 void step_motor_init(void)
@@ -103,8 +108,18 @@ void step_motor_init(void)
 
 //*****************************************************************************
 //*****************************************************************************
-void step_motor_set_speed(int Motor,  int Speed )
+void step_motor_set_speed(int Motor,  int Speed, int Step)
 {
+    if(Step > 0)
+    {
+        _count = 0;
+        _end_step = Step;
+    }
+    else
+    {
+        _end_step = -1;
+    }
+
     if(Speed < 0)
     {
         step_motor_set_dir(Motor, 0);
@@ -115,12 +130,7 @@ void step_motor_set_speed(int Motor,  int Speed )
         step_motor_set_dir(Motor, 1);
     }
 
-    if(Speed > 600)
-    {
-        Speed = 600;
-    }
-
-    int count = 375000 / Speed;
+    int count = 1250000 / Speed;
 
     if ( Speed == 0 ) {
         if (Motor==0) {
@@ -139,11 +149,9 @@ void step_motor_set_speed(int Motor,  int Speed )
         ROM_PWMGenEnable(PWM1_BASE, PWM_GEN_1);
         if (Motor==0) {
             ROM_GPIOPinWrite(SENABLE0_PORT, SENABLE0_PIN, 0 );  // #enable0 is enabled
-            //ROM_GPIOPinWrite(SDIR0_PORT,  SDIR0_PIN, (Dir==0)? 0 : SDIR0_B ); // SDIR0
         }
         else {
             ROM_GPIOPinWrite(SENABLE1_PORT, SENABLE1_PIN, 0 );  // #enable1 is enabled
-           // ROM_GPIOPinWrite(SDIR1_A,  SDIR1_B, (Dir==0)? 0 : SDIR1_B ); // SDIR1
         }
     }
 }

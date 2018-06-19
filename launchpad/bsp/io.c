@@ -19,7 +19,7 @@
 #include "driverlib/systick.h"
 #include "driverlib/rom.h"
 #include "utils/uartstdio.h"
-#include "PG2Slave.h"
+//#include "PG2Slave.h"
 
 void io_manager_init()
 {
@@ -81,6 +81,7 @@ void io_manager_test()
 
 void io_manager_process()
 {
+    /*
 	int data;
 	data = (Output1 & 0x1) ? GPIO_PIN_0 : 0;
 	GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_0, data);
@@ -106,4 +107,5 @@ void io_manager_process()
 	Input1 |= data ? 0x10 : 0;
 	data = GPIOPinRead(GPIO_PORTC_BASE, GPIO_PIN_5);
 	Input1 |= data ? 0x20 : 0;
+	*/
 }

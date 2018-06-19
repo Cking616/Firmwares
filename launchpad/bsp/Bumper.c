@@ -13,7 +13,7 @@
 #include "driverlib/pin_map.h"
 #include "driverlib/sysctl.h"
 #include "utils/uartstdio.h"
-#include "PG2Slave.h"
+
 
 void bumper_init()
 {
@@ -96,6 +96,4 @@ void bumper_process()
 	//
 	// Display the AIN0 (PE3) digital value on the console.
 	//
-	Bumper1 = pui32ADC0Value[0];
-	Bumper2 = pui32ADC0Value[1];
 }

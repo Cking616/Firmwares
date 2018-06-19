@@ -24,7 +24,7 @@
 #include "driverlib/rom.h"
 #include "utils/uartstdio.h"
 #include "MA3encoder.h"
-#include "PG2Slave.h"
+//#include "PG2Slave.h"
 
 void inputInt();
 void Captureinit();
@@ -36,7 +36,6 @@ volatile int circle = 0;
 volatile int  dir = 1;
 volatile uint32_t ton=0;
 volatile uint32_t toff=0;
-
 
 void MA3_encoder_init()
 {
@@ -129,13 +128,13 @@ int MA3_encoder_get_value(void)
 
 void MA3_encoder_print_value(void)
 {
-    int angle = pulse * 360 / 4096;
+    int angle = pulse + circle * 4096;
     //int   deg = angle;
     //int   Min = (angle - deg) * 100 * 100 / 60;
-    UARTprintf("angle:%d deg\n",  angle);
+    UARTprintf("Encoder:%d \n",  angle);
 }
 
 void MA3_encoder_process(void)
 {
-	YEncoder = pulse + circle * 4096;
+	//YEncoder = pulse + circle * 4096;
 }

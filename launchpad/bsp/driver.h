@@ -10,8 +10,6 @@
 
 void driver_init_hardware(void);
 
-inline int driver_get_address(void);
-
 void driver_init_system(void);
 
 inline void driver_start_tick();

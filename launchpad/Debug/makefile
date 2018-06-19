@@ -10,17 +10,21 @@ GEN_OPTS__FLAG :=
 GEN_CMDS__FLAG := 
 
 ORDERED_OBJS += \
-"./PG2Slave.obj" \
+"./PD4Master.obj" \
 "./main.obj" \
 "./period.obj" \
 "./startup_ccs.obj" \
+"./app/CMD/cmd_task.obj" \
+"./app/CMD/user_cmd.obj" \
+"./app/PD4/Master.obj" \
+"./app/PD4/PD4_task.obj" \
+"./app/canfestival_thread.obj" \
 "./bsp/Bumper.obj" \
-"./bsp/CO_driver.obj" \
 "./bsp/MA3encoder.obj" \
+"./bsp/can.obj" \
 "./bsp/delay.obj" \
 "./bsp/driver.obj" \
 "./bsp/io.obj" \
-"./bsp/sonar.obj" \
 "./third_party/CanFestival/src/dcf.obj" \
 "./third_party/CanFestival/src/emcy.obj" \
 "./third_party/CanFestival/src/lifegrd.obj" \
@@ -33,7 +37,9 @@ ORDERED_OBJS += \
 "./third_party/CanFestival/src/states.obj" \
 "./third_party/CanFestival/src/sync.obj" \
 "./third_party/CanFestival/src/timer.obj" \
+"./utils/cmdline.obj" \
 "./utils/uartstdio.obj" \
+"./utils/ustdlib.obj" \
 "C:/ti/TivaWare_C_Series-2.1.4.178/examples/boards/ek-tm4c123gxl/timers/timers_ccs.cmd" \
 $(GEN_CMDS__FLAG) \
 -llibc.a \
@@ -47,10 +53,16 @@ RMDIR := RMDIR /S/Q
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include subdir_vars.mk
+-include app/CMD/subdir_vars.mk
+-include app/PD4/subdir_vars.mk
+-include app/subdir_vars.mk
 -include bsp/subdir_vars.mk
 -include third_party/CanFestival/src/subdir_vars.mk
 -include utils/subdir_vars.mk
 -include subdir_rules.mk
+-include app/CMD/subdir_rules.mk
+-include app/PD4/subdir_rules.mk
+-include app/subdir_rules.mk
 -include bsp/subdir_rules.mk
 -include third_party/CanFestival/src/subdir_rules.mk
 -include utils/subdir_rules.mk
@@ -169,7 +181,7 @@ all: launchpad.out
 launchpad.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: ARM Linker'
-	"C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --advice:power=all --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual -z -m"timers_ccs.map" --heap_size=0 --stack_size=256 -i"C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.7.LTS/lib" -i"C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.7.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="launchpad_linkInfo.xml" --rom_model -o "launchpad.out" $(ORDERED_OBJS)
+	"C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O2 --advice:power=all --define=ccs="ccs" --define=UART_BUFFERED --define=PART_TM4C123GH6PM --define=TARGET_IS_TM4C123_RB1 -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --ual -z -m"timers_ccs.map" --heap_size=0 --stack_size=256 -i"C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.7.LTS/lib" -i"C:/ti/ccsv7/tools/compiler/ti-cgt-arm_16.9.7.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="launchpad_linkInfo.xml" --rom_model -o "launchpad.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 	@$(MAKE) --no-print-directory post-build
@@ -185,8 +197,8 @@ launchpad.bin: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "PG2Slave.obj" "main.obj" "period.obj" "startup_ccs.obj" "bsp\Bumper.obj" "bsp\CO_driver.obj" "bsp\MA3encoder.obj" "bsp\delay.obj" "bsp\driver.obj" "bsp\io.obj" "bsp\sonar.obj" "third_party\CanFestival\src\dcf.obj" "third_party\CanFestival\src\emcy.obj" "third_party\CanFestival\src\lifegrd.obj" "third_party\CanFestival\src\lss.obj" "third_party\CanFestival\src\nmtMaster.obj" "third_party\CanFestival\src\nmtSlave.obj" "third_party\CanFestival\src\objacces.obj" "third_party\CanFestival\src\pdo.obj" "third_party\CanFestival\src\sdo.obj" "third_party\CanFestival\src\states.obj" "third_party\CanFestival\src\sync.obj" "third_party\CanFestival\src\timer.obj" "utils\uartstdio.obj" 
-	-$(RM) "PG2Slave.d" "main.d" "period.d" "startup_ccs.d" "bsp\Bumper.d" "bsp\CO_driver.d" "bsp\MA3encoder.d" "bsp\delay.d" "bsp\driver.d" "bsp\io.d" "bsp\sonar.d" "third_party\CanFestival\src\dcf.d" "third_party\CanFestival\src\emcy.d" "third_party\CanFestival\src\lifegrd.d" "third_party\CanFestival\src\lss.d" "third_party\CanFestival\src\nmtMaster.d" "third_party\CanFestival\src\nmtSlave.d" "third_party\CanFestival\src\objacces.d" "third_party\CanFestival\src\pdo.d" "third_party\CanFestival\src\sdo.d" "third_party\CanFestival\src\states.d" "third_party\CanFestival\src\sync.d" "third_party\CanFestival\src\timer.d" "utils\uartstdio.d" 
+	-$(RM) "PD4Master.obj" "main.obj" "period.obj" "startup_ccs.obj" "app\CMD\cmd_task.obj" "app\CMD\user_cmd.obj" "app\PD4\Master.obj" "app\PD4\PD4_task.obj" "app\canfestival_thread.obj" "bsp\Bumper.obj" "bsp\MA3encoder.obj" "bsp\can.obj" "bsp\delay.obj" "bsp\driver.obj" "bsp\io.obj" "third_party\CanFestival\src\dcf.obj" "third_party\CanFestival\src\emcy.obj" "third_party\CanFestival\src\lifegrd.obj" "third_party\CanFestival\src\lss.obj" "third_party\CanFestival\src\nmtMaster.obj" "third_party\CanFestival\src\nmtSlave.obj" "third_party\CanFestival\src\objacces.obj" "third_party\CanFestival\src\pdo.obj" "third_party\CanFestival\src\sdo.obj" "third_party\CanFestival\src\states.obj" "third_party\CanFestival\src\sync.obj" "third_party\CanFestival\src\timer.obj" "utils\cmdline.obj" "utils\uartstdio.obj" "utils\ustdlib.obj" 
+	-$(RM) "PD4Master.d" "main.d" "period.d" "startup_ccs.d" "app\CMD\cmd_task.d" "app\CMD\user_cmd.d" "app\PD4\Master.d" "app\PD4\PD4_task.d" "app\canfestival_thread.d" "bsp\Bumper.d" "bsp\MA3encoder.d" "bsp\can.d" "bsp\delay.d" "bsp\driver.d" "bsp\io.d" "third_party\CanFestival\src\dcf.d" "third_party\CanFestival\src\emcy.d" "third_party\CanFestival\src\lifegrd.d" "third_party\CanFestival\src\lss.d" "third_party\CanFestival\src\nmtMaster.d" "third_party\CanFestival\src\nmtSlave.d" "third_party\CanFestival\src\objacces.d" "third_party\CanFestival\src\pdo.d" "third_party\CanFestival\src\sdo.d" "third_party\CanFestival\src\states.d" "third_party\CanFestival\src\sync.d" "third_party\CanFestival\src\timer.d" "utils\cmdline.d" "utils\uartstdio.d" "utils\ustdlib.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

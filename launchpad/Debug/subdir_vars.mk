@@ -9,37 +9,37 @@ CMD_SRCS += \
 C:/ti/TivaWare_C_Series-2.1.4.178/examples/boards/ek-tm4c123gxl/timers/timers_ccs.cmd 
 
 C_SRCS += \
-../PG2Slave.c \
+../PD4Master.c \
 ../main.c \
 ../period.c \
 ../startup_ccs.c 
 
 C_DEPS += \
-./PG2Slave.d \
+./PD4Master.d \
 ./main.d \
 ./period.d \
 ./startup_ccs.d 
 
 OBJS += \
-./PG2Slave.obj \
+./PD4Master.obj \
 ./main.obj \
 ./period.obj \
 ./startup_ccs.obj 
 
 OBJS__QUOTED += \
-"PG2Slave.obj" \
+"PD4Master.obj" \
 "main.obj" \
 "period.obj" \
 "startup_ccs.obj" 
 
 C_DEPS__QUOTED += \
-"PG2Slave.d" \
+"PD4Master.d" \
 "main.d" \
 "period.d" \
 "startup_ccs.d" 
 
 C_SRCS__QUOTED += \
-"../PG2Slave.c" \
+"../PD4Master.c" \
 "../main.c" \
 "../period.c" \
 "../startup_ccs.c" 

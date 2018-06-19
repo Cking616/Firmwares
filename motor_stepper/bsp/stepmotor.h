@@ -26,7 +26,7 @@
 void step_motor_init(void);
 
 //speed unit: rpm, maybe 300 ~ 600 rpm.
-void step_motor_set_speed(int Motor,  int Speed );
+void step_motor_set_speed(int Motor,  int Speed, int Step);
 
 #define STEP_MOTOR_CCW  1
 #define STEP_MOTOR_CW   0

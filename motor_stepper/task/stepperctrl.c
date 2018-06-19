@@ -11,7 +11,7 @@ int _speed = 0;
 
 void stepperctrl_thread()
 {
-    step_motor_set_speed(1, _speed);
+    //step_motor_set_speed(1, _speed);
     //step_motor_set_speed(0, _speed);
 }
 

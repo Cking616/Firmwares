@@ -11,8 +11,9 @@
 #include "task/stepperctrl.h"
 #include "task/cmdpool.h"
 #include "utils/uartstdio.h"
+#include "bsp/stepmotor.h"
 
-int _testspeed[5] = {100, 100, -100, -100, 0};
+int _testspeed[4] = {400, 0, -400, 0};
 int _testi = 0;
 int _tick = 0;
 volatile unsigned int _tick_second = 0;
@@ -22,7 +23,7 @@ inline void on_sys_period(void)
 {
     stepperctrl_thread();
 
-    if(_tick == 999)
+    if(_tick == 2999)
     {
         _tick = 0;
 
@@ -31,8 +32,9 @@ inline void on_sys_period(void)
         _tick_second++;
         UARTprintf("Tick Time!\n");
 
-        _testi = (_testi + 1) % 5;
-        stepperctrl_set_speed(_testspeed[_testi]);
+        step_motor_set_speed(0, _testspeed[_testi], 1000);
+        _testi = (_testi + 1) % 4;
+        //stepperctrl_set_speed(_testspeed[_testi]);
     }
     else
     {

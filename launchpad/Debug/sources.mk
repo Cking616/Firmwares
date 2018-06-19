@@ -112,6 +112,9 @@ PDE_DEPS__QUOTED :=
 # Every subdirectory with source files must be described here
 SUBDIRS := \
 . \
+app/CMD \
+app/PD4 \
+app \
 bsp \
 third_party/CanFestival/src \
 utils \
