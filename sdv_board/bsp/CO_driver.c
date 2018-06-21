@@ -425,11 +425,6 @@ void CO_Timerinit(void)
     IntPrioritySet(INT_TIMER0A, 0xC0);
 	MAP_IntEnable(INT_TIMER0A);
 	MAP_TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
-
-	//
-	// Enable the timers.
-	//
-	MAP_TimerEnable(TIMER0_BASE, TIMER_A);
 }
 
 void CO_driver_init(void)
@@ -437,4 +432,12 @@ void CO_driver_init(void)
 	CO_Timerinit();
 
 	can_init();
+}
+
+void CO_timer_start(void)
+{
+    //
+    // Enable the timers.
+    //
+    MAP_TimerEnable(TIMER0_BASE, TIMER_A);
 }

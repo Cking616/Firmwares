@@ -46,16 +46,16 @@ void can_init()
     ROM_GPIOPinTypeGPIOOutput( CANS_PORT, CANS_PIN );
     ROM_GPIOPinWrite(CANS_PORT, CANS_PIN, 0 );  // S = LOW
 
-    ROM_IntMasterEnable();   // Enable processor interrupts.
+    //ROM_IntMasterEnable();   // Enable processor interrupts.
     ROM_GPIOPinConfigure(GPIO_PB4_CAN0RX);      // Configure the GPIO pin muxing to select CAN0 functions for these pins.
     ROM_GPIOPinConfigure(GPIO_PB5_CAN0TX);
     ROM_GPIOPinTypeCAN(GPIO_PORTB_BASE, GPIO_PIN_4 | GPIO_PIN_5);  // Enable the alternate function on the GPIO pins.
 
     ROM_CANInit(CAN0_BASE);     // Initialize the CAN controller
     ROM_CANBitRateSet(CAN0_BASE, ROM_SysCtlClockGet(), 1000000);  // Set up the bit rate for the CAN bus.
-    ROM_CANIntEnable(CAN0_BASE, CAN_INT_MASTER | CAN_INT_ERROR | CAN_INT_STATUS);  // Enable interrupts on the CAN peripheral. Name of the handler is in the vector table of startup code.
-    ROM_IntEnable(INT_CAN0);   // Enable the CAN interrupt on the processor (NVIC).
-    ROM_CANEnable(CAN0_BASE);   // Enable the CAN for operation.
+    //ROM_CANIntEnable(CAN0_BASE, CAN_INT_MASTER | CAN_INT_ERROR | CAN_INT_STATUS);  // Enable interrupts on the CAN peripheral. Name of the handler is in the vector table of startup code.
+   // ROM_IntEnable(INT_CAN0);   // Enable the CAN interrupt on the processor (NVIC).
+    //ROM_CANEnable(CAN0_BASE);   // Enable the CAN for operation.
 }
 //*****************************************************************************
 //

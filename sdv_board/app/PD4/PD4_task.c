@@ -7,7 +7,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "bsp/lights.h"
+#include "bsp/CO_driver.h"
 #include "utils/uartstdio.h"
 #include "../priorities.h"
 #include "FreeRTOS.h"
@@ -120,6 +120,8 @@ PD4Master_task(void *pvParameters)
     TestMaster_Data.post_SlaveStateChange = PD4Master_post_SlaveStateChange;
 
     setNodeId(&TestMaster_Data, 0x7F);
+    CO_timer_start();
+    vTaskDelay(10);
     setState(&TestMaster_Data, Initialisation);     // Init the state
     setState(&TestMaster_Data, Pre_operational);
 

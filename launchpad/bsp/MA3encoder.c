@@ -45,15 +45,13 @@ void MA3_encoder_init()
     ROM_SysCtlDelay(3);
     //Configure pwm pin
     ROM_GPIOPinTypeGPIOInput(GPIO_PORTD_BASE, GPIO_PIN_6);
-    GPIOIntEnable(GPIO_PORTD_BASE, GPIO_PIN_6);
+    IntPrioritySet(INT_GPIOD, 0xB1);
     ROM_GPIOIntTypeSet(GPIO_PORTD_BASE, GPIO_PIN_6,GPIO_BOTH_EDGES);
     GPIOIntRegister(GPIO_PORTD_BASE, inputInt);
+    GPIOIntEnable(GPIO_PORTD_BASE, GPIO_PIN_6);
 }
 
 void inputInt(){
-  //Clear interrupt flag. Since we only enabled on this is enough
-    GPIOIntClear(GPIO_PORTD_BASE, GPIO_PIN_6);
-
   /*
     If it's a rising edge then set he timer to 0
     It's in periodic mode so it was in some random value
@@ -65,8 +63,8 @@ void inputInt(){
     if ( (ton + toff) != 0)
     {
         pulse = ((ton * 4098) / (ton + toff)) - 1;
-        last_pulse = pulse;
-		int inc = pulse - last_pulse;
+		/*
+        int inc = pulse - last_pulse;
 		if (inc > 0)
 		{
 			if (inc < 2048)
@@ -91,6 +89,8 @@ void inputInt(){
 				circle++;
 			}
 		}
+        last_pulse = pulse;
+        */
     }
 
     ROM_TimerEnable(TIMER2_BASE,TIMER_A);
@@ -105,6 +105,9 @@ void inputInt(){
     ROM_TimerEnable(TIMER3_BASE,TIMER_A);
     ROM_TimerDisable(TIMER2_BASE,TIMER_A);
   }
+
+  //Clear interrupt flag. Since we only enabled on this is enough
+  GPIOIntClear(GPIO_PORTD_BASE, GPIO_PIN_6);
 }
 
 void Captureinit(){
@@ -118,19 +121,18 @@ void Captureinit(){
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER3);
     ROM_SysCtlDelay(3);
     ROM_TimerConfigure(TIMER3_BASE, TIMER_CFG_PERIODIC_UP);
-    //ROM_TimerConfigure(TIMER2_BASE, TIMER_CFG_SPLIT_PAIR);
 }
 
 int MA3_encoder_get_value(void)
 {
-	return pulse + circle * 4096;
+    return pulse;
+	//return pulse + circle * 4096;
 }
 
 void MA3_encoder_print_value(void)
 {
-    int angle = pulse + circle * 4096;
-    //int   deg = angle;
-    //int   Min = (angle - deg) * 100 * 100 / 60;
+    //int angle = pulse + circle * 4096;
+    int angle = pulse;
     UARTprintf("Encoder:%d \n",  angle);
 }
 

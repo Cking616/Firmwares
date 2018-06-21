@@ -117,5 +117,8 @@ app/PD4 \
 app \
 bsp \
 third_party/CanFestival/src \
+third_party/FreeRTOS/Source \
+third_party/FreeRTOS/Source/portable/CCS/ARM_CM4F \
+third_party/FreeRTOS/Source/portable/MemMang \
 utils \
 
