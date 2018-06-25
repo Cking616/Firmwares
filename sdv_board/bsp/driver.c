@@ -36,31 +36,23 @@ void
 ConfigureUART(void)
 {
     //
-    // Enable the GPIO Peripheral used by the UART.
-    //
-    MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOC);
-
-    //
     // Enable UART0
     //
-    MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_UART1);
+    MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_UART4);
 
-    //
-    // Configure GPIO Pins for UART mode.
-    //
-    MAP_GPIOPinConfigure(GPIO_PC4_U1RX);
-    MAP_GPIOPinConfigure(GPIO_PC5_U1TX);
-    MAP_GPIOPinTypeUART(GPIO_PORTC_BASE, GPIO_PIN_4 | GPIO_PIN_5);
+    MAP_GPIOPinConfigure(GPIO_PJ0_U4RX);
+    MAP_GPIOPinConfigure(GPIO_PJ1_U4TX);
+    MAP_GPIOPinTypeUART(GPIO_PORTJ_BASE, GPIO_PIN_0 | GPIO_PIN_1);
 
     //
     // Use the internal 16MHz oscillator as the UART clock source.
     //
-    UARTClockSourceSet(UART1_BASE, UART_CLOCK_SYSTEM);
+    UARTClockSourceSet(UART4_BASE, UART_CLOCK_SYSTEM);
 
     //
     // Initialize the UART for console I/O.
     //
-    UARTStdioConfig(1, 115200, SysCtlClockGet());
+    UARTStdioConfig(4, 115200, SysCtlClockGet());
 }
 
 void driver_init_hardware(void)
@@ -87,14 +79,11 @@ void driver_init_hardware(void)
     MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOP);
     MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOL);
     MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOK);
-    //MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_WTIMER1);
 
     // Check if the peripheral access is enabled.
     while(!MAP_SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOA)) {MAP_SysCtlDelay(1); }
 
     ConfigureUART();
-
-    //can_init();
 
     encoder_init();
 
@@ -118,12 +107,10 @@ void driver_init_system(void)
 {
     //UARTprintf("Sys init\n");
     CO_start_listening();
-    //can_start_listening();
 
     encoder_reset(0);
     encoder_reset(1);
 
     drv8308_enable(1);
-    //can_write(_address, 0x12345699, 0 ); // magic number means reset just happened
 }
 

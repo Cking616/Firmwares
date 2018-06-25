@@ -42,20 +42,20 @@ void cmd_uart_init_handler(void)
     //
     // Get the interrrupt status.
     //
-    ui32Status = MAP_UARTIntStatus(UART0_BASE, true);
+    ui32Status = MAP_UARTIntStatus(UART3_BASE, true);
 
     //
     // Clear the asserted interrupts.
     //
-    MAP_UARTIntClear(UART0_BASE, ui32Status);
+    MAP_UARTIntClear(UART3_BASE, ui32Status);
 
     //
     // Loop while there are characters in the receive FIFO.
     //
-    while(MAP_UARTCharsAvail(UART0_BASE))
+    while(MAP_UARTCharsAvail(UART3_BASE))
     {
         char _temp;
-        _temp = UARTCharGetNonBlocking(UART0_BASE);
+        _temp = UARTCharGetNonBlocking(UART3_BASE);
         if(_start_flag)
         {
 			if (_cur_pos == 0)
@@ -96,7 +96,7 @@ void cmd_uart_init_handler(void)
 void cmd_uart_send(const uint8_t *pui8Buffer, uint32_t ui32Count)
 {
 	taskDISABLE_INTERRUPTS();
-    MAP_UARTCharPutNonBlocking(UART0_BASE, '#');
+    MAP_UARTCharPutNonBlocking(UART3_BASE, '#');
     //
     // Loop while there are more characters to send.
     //
@@ -106,7 +106,7 @@ void cmd_uart_send(const uint8_t *pui8Buffer, uint32_t ui32Count)
         // Write the next character to the UART.
         //
 
-        MAP_UARTCharPutNonBlocking(UART0_BASE, *pui8Buffer++);
+        MAP_UARTCharPutNonBlocking(UART3_BASE, *pui8Buffer++);
     }
 	taskENABLE_INTERRUPTS();
 }
@@ -116,7 +116,7 @@ void cmd_uart_init(void)
     //
     // Enable the peripherals used by this example.
     //
-    MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
+    MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_UART3);
 
     //
     // Enable processor interrupts.
@@ -126,23 +126,23 @@ void cmd_uart_init(void)
     //
     // Set GPIO A0 and A1 as UART pins.
     //
-    MAP_GPIOPinConfigure(GPIO_PA0_U0RX);
-    MAP_GPIOPinConfigure(GPIO_PA1_U0TX);
-    MAP_GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
-    UARTFIFOEnable(UART0_BASE);
+    MAP_GPIOPinConfigure(GPIO_PC6_U3RX);
+    MAP_GPIOPinConfigure(GPIO_PC7_U3TX);
+    MAP_GPIOPinTypeUART(GPIO_PORTC_BASE, GPIO_PIN_6 | GPIO_PIN_7);
+    UARTFIFOEnable(UART3_BASE);
     //
     // Configure the UART for 115,200, 8-N-1 operation.
     //
-    MAP_UARTConfigSetExpClk(UART0_BASE, MAP_SysCtlClockGet(), 115200,
+    MAP_UARTConfigSetExpClk(UART3_BASE, MAP_SysCtlClockGet(), 115200,
                             (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE |
                              UART_CONFIG_PAR_NONE));
 
-    UARTIntRegister(UART0_BASE, cmd_uart_init_handler);
+    UARTIntRegister(UART3_BASE, cmd_uart_init_handler);
     //
     // Enable the UART interrupt.
     //
-    IntPrioritySet(INT_UART0, 0xD0);
-    MAP_IntEnable(INT_UART0);
-    MAP_UARTIntEnable(UART0_BASE, UART_INT_RX);
+    IntPrioritySet(INT_UART3, 0xD0);
+    MAP_IntEnable(INT_UART3);
+    MAP_UARTIntEnable(UART3_BASE, UART_INT_RX);
 }
 

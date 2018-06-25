@@ -24,7 +24,6 @@
 #include "driverlib/rom.h"
 #include "utils/uartstdio.h"
 #include "MA3encoder.h"
-//#include "PG2Slave.h"
 
 void inputInt();
 void Captureinit();

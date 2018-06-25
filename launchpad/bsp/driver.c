@@ -65,32 +65,22 @@ void driver_init_hardware(void)
 {
     ROM_SysCtlClockSet(SYSCTL_SYSDIV_2_5 | SYSCTL_OSC_MAIN | SYSCTL_USE_PLL
                        | SYSCTL_XTAL_16MHZ | SYSCTL_RCC2_USERCC2 | SYSCTL_RCC2_DIV400); // 80 Mhz
-    //ROM_FPULazyStackingEnable();
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOB);
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOC);
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
-    //ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOG);
-    //ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_WTIMER1);
 
     // Check if the peripheral access is enabled.
     while(!ROM_SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOA)) { }
 
-    //IntPrioritySet(INT_UART0, 0xA0);
-    //IntPrioritySet(INT_CAN0, 0xD0);
-
     MA3_encoder_init();
     CO_driver_init();
-    //cmd_uart_init();
+    cmd_uart_init();
     //bumper_init();
     //io_manager_init();
-    //can_init();
     ConfigureUART();
-
-    // ************************************************************************************************************
-    //ROM_SysTickPeriodSet(80000);  // every 1mSec, @ 80Mhz
 }
 
 void driver_init_system(void)
