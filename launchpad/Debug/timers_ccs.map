@@ -1,34 +1,34 @@
 ******************************************************************************
                   TI ARM Linker PC v16.9.7                     
 ******************************************************************************
->> Linked Mon Jun 25 12:00:35 2018
+>> Linked Tue Jun 26 17:37:11 2018
 
 OUTPUT FILE NAME:   <launchpad.out>
-ENTRY POINT SYMBOL: "_c_int00"  address: 00004875
+ENTRY POINT SYMBOL: "_c_int00"  address: 00004781
 
 
 MEMORY CONFIGURATION
 
          name            origin    length      used     unused   attr    fill
 ----------------------  --------  ---------  --------  --------  ----  --------
-  FLASH                 00000000   00040000  00006668  00039998  R  X
-  SRAM                  20000000   00008000  00002538  00005ac8  RW X
+  FLASH                 00000000   00040000  00006438  00039bc8  R  X
+  SRAM                  20000000   00008000  00002d28  000052d8  RW X
 
 
 SEGMENT ALLOCATION MAP
 
 run origin  load origin   length   init length attrs members
 ----------  ----------- ---------- ----------- ----- -------
-00000000    00000000    00006668   00006668    r-x
+00000000    00000000    00006438   00006438    r-x
   00000000    00000000    0000026c   0000026c    r-- .intvecs
-  0000026c    0000026c    000059f0   000059f0    r-x .text
-  00005c5c    00005c5c    0000061c   0000061c    r-- .const
-  00006278    00006278    000003f0   000003f0    r-- .cinit
-20000000    20000000    00002538   00000000    rw-
+  0000026c    0000026c    000057c0   000057c0    r-x .text
+  00005a2c    00005a2c    0000061c   0000061c    r-- .const
+  00006048    00006048    000003f0   000003f0    r-- .cinit
+20000000    20000000    00002d28   00000000    rw-
   20000000    20000000    0000026c   00000000    rw- .vtable
-  2000026c    2000026c    0000159c   00000000    rw- .bss
-  20001808    20001808    00000c30   00000000    rw- .data
-  20002438    20002438    00000100   00000000    rw- .stack
+  2000026c    2000026c    00001d6c   00000000    rw- .bss
+  20001fd8    20001fd8    00000c50   00000000    rw- .data
+  20002c28    20002c28    00000100   00000000    rw- .stack
 
 
 SECTION ALLOCATION MAP
@@ -39,274 +39,266 @@ section   page    origin      length       input sections
 .intvecs   0    00000000    0000026c     
                   00000000    0000026c     startup_ccs.obj (.intvecs)
 
-.text      0    0000026c    000059f0     
+.text      0    0000026c    000057c0     
                   0000026c    00001076     sdo.obj (.text:proceedSDO)
                   000012e2    00000002     startup_ccs.obj (.text:FaultISR)
-                  000012e4    00000258     PD4Master.obj (.text:TestMaster_scanIndexOD)
-                  0000153c    00000222     pdo.obj (.text:proceedPDO)
-                  0000175e    00000002     startup_ccs.obj (.text:IntDefaultHandler)
-                  00001760    00000204     PD4_task.obj (.text:PD4Master_task)
-                  00001964    000001ea     uartstdio.obj (.text:UARTvprintf)
-                  00001b4e    00000002     startup_ccs.obj (.text:NmiSR)
-                  00001b50    00000164     cmd_task.obj (.text:cmd_task)
-                  00001cb4    0000015a     sdo.obj (.text:_writeNetworkDict)
-                  00001e0e    00000002     Master.obj (.text:PD4Master_heartbeatError)
-                  00001e10    00000144     states.obj (.text:setNodeId)
-                  00001f54    0000011c     pdo.obj (.text:_sendPDOevent)
-                  00002070    00000118     queue.obj (.text:xQueueGenericReceive)
-                  00002188    00000110     driverlib.lib : sysctl.obj (.text:SysCtlClockGet)
-                  00002298    00000110     states.obj (.text:switchCommunicationState)
-                  000023a8    00000104     tasks.obj (.text:xTaskIncrementTick)
-                  000024ac    00000102     states.obj (.text:setState)
-                  000025ae    00000002     Master.obj (.text:PD4Master_post_TPDO)
-                  000025b0    00000100     tasks.obj (.text:xTaskGenericCreate)
-                  000026b0    000000fc     lifegrd.obj (.text:proceedNODE_GUARD)
-                  000027ac    000000f4     objacces.obj (.text:_setODentry)
-                  000028a0    000000f0     pdo.obj (.text:sendOnePDOevent)
-                  00002990    000000e8     queue.obj (.text:xQueueGenericSend)
-                  00002a78    000000e4     tasks.obj (.text:xTaskResumeAll)
-                  00002b5c    000000dc     CO_driver.obj (.text:CAN0IntHandler)
-                  00002c38    000000d8     pdo.obj (.text:buildPDO)
-                  00002d10    000000d2     portasm.obj (.text)
-                  00002de2    00000002     Master.obj (.text:PD4Master_post_sync)
-                  00002de4    000000d0     CO_driver.obj (.text:can_init)
-                  00002eb4    000000c8     MA3encoder.obj (.text:inputInt)
-                  00002f7c    000000c4     objacces.obj (.text:_getODentry)
-                  00003040    000000c0     cmdUart.obj (.text:cmd_uart_init_handler)
-                  00003100    000000b8     timer.obj (.text:TimeDispatch)
-                  000031b8    000000b0     pdo.obj (.text:CopyBits)
-                  00003268    000000a8     heap_2.obj (.text:pvPortMalloc)
-                  00003310    000000a0     timer.obj (.text:SetAlarm)
-                  000033b0    0000009c     rtsv7M4_T_le_v4SPD16_eabi.lib : memcpy_t2.obj (.text)
-                  0000344c    00000098     cmdUart.obj (.text:cmd_uart_init)
-                  000034e4    00000094     nmtSlave.obj (.text:proceedNMTstateChange)
-                  00003578    00000090     Master.obj (.text:PD4Master_writeSlaveParam)
-                  00003608    00000090     sdo.obj (.text:initSDOline)
-                  00003698    00000090     tasks.obj (.text:vTaskPriorityInherit)
-                  00003728    0000008c     tasks.obj (.text:vTaskSwitchContext)
-                  000037b4    00000084     driver.obj (.text:driver_init_hardware)
-                  00003838    00000084     tasks.obj (.text:vTaskDelayUntil)
-                  000038bc    00000084     queue.obj (.text:xQueueGenericReset)
-                  00003940    00000080     Master.obj (.text:CanOpen_Change_Param)
-                  000039c0    0000007a     rtsv7M4_T_le_v4SPD16_eabi.lib : memset_t2.obj (.text)
-                  00003a3a    00000002     pdo.obj (.text:_RxPDO_EventTimers_Handler)
-                  00003a3c    00000078     lifegrd.obj (.text:heartbeatInit)
-                  00003ab4    00000078     tasks.obj (.text:xTaskPriorityDisinherit)
-                  00003b2c    00000074     CO_driver.obj (.text:CO_Timerinit)
-                  00003ba0    00000074     PD4_task.obj (.text:PD4Master_taskInit)
-                  00003c14    00000074     sdo.obj (.text:SDOTimeoutAlarm)
-                  00003c88    00000074     lifegrd.obj (.text:nodeguardInit)
-                  00003cfc    00000074     sdo.obj (.text:sendSDO)
-                  00003d70    00000074     tasks.obj (.text:xTaskRemoveFromEventList)
-                  00003de4    00000072     queue.obj (.text:prvCopyDataToQueue)
-                  00003e56    00000002     lifegrd.obj (.text:_heartbeatError)
-                  00003e58    00000070     rtsv7M4_T_le_v4SPD16_eabi.lib : autoinit.obj (.text)
-                  00003ec8    0000006e     pdo.obj (.text:TPDO_Communication_Parameter_Callback)
-                  00003f36    0000006c     sdo.obj (.text:failedSDO)
-                  00003fa2    00000002     states.obj (.text:_initialisation)
-                  00003fa4    00000068     driverlib.lib : interrupt.obj (.text:IntEnable)
-                  0000400c    00000068     states.obj (.text:canDispatch)
-                  00004074    00000068     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_decompress_lzss.obj (.text:decompress:lzss)
-                  000040dc    00000068     sync.obj (.text:startSYNC)
-                  00004144    00000064     driver.obj (.text:ConfigureUART)
-                  000041a8    00000064     pdo.obj (.text:PDOStop)
-                  0000420c    00000064     tasks.obj (.text:vTaskPlaceOnEventList)
-                  00004270    00000062     lifegrd.obj (.text:GuardTimeAlarm)
-                  000042d2    00000062     queue.obj (.text:prvUnlockQueue)
-                  00004334    00000060     MA3encoder.obj (.text:MA3_encoder_init)
-                  00004394    00000060     uartstdio.obj (.text:UARTStdioConfig)
-                  000043f4    00000060     tasks.obj (.text:prvInitialiseTaskLists)
-                  00004454    00000060     tasks.obj (.text:vTaskStartScheduler)
-                  000044b4    0000005c     driverlib.lib : can.obj (.text:_CANIntNumberGet)
-                  00004510    0000005c     tasks.obj (.text:vTaskDelay)
-                  0000456c    0000005c     queue.obj (.text:xQueueGenericSendFromISR)
-                  000045c8    00000058     MA3encoder.obj (.text:Captureinit)
-                  00004620    00000058     tasks.obj (.text:prvCheckTasksWaitingTermination)
-                  00004678    00000056     pdo.obj (.text:sendPDOrequest)
-                  000046ce    00000056     queue.obj (.text:xQueueGiveFromISR)
-                  00004724    00000054     CO_driver.obj (.text:CO_TimerIntHandler)
-                  00004778    00000054     Master.obj (.text:CanOpen_Reset_RPDO)
-                  000047cc    00000054     PD4_task.obj (.text:PD4Master_set_pos)
-                  00004820    00000054     tasks.obj (.text:prvInitialiseTCBVariables)
-                  00004874    00000054     rtsv7M4_T_le_v4SPD16_eabi.lib : boot.obj (.text)
-                  000048c8    00000054                                   : exit.obj (.text)
-                  0000491c    00000054     tasks.obj (.text:xTaskCheckForTimeOut)
-                  00004970    00000052     Master.obj (.text:PD4Master_post_emcy)
-                  000049c2    00000002     lifegrd.obj (.text:_nodeguardError)
-                  000049c4    00000050     led_task.obj (.text:LEDTask)
-                  00004a14    0000004e     Master.obj (.text:CanOpen_setMaster)
-                  00004a62    0000004c     Master.obj (.text:CanOpen_Reset_TPDO)
-                  00004aae    00000002     states.obj (.text:_operational)
-                  00004ab0    0000004c     pdo.obj (.text:PDOInit)
-                  00004afc    0000004c     driverlib.lib : timer.obj (.text:_TimerIntNumberGet)
-                  00004b48    0000004c     tasks.obj (.text:prvAddCurrentTaskToDelayedList)
-                  00004b94    0000004c     rtsv7M4_T_le_v4SPD16_eabi.lib : cpy_tbl.obj (.text)
-                  00004be0    0000004c     queue.obj (.text:xQueueCreateMutex)
-                  00004c2c    00000048     sdo.obj (.text:GetSDOClientFromNodeId)
-                  00004c74    00000048     lifegrd.obj (.text:ProducerHeartbeatAlarm)
-                  00004cbc    00000048     uartstdio.obj (.text:UARTwrite)
-                  00004d04    00000048     cmdUart.obj (.text:cmd_uart_send)
-                  00004d4c    00000044     driverlib.lib : gpio.obj (.text:_GPIOIntNumberGet)
-                  00004d90    00000044     CO_driver.obj (.text:can_write)
-                  00004dd4    00000044     cmd_task.obj (.text:cmd_taskInit)
-                  00004e18    00000044     sdo.obj (.text:lineToSDO)
-                  00004e5c    00000044     heap_2.obj (.text:vPortFree)
-                  00004ea0    00000042     sdo.obj (.text:objdictToSDOline)
-                  00004ee2    00000040     sdo.obj (.text:SDOtoLine)
-                  00004f22    00000002     lifegrd.obj (.text:_post_SlaveBootup)
-                  00004f24    00000040     driverlib.lib : uart.obj (.text:_UARTIntNumberGet)
-                  00004f64    00000040     rtsv7M4_T_le_v4SPD16_eabi.lib : u_divt2.obj (.text)
-                  00004fa4    00000040     port.obj (.text:xPortStartScheduler)
-                  00004fe4    0000003c     queue.obj (.text:xQueueGenericCreate)
-                  00005020    0000003a     tasks.obj (.text:prvAllocateTCBAndStack)
-                  0000505a    0000003a     sdo.obj (.text:sendSDOabort)
-                  00005094    00000038     sdo.obj (.text:SDOlineToObjdict)
-                  000050cc    00000038     list.obj (.text:vListInsert)
-                  00005104    00000036     lifegrd.obj (.text:heartbeatStop)
-                  0000513a    00000002     lifegrd.obj (.text:_post_SlaveStateChange)
-                  0000513c    00000034     CO_driver.obj (.text:CO_start_listening)
-                  00005170    00000034     driverlib.lib : interrupt.obj (.text:IntRegister)
-                  000051a4    00000034     led_task.obj (.text:LEDTaskInit)
-                  000051d8    00000034     Master.obj (.text:PD4Master_confSlaveNode)
-                  0000520c    00000034     Master.obj (.text:PD4Master_post_SlaveStateChange)
-                  00005240    00000034     driverlib.lib : sysctl.obj (.text:SysCtlPeripheralEnable)
-                  00005274    00000034     sdo.obj (.text:closeSDOtransfer)
-                  000052a8    00000034     sdo.obj (.text:resetSDOline)
-                  000052dc    00000030     timer.obj (.text:DelAlarm)
-                  0000530c    00000030     PD4_task.obj (.text:PD4Master_set_ctrl)
-                  0000533c    00000030     heap_2.obj (.text:prvHeapInit)
-                  0000536c    0000002e     sdo.obj (.text:getSDOlineOnUse)
-                  0000539a    0000002c     sync.obj (.text:stopSYNC)
-                  000053c6    00000002     sync.obj (.text:_post_TPDO)
-                  000053c8    0000002c     port.obj (.text:xPortSysTickHandler)
-                  000053f4    0000002a     lifegrd.obj (.text:ConsumerHeartbeatAlarm)
-                  0000541e    0000002a     emcy.obj (.text:OnNumberOfErrorsUpdate)
-                  00005448    0000002a     sdo.obj (.text:getSDOlineToClose)
-                  00005472    0000002a     sync.obj (.text:proceedSYNC)
-                  0000549c    0000002a     nmtSlave.obj (.text:slaveSendBootUp)
-                  000054c6    00000002     emcy.obj (.text:_post_emcy)
-                  000054c8    00000028     PD4_task.obj (.text:PD4Master_set_speed)
-                  000054f0    00000028     CO_driver.obj (.text:canSend)
-                  00005518    00000028     CO_driver.obj (.text:getElapsedTime)
-                  00005540    00000028     main.obj (.text:main)
-                  00005568    00000028     nmtMaster.obj (.text:masterSendNMTstateChange)
-                  00005590    00000028     tasks.obj (.text:prvResetNextTaskUnblockTime)
-                  000055b8    00000028     port.obj (.text:pxPortInitialiseStack)
-                  000055e0    00000028     CO_driver.obj (.text:setTimer)
-                  00005608    00000028     sdo.obj (.text:writeNetworkDictCallBack)
-                  00005630    00000026     objacces.obj (.text:RegisterSetODentryCallBack)
-                  00005656    00000026     queue.obj (.text:prvCopyDataFromQueue)
-                  0000567c    00000026     pdo.obj (.text:sendPdo)
-                  000056a2    00000002     sync.obj (.text:_post_sync)
-                  000056a4    00000024     driverlib.lib : interrupt.obj (.text:IntPrioritySet)
-                  000056c8    00000024     PD4_task.obj (.text:PD4Master_get_flag)
-                  000056ec    00000024     pdo.obj (.text:PDOInhibitTimerAlarm)
-                  00005710    00000024     rtsv7M4_T_le_v4SPD16_eabi.lib : memcmp.obj (.text)
-                  00005734    00000022     Master.obj (.text:PD4Master_initialisation)
-                  00005756    00000002     states.obj (.text:_stopped)
-                  00005758    00000022     Master.obj (.text:PD4Master_preOperational)
-                  0000577a    00000022     pdo.obj (.text:PDOEventTimerAlarm)
-                  0000579c    00000022     nmtMaster.obj (.text:masterSendNMTnodeguard)
-                  000057be    00000022     emcy.obj (.text:proceedEMCY)
-                  000057e0    00000022     sync.obj (.text:sendSYNCMessage)
-                  00005802    00000002     objacces.obj (.text:_storeODSubIndex)
-                  00005804    00000020     Master.obj (.text:CheckSDOAndContinue)
-                  00005824    00000020     emcy.obj (.text:emergencyInit)
-                  00005844    00000020     list.obj (.text:uxListRemove)
-                  00005864    0000001f     Master.obj (.text:PD4Master_operational)
-                  00005883    00000001     --HOLE-- [fill = 0]
-                  00005884    0000001e     PD4_task.obj (.text:PD4Master_stop)
-                  000058a2    00000002     emcy.obj (.text:emergencyStop)
-                  000058a4    0000001c     CO_driver.obj (.text:CO_timer_start)
-                  000058c0    0000001c     queue.obj (.text:prvIsQueueFull)
-                  000058dc    0000001c     port.obj (.text:vPortEnterCritical)
-                  000058f8    0000001b     Master.obj (.text:PD4Master_stopped)
-                  00005913    00000001     --HOLE-- [fill = 0]
-                  00005914    0000001a     uartstdio.obj (.text:UARTprintf)
-                  0000592e    0000001a     sdo.obj (.text:getSDOfreeLine)
-                  00005948    0000001a     sdo.obj (.text:getSDOlineRestBytes)
-                  00005962    0000001a     queue.obj (.text:prvIsQueueEmpty)
-                  0000597c    00000018     driverlib.lib : can.obj (.text:CANIntRegister)
-                  00005994    00000018                   : gpio.obj (.text:GPIOIntRegister)
-                  000059ac    00000018     PD4Master.obj (.text:TestMaster_valueRangeTest)
-                  000059c4    00000018     driverlib.lib : timer.obj (.text:TimerIntRegister)
-                  000059dc    00000018                   : uart.obj (.text:UARTIntRegister)
-                  000059f4    00000018     tasks.obj (.text:pvTaskIncrementMutexHeldCount)
-                  00005a0c    00000018     rtsv7M4_T_le_v4SPD16_eabi.lib : args_main.obj (.text)
-                  00005a24    00000018     list.obj (.text:vListInsertEnd)
-                  00005a3c    00000018     port.obj (.text:vPortExitCritical)
-                  00005a54    00000018     tasks.obj (.text:vTaskSetTimeOutState)
-                  00005a6c    00000016     list.obj (.text:vListInitialise)
-                  00005a82    00000002     rtsv7M4_T_le_v4SPD16_eabi.lib : i_div0.obj (.text)
-                  00005a84    00000014                                   : _lock.obj (.text)
-                  00005a98    00000014     sync.obj (.text:sendSYNC)
-                  00005aac    00000014     sdo.obj (.text:setSDOlineRestBytes)
-                  00005ac0    00000014     port.obj (.text:vPortSetupTimerInterrupt)
-                  00005ad4    00000012     lifegrd.obj (.text:OnHeartbeatProducerUpdate)
-                  00005ae6    00000012     lifegrd.obj (.text:OnNodeGuardUpdate)
-                  00005af8    00000012     lifegrd.obj (.text:nodeguardStop)
-                  00005b0a    00000012     tasks.obj (.text:prvDeleteTCB)
-                  00005b1c    00000012     objacces.obj (.text:scanIndexOD)
-                  00005b2e    00000010     driverlib.lib : interrupt.obj (.text:IntMasterEnable)
-                  00005b3e    00000002     rtsv7M4_T_le_v4SPD16_eabi.lib : mpu_init.obj (.text)
-                  00005b40    00000010     PD4_task.obj (.text:PD4Master_get_encoder)
-                  00005b50    00000010     states.obj (.text:_preOperational)
-                  00005b60    00000010     lifegrd.obj (.text:lifeGuardInit)
-                  00005b70    00000010     lifegrd.obj (.text:lifeGuardStop)
-                  00005b80    00000010     port.obj (.text:prvTaskExitError)
-                  00005b90    00000010     tasks.obj (.text:vTaskSuspendAll)
-                  00005ba0    0000000e     driverlib.lib : uart.obj (.text:UARTCharGetNonBlocking)
-                  00005bae    0000000e     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_decompress_none.obj (.text:decompress:none)
-                  00005bbc    0000000c     CO_driver.obj (.text:CO_driver_init)
-                  00005bc8    0000000c     driverlib.lib : cpu.obj (.text:CPUcpsie)
-                  00005bd4    0000000c                   : gpio.obj (.text:GPIOIntEnable)
-                  00005be0    0000000c     MA3encoder.obj (.text:MA3_encoder_get_value)
-                  00005bec    0000000c     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_zero_init.obj (.text:decompress:ZI)
-                  00005bf8    0000000c     tasks.obj (.text:vTaskMissedYield)
-                  00005c04    0000000c     tasks.obj (.text:xTaskGetTickCount)
-                  00005c10    0000000a     sync.obj (.text:OnCOB_ID_SyncUpdate)
-                  00005c1a    0000000a     driverlib.lib : uart.obj (.text:UARTFIFOEnable)
-                  00005c24    00000008     tasks.obj (.text:prvIdleTask)
-                  00005c2c    00000006     driverlib.lib : gpio.obj (.text:GPIOIntClear)
-                  00005c32    00000006     startup_ccs.obj (.text:ResetISR)
-                  00005c38    00000006     driverlib.lib : uart.obj (.text:UARTClockSourceSet)
-                  00005c3e    00000006     states.obj (.text:getNodeId)
-                  00005c44    00000006     sdo.obj (.text:resetSDO)
-                  00005c4a    00000006     list.obj (.text:vListInitialiseItem)
-                  00005c50    00000004     sync.obj (.text:SyncAlarm)
-                  00005c54    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : pre_init.obj (.text)
-                  00005c58    00000002                                   : startup.obj (.text)
-                  00005c5a    00000002     main.obj (.text:vApplicationStackOverflowHook)
+                  000012e4    0000029c     PD4_task.obj (.text:PD4Master_task)
+                  00001580    00000258     PD4Master.obj (.text:TestMaster_scanIndexOD)
+                  000017d8    00000222     pdo.obj (.text:proceedPDO)
+                  000019fa    00000002     startup_ccs.obj (.text:IntDefaultHandler)
+                  000019fc    000001ea     uartstdio.obj (.text:UARTvprintf)
+                  00001be6    0000015a     sdo.obj (.text:_writeNetworkDict)
+                  00001d40    00000144     states.obj (.text:setNodeId)
+                  00001e84    0000011c     pdo.obj (.text:_sendPDOevent)
+                  00001fa0    00000118     queue.obj (.text:xQueueGenericReceive)
+                  000020b8    00000110     driverlib.lib : sysctl.obj (.text:SysCtlClockGet)
+                  000021c8    00000110     states.obj (.text:switchCommunicationState)
+                  000022d8    00000108     led_task.obj (.text:LEDTask)
+                  000023e0    00000104     tasks.obj (.text:xTaskIncrementTick)
+                  000024e4    00000102     states.obj (.text:setState)
+                  000025e6    00000002     startup_ccs.obj (.text:NmiSR)
+                  000025e8    00000100     tasks.obj (.text:xTaskGenericCreate)
+                  000026e8    000000fc     lifegrd.obj (.text:proceedNODE_GUARD)
+                  000027e4    000000f4     objacces.obj (.text:_setODentry)
+                  000028d8    000000f0     pdo.obj (.text:sendOnePDOevent)
+                  000029c8    000000e8     queue.obj (.text:xQueueGenericSend)
+                  00002ab0    000000e4     tasks.obj (.text:xTaskResumeAll)
+                  00002b94    000000e0     CO_driver.obj (.text:CAN0IntHandler)
+                  00002c74    000000d8     pdo.obj (.text:buildPDO)
+                  00002d4c    000000d2     portasm.obj (.text)
+                  00002e1e    00000002     Master.obj (.text:PD4Master_heartbeatError)
+                  00002e20    000000d0     CO_driver.obj (.text:can_init)
+                  00002ef0    000000c8     MA3encoder.obj (.text:inputInt)
+                  00002fb8    000000c4     objacces.obj (.text:_getODentry)
+                  0000307c    000000c0     cmdUart.obj (.text:cmd_uart_init_handler)
+                  0000313c    000000b8     timer.obj (.text:TimeDispatch)
+                  000031f4    000000b0     pdo.obj (.text:CopyBits)
+                  000032a4    000000ac     heap_2.obj (.text:pvPortMalloc)
+                  00003350    000000a0     timer.obj (.text:SetAlarm)
+                  000033f0    0000009c     rtsv7M4_T_le_v4SPD16_eabi.lib : memcpy_t2.obj (.text)
+                  0000348c    00000098     cmdUart.obj (.text:cmd_uart_init)
+                  00003524    00000094     nmtSlave.obj (.text:proceedNMTstateChange)
+                  000035b8    00000090     sdo.obj (.text:initSDOline)
+                  00003648    00000090     tasks.obj (.text:vTaskPriorityInherit)
+                  000036d8    0000008c     tasks.obj (.text:vTaskSwitchContext)
+                  00003764    00000084     Master.obj (.text:PD4Master_writeSlaveParam)
+                  000037e8    00000084     driver.obj (.text:driver_init_hardware)
+                  0000386c    00000084     tasks.obj (.text:vTaskDelayUntil)
+                  000038f0    00000084     queue.obj (.text:xQueueGenericReset)
+                  00003974    0000007a     rtsv7M4_T_le_v4SPD16_eabi.lib : memset_t2.obj (.text)
+                  000039ee    00000002     Master.obj (.text:PD4Master_post_TPDO)
+                  000039f0    00000078     lifegrd.obj (.text:heartbeatInit)
+                  00003a68    00000078     tasks.obj (.text:xTaskPriorityDisinherit)
+                  00003ae0    00000074     CO_driver.obj (.text:CO_Timerinit)
+                  00003b54    00000074     PD4_task.obj (.text:PD4Master_taskInit)
+                  00003bc8    00000074     sdo.obj (.text:SDOTimeoutAlarm)
+                  00003c3c    00000074     lifegrd.obj (.text:nodeguardInit)
+                  00003cb0    00000074     sdo.obj (.text:sendSDO)
+                  00003d24    00000074     tasks.obj (.text:xTaskRemoveFromEventList)
+                  00003d98    00000072     queue.obj (.text:prvCopyDataToQueue)
+                  00003e0a    00000002     Master.obj (.text:PD4Master_post_sync)
+                  00003e0c    00000070     rtsv7M4_T_le_v4SPD16_eabi.lib : autoinit.obj (.text)
+                  00003e7c    0000006e     pdo.obj (.text:TPDO_Communication_Parameter_Callback)
+                  00003eea    0000006c     sdo.obj (.text:failedSDO)
+                  00003f56    00000002     pdo.obj (.text:_RxPDO_EventTimers_Handler)
+                  00003f58    00000068     driverlib.lib : interrupt.obj (.text:IntEnable)
+                  00003fc0    00000068     states.obj (.text:canDispatch)
+                  00004028    00000068     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_decompress_lzss.obj (.text:decompress:lzss)
+                  00004090    00000068     sync.obj (.text:startSYNC)
+                  000040f8    00000064     driver.obj (.text:ConfigureUART)
+                  0000415c    00000064     pdo.obj (.text:PDOStop)
+                  000041c0    00000064     tasks.obj (.text:vTaskPlaceOnEventList)
+                  00004224    00000062     lifegrd.obj (.text:GuardTimeAlarm)
+                  00004286    00000062     queue.obj (.text:prvUnlockQueue)
+                  000042e8    00000060     MA3encoder.obj (.text:MA3_encoder_init)
+                  00004348    00000060     uartstdio.obj (.text:UARTStdioConfig)
+                  000043a8    00000060     tasks.obj (.text:prvInitialiseTaskLists)
+                  00004408    00000060     tasks.obj (.text:vTaskStartScheduler)
+                  00004468    0000005c     driverlib.lib : can.obj (.text:_CANIntNumberGet)
+                  000044c4    0000005c     tasks.obj (.text:vTaskDelay)
+                  00004520    0000005c     queue.obj (.text:xQueueGenericSendFromISR)
+                  0000457c    00000058     MA3encoder.obj (.text:Captureinit)
+                  000045d4    00000058     tasks.obj (.text:prvCheckTasksWaitingTermination)
+                  0000462c    00000056     pdo.obj (.text:sendPDOrequest)
+                  00004682    00000002     lifegrd.obj (.text:_heartbeatError)
+                  00004684    00000054     CO_driver.obj (.text:CO_TimerIntHandler)
+                  000046d8    00000054     PD4_task.obj (.text:PD4Master_set_pos)
+                  0000472c    00000054     tasks.obj (.text:prvInitialiseTCBVariables)
+                  00004780    00000054     rtsv7M4_T_le_v4SPD16_eabi.lib : boot.obj (.text)
+                  000047d4    00000054                                   : exit.obj (.text)
+                  00004828    00000054     tasks.obj (.text:xTaskCheckForTimeOut)
+                  0000487c    00000052     Master.obj (.text:PD4Master_post_emcy)
+                  000048ce    0000004e     Master.obj (.text:CanOpen_setMaster)
+                  0000491c    0000004c     pdo.obj (.text:PDOInit)
+                  00004968    0000004c     driverlib.lib : timer.obj (.text:_TimerIntNumberGet)
+                  000049b4    0000004c     tasks.obj (.text:prvAddCurrentTaskToDelayedList)
+                  00004a00    0000004c     rtsv7M4_T_le_v4SPD16_eabi.lib : cpy_tbl.obj (.text)
+                  00004a4c    0000004c     queue.obj (.text:xQueueCreateMutex)
+                  00004a98    00000048     sdo.obj (.text:GetSDOClientFromNodeId)
+                  00004ae0    00000048     lifegrd.obj (.text:ProducerHeartbeatAlarm)
+                  00004b28    00000048     uartstdio.obj (.text:UARTwrite)
+                  00004b70    00000044     CANopen_task.obj (.text:CANopen_taskInit)
+                  00004bb4    00000044     driverlib.lib : gpio.obj (.text:_GPIOIntNumberGet)
+                  00004bf8    00000044     CO_driver.obj (.text:can_write)
+                  00004c3c    00000044     sdo.obj (.text:lineToSDO)
+                  00004c80    00000044     heap_2.obj (.text:vPortFree)
+                  00004cc4    00000042     sdo.obj (.text:objdictToSDOline)
+                  00004d06    00000040     sdo.obj (.text:SDOtoLine)
+                  00004d46    00000002     states.obj (.text:_initialisation)
+                  00004d48    00000040     driverlib.lib : uart.obj (.text:_UARTIntNumberGet)
+                  00004d88    00000040     rtsv7M4_T_le_v4SPD16_eabi.lib : u_divt2.obj (.text)
+                  00004dc8    00000040     port.obj (.text:xPortStartScheduler)
+                  00004e08    0000003c     queue.obj (.text:xQueueGenericCreate)
+                  00004e44    0000003a     tasks.obj (.text:prvAllocateTCBAndStack)
+                  00004e7e    0000003a     sdo.obj (.text:sendSDOabort)
+                  00004eb8    00000038     sdo.obj (.text:SDOlineToObjdict)
+                  00004ef0    00000038     list.obj (.text:vListInsert)
+                  00004f28    00000036     lifegrd.obj (.text:heartbeatStop)
+                  00004f5e    00000002     lifegrd.obj (.text:_nodeguardError)
+                  00004f60    00000034     CO_driver.obj (.text:CO_start_listening)
+                  00004f94    00000034     driverlib.lib : interrupt.obj (.text:IntRegister)
+                  00004fc8    00000034     led_task.obj (.text:LEDTaskInit)
+                  00004ffc    00000034     Master.obj (.text:PD4Master_post_SlaveStateChange)
+                  00005030    00000034     driverlib.lib : sysctl.obj (.text:SysCtlPeripheralEnable)
+                  00005064    00000034     sdo.obj (.text:closeSDOtransfer)
+                  00005098    00000034     sdo.obj (.text:resetSDOline)
+                  000050cc    00000030     timer.obj (.text:DelAlarm)
+                  000050fc    00000030     PD4_task.obj (.text:PD4Master_set_ctrl)
+                  0000512c    00000030     heap_2.obj (.text:prvHeapInit)
+                  0000515c    0000002e     sdo.obj (.text:getSDOlineOnUse)
+                  0000518a    0000002c     sync.obj (.text:stopSYNC)
+                  000051b6    00000002     states.obj (.text:_operational)
+                  000051b8    0000002c     port.obj (.text:xPortSysTickHandler)
+                  000051e4    0000002a     lifegrd.obj (.text:ConsumerHeartbeatAlarm)
+                  0000520e    0000002a     emcy.obj (.text:OnNumberOfErrorsUpdate)
+                  00005238    0000002a     sdo.obj (.text:getSDOlineToClose)
+                  00005262    0000002a     sync.obj (.text:proceedSYNC)
+                  0000528c    0000002a     nmtSlave.obj (.text:slaveSendBootUp)
+                  000052b6    00000002     lifegrd.obj (.text:_post_SlaveBootup)
+                  000052b8    00000028     CANopen_task.obj (.text:CANopen_task)
+                  000052e0    00000028     PD4_task.obj (.text:PD4Master_set_speed)
+                  00005308    00000028     CO_driver.obj (.text:canSend)
+                  00005330    00000028     CO_driver.obj (.text:getElapsedTime)
+                  00005358    00000028     main.obj (.text:main)
+                  00005380    00000028     nmtMaster.obj (.text:masterSendNMTstateChange)
+                  000053a8    00000028     tasks.obj (.text:prvResetNextTaskUnblockTime)
+                  000053d0    00000028     port.obj (.text:pxPortInitialiseStack)
+                  000053f8    00000028     CO_driver.obj (.text:setTimer)
+                  00005420    00000028     sdo.obj (.text:writeNetworkDictCallBack)
+                  00005448    00000026     objacces.obj (.text:RegisterSetODentryCallBack)
+                  0000546e    00000026     queue.obj (.text:prvCopyDataFromQueue)
+                  00005494    00000026     pdo.obj (.text:sendPdo)
+                  000054ba    00000002     lifegrd.obj (.text:_post_SlaveStateChange)
+                  000054bc    00000024     Master.obj (.text:CheckSDOAndContinue)
+                  000054e0    00000024     driverlib.lib : interrupt.obj (.text:IntPrioritySet)
+                  00005504    00000024     pdo.obj (.text:PDOInhibitTimerAlarm)
+                  00005528    00000024     rtsv7M4_T_le_v4SPD16_eabi.lib : memcmp.obj (.text)
+                  0000554c    00000022     Master.obj (.text:PD4Master_initialisation)
+                  0000556e    00000002     sync.obj (.text:_post_TPDO)
+                  00005570    00000022     Master.obj (.text:PD4Master_preOperational)
+                  00005592    00000022     pdo.obj (.text:PDOEventTimerAlarm)
+                  000055b4    00000022     nmtMaster.obj (.text:masterSendNMTnodeguard)
+                  000055d6    00000022     emcy.obj (.text:proceedEMCY)
+                  000055f8    00000022     sync.obj (.text:sendSYNCMessage)
+                  0000561a    00000002     emcy.obj (.text:_post_emcy)
+                  0000561c    00000020     emcy.obj (.text:emergencyInit)
+                  0000563c    00000020     list.obj (.text:uxListRemove)
+                  0000565c    0000001f     Master.obj (.text:PD4Master_operational)
+                  0000567b    00000001     --HOLE-- [fill = 0]
+                  0000567c    0000001c     CO_driver.obj (.text:CO_timer_start)
+                  00005698    0000001c     queue.obj (.text:prvIsQueueFull)
+                  000056b4    0000001c     port.obj (.text:vPortEnterCritical)
+                  000056d0    0000001b     Master.obj (.text:PD4Master_stopped)
+                  000056eb    00000001     --HOLE-- [fill = 0]
+                  000056ec    0000001a     uartstdio.obj (.text:UARTprintf)
+                  00005706    0000001a     sdo.obj (.text:getSDOfreeLine)
+                  00005720    0000001a     sdo.obj (.text:getSDOlineRestBytes)
+                  0000573a    0000001a     queue.obj (.text:prvIsQueueEmpty)
+                  00005754    00000018     driverlib.lib : can.obj (.text:CANIntRegister)
+                  0000576c    00000018                   : gpio.obj (.text:GPIOIntRegister)
+                  00005784    00000018     PD4Master.obj (.text:TestMaster_valueRangeTest)
+                  0000579c    00000018     driverlib.lib : timer.obj (.text:TimerIntRegister)
+                  000057b4    00000018                   : uart.obj (.text:UARTIntRegister)
+                  000057cc    00000018     tasks.obj (.text:pvTaskIncrementMutexHeldCount)
+                  000057e4    00000018     rtsv7M4_T_le_v4SPD16_eabi.lib : args_main.obj (.text)
+                  000057fc    00000018     list.obj (.text:vListInsertEnd)
+                  00005814    00000018     port.obj (.text:vPortExitCritical)
+                  0000582c    00000018     tasks.obj (.text:vTaskSetTimeOutState)
+                  00005844    00000016     list.obj (.text:vListInitialise)
+                  0000585a    00000002     sync.obj (.text:_post_sync)
+                  0000585c    00000014     rtsv7M4_T_le_v4SPD16_eabi.lib : _lock.obj (.text)
+                  00005870    00000014     sync.obj (.text:sendSYNC)
+                  00005884    00000014     sdo.obj (.text:setSDOlineRestBytes)
+                  00005898    00000014     port.obj (.text:vPortSetupTimerInterrupt)
+                  000058ac    00000012     lifegrd.obj (.text:OnHeartbeatProducerUpdate)
+                  000058be    00000012     lifegrd.obj (.text:OnNodeGuardUpdate)
+                  000058d0    00000012     lifegrd.obj (.text:nodeguardStop)
+                  000058e2    00000012     tasks.obj (.text:prvDeleteTCB)
+                  000058f4    00000012     objacces.obj (.text:scanIndexOD)
+                  00005906    00000010     driverlib.lib : interrupt.obj (.text:IntMasterEnable)
+                  00005916    00000010     states.obj (.text:_preOperational)
+                  00005926    00000010     lifegrd.obj (.text:lifeGuardInit)
+                  00005936    00000010     lifegrd.obj (.text:lifeGuardStop)
+                  00005946    00000010     port.obj (.text:prvTaskExitError)
+                  00005956    00000002     states.obj (.text:_stopped)
+                  00005958    00000010     tasks.obj (.text:vTaskSuspendAll)
+                  00005968    0000000e     driverlib.lib : uart.obj (.text:UARTCharGetNonBlocking)
+                  00005976    0000000e     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_decompress_none.obj (.text:decompress:none)
+                  00005984    0000000c     CO_driver.obj (.text:CO_driver_init)
+                  00005990    0000000c     driverlib.lib : cpu.obj (.text:CPUcpsie)
+                  0000599c    0000000c                   : gpio.obj (.text:GPIOIntEnable)
+                  000059a8    0000000c     MA3encoder.obj (.text:MA3_encoder_get_value)
+                  000059b4    0000000c     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_zero_init.obj (.text:decompress:ZI)
+                  000059c0    0000000c     tasks.obj (.text:vTaskMissedYield)
+                  000059cc    0000000c     tasks.obj (.text:xTaskGetTickCount)
+                  000059d8    0000000a     sync.obj (.text:OnCOB_ID_SyncUpdate)
+                  000059e2    0000000a     driverlib.lib : uart.obj (.text:UARTFIFOEnable)
+                  000059ec    00000008     tasks.obj (.text:prvIdleTask)
+                  000059f4    00000006     driverlib.lib : gpio.obj (.text:GPIOIntClear)
+                  000059fa    00000006     startup_ccs.obj (.text:ResetISR)
+                  00005a00    00000006     driverlib.lib : uart.obj (.text:UARTClockSourceSet)
+                  00005a06    00000006     states.obj (.text:getNodeId)
+                  00005a0c    00000006     sdo.obj (.text:resetSDO)
+                  00005a12    00000006     list.obj (.text:vListInitialiseItem)
+                  00005a18    00000004     sync.obj (.text:SyncAlarm)
+                  00005a1c    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : pre_init.obj (.text)
+                  00005a20    00000002     objacces.obj (.text:_storeODSubIndex)
+                  00005a22    00000002     emcy.obj (.text:emergencyStop)
+                  00005a24    00000002     rtsv7M4_T_le_v4SPD16_eabi.lib : i_div0.obj (.text)
+                  00005a26    00000002                                   : mpu_init.obj (.text)
+                  00005a28    00000002                                   : startup.obj (.text)
+                  00005a2a    00000002     main.obj (.text:vApplicationStackOverflowHook)
 
-.const     0    00005c5c    0000061c     
-                  00005c5c    00000180     PD4Master.obj (.const:TestMaster_objdict)
-                  00005ddc    000000d8     driverlib.lib : gpio.obj (.const:g_ppui32GPIOIntMapSnowflake)
-                  00005eb4    000000c0                   : gpio.obj (.const:g_ppui32GPIOIntMapBlizzard)
-                  00005f74    0000009c                   : interrupt.obj (.const:g_pui32Regs)
-                  00006010    00000070                   : interrupt.obj (.const)
-                  00006080    0000006c                   : sysctl.obj (.const:g_pui32Xtals)
-                  000060ec    00000060                   : timer.obj (.const:g_ppui32TimerIntMap)
-                  0000614c    00000040                   : timer.obj (.const:g_ppui32TimerIntMapSnowflake)
-                  0000618c    00000040                   : uart.obj (.const:g_ppui32UARTIntMap)
-                  000061cc    00000040                   : uart.obj (.const:g_ppui32UARTIntMapSnowflake)
-                  0000620c    00000012     PD4Master.obj (.const:.string)
-                  0000621e    00000002     --HOLE-- [fill = 0]
-                  00006220    00000010     states.obj (.const:$P$T4$5)
-                  00006230    00000010     states.obj (.const:$P$T5$6)
-                  00006240    0000000c     PD4Master.obj (.const:TestMaster_firstIndex)
-                  0000624c    0000000c     PD4Master.obj (.const:TestMaster_lastIndex)
-                  00006258    0000000c     uartstdio.obj (.const:g_ui32UARTBase)
-                  00006264    0000000c     uartstdio.obj (.const:g_ui32UARTPeriph)
-                  00006270    00000004     PD4Master.obj (.const)
-                  00006274    00000004     port.obj (.const)
+.const     0    00005a2c    0000061c     
+                  00005a2c    00000180     PD4Master.obj (.const:TestMaster_objdict)
+                  00005bac    000000d8     driverlib.lib : gpio.obj (.const:g_ppui32GPIOIntMapSnowflake)
+                  00005c84    000000c0                   : gpio.obj (.const:g_ppui32GPIOIntMapBlizzard)
+                  00005d44    0000009c                   : interrupt.obj (.const:g_pui32Regs)
+                  00005de0    00000070                   : interrupt.obj (.const)
+                  00005e50    0000006c                   : sysctl.obj (.const:g_pui32Xtals)
+                  00005ebc    00000060                   : timer.obj (.const:g_ppui32TimerIntMap)
+                  00005f1c    00000040                   : timer.obj (.const:g_ppui32TimerIntMapSnowflake)
+                  00005f5c    00000040                   : uart.obj (.const:g_ppui32UARTIntMap)
+                  00005f9c    00000040                   : uart.obj (.const:g_ppui32UARTIntMapSnowflake)
+                  00005fdc    00000012     PD4Master.obj (.const:.string)
+                  00005fee    00000002     --HOLE-- [fill = 0]
+                  00005ff0    00000010     states.obj (.const:$P$T4$5)
+                  00006000    00000010     states.obj (.const:$P$T5$6)
+                  00006010    0000000c     PD4Master.obj (.const:TestMaster_firstIndex)
+                  0000601c    0000000c     PD4Master.obj (.const:TestMaster_lastIndex)
+                  00006028    0000000c     uartstdio.obj (.const:g_ui32UARTBase)
+                  00006034    0000000c     uartstdio.obj (.const:g_ui32UARTPeriph)
+                  00006040    00000004     PD4Master.obj (.const)
+                  00006044    00000004     port.obj (.const)
 
-.cinit     0    00006278    000003f0     
-                  00006278    000003b8     (.cinit..data.load) [load image, compression = lzss]
-                  00006630    0000000c     (__TI_handler_table)
-                  0000663c    00000004     --HOLE-- [fill = 0]
-                  00006640    00000008     (.cinit..bss.load) [load image, compression = zero_init]
-                  00006648    00000008     (.cinit..vtable.load) [load image, compression = zero_init]
-                  00006650    00000018     (__TI_cinit_table)
+.cinit     0    00006048    000003f0     
+                  00006048    000003b5     (.cinit..data.load) [load image, compression = lzss]
+                  000063fd    00000003     --HOLE-- [fill = 0]
+                  00006400    0000000c     (__TI_handler_table)
+                  0000640c    00000004     --HOLE-- [fill = 0]
+                  00006410    00000008     (.cinit..bss.load) [load image, compression = zero_init]
+                  00006418    00000008     (.cinit..vtable.load) [load image, compression = zero_init]
+                  00006420    00000018     (__TI_cinit_table)
 
 .init_array 
 *          0    00000000    00000000     UNINITIALIZED
@@ -314,120 +306,122 @@ section   page    origin      length       input sections
 .vtable    0    20000000    0000026c     UNINITIALIZED
                   20000000    0000026c     driverlib.lib : interrupt.obj (.vtable)
 
-.bss       0    2000026c    0000159c     UNINITIALIZED
-                  2000026c    00001388     heap_2.obj (.bss:ucHeap)
-                  200015f4    00000140     tasks.obj (.bss:pxReadyTasksLists)
-                  20001734    00000014     tasks.obj (.bss:xDelayedTaskList1)
-                  20001748    00000014     tasks.obj (.bss:xDelayedTaskList2)
-                  2000175c    00000014     tasks.obj (.bss:xPendingReadyList)
-                  20001770    00000014     tasks.obj (.bss:xSuspendedTaskList)
-                  20001784    00000014     tasks.obj (.bss:xTasksWaitingTermination)
-                  20001798    00000014     (.common:g_sCAN0RxMessage)
-                  200017ac    00000014     (.common:g_sCAN0TxMessage)
-                  200017c0    0000000c     (.common:g_RxMessage)
-                  200017cc    0000000c     (.common:g_cmd_uart_fifo)
-                  200017d8    00000008     tasks.obj (.bss)
-                  200017e0    00000008     heap_2.obj (.bss:xEnd)
-                  200017e8    00000008     heap_2.obj (.bss:xStart)
-                  200017f0    00000004     Master.obj (.bss)
-                  200017f4    00000004     (.common:g_PD4_Semaphore)
-                  200017f8    00000004     (.common:g_SDO_Mutex)
-                  200017fc    00000004     (.common:g_SDO_Semaphore)
-                  20001800    00000004     (.common:g_Slave_Queue)
-                  20001804    00000004     (.common:g_cmd_Queue)
+.bss       0    2000026c    00001d6c     UNINITIALIZED
+                  2000026c    00001b58     heap_2.obj (.bss:ucHeap)
+                  20001dc4    00000140     tasks.obj (.bss:pxReadyTasksLists)
+                  20001f04    00000014     tasks.obj (.bss:xDelayedTaskList1)
+                  20001f18    00000014     tasks.obj (.bss:xDelayedTaskList2)
+                  20001f2c    00000014     tasks.obj (.bss:xPendingReadyList)
+                  20001f40    00000014     tasks.obj (.bss:xSuspendedTaskList)
+                  20001f54    00000014     tasks.obj (.bss:xTasksWaitingTermination)
+                  20001f68    00000014     (.common:g_sCAN0RxMessage)
+                  20001f7c    00000014     (.common:g_sCAN0TxMessage)
+                  20001f90    0000000c     (.common:g_RxMessage)
+                  20001f9c    0000000c     (.common:g_cmd_uart_fifo)
+                  20001fa8    00000008     tasks.obj (.bss)
+                  20001fb0    00000008     heap_2.obj (.bss:xEnd)
+                  20001fb8    00000008     heap_2.obj (.bss:xStart)
+                  20001fc0    00000004     (.common:g_MSG_Queue)
+                  20001fc4    00000004     (.common:g_PD4_Semaphore)
+                  20001fc8    00000004     (.common:g_SDO_Mutex)
+                  20001fcc    00000004     (.common:g_SDO_Semaphore)
+                  20001fd0    00000004     (.common:g_Slave_Queue)
+                  20001fd4    00000004     (.common:g_cmd_Queue)
 
-.data      0    20001808    00000c30     UNINITIALIZED
-                  20001808    0000023c     PD4Master.obj (.data:TestMaster_Data)
-                  20001a44    000000ee     PD4Master.obj (.data)
-                  20001b32    00000002     PD4Master.obj (.data:TestMaster_heartBeatTimers)
-                  20001b34    000000c0     timer.obj (.data:timers)
-                  20001bf4    00000054     PD4Master.obj (.data:TestMaster_Index1401)
-                  20001c48    00000054     PD4Master.obj (.data:TestMaster_Index1402)
-                  20001c9c    00000054     PD4Master.obj (.data:TestMaster_Index1403)
-                  20001cf0    00000054     PD4Master.obj (.data:TestMaster_Index1800)
-                  20001d44    00000054     PD4Master.obj (.data:TestMaster_Index1801)
-                  20001d98    00000054     PD4Master.obj (.data:TestMaster_Index1802)
-                  20001dec    00000054     PD4Master.obj (.data:TestMaster_Index1803)
-                  20001e40    00000048     PD4Master.obj (.data:TestMaster_Index1400)
-                  20001e88    00000048     PD4Master.obj (.data:TestMaster_PDO_status)
-                  20001ed0    0000003c     PD4Master.obj (.data:TestMaster_Index1018)
-                  20001f0c    00000030     PD4Master.obj (.data:TestMaster_Index1280)
-                  20001f3c    00000030     PD4Master.obj (.data:TestMaster_Index1281)
-                  20001f6c    00000030     PD4Master.obj (.data:TestMaster_Index1282)
-                  20001f9c    00000030     PD4Master.obj (.data:TestMaster_Index1283)
-                  20001fcc    00000030     PD4Master.obj (.data:TestMaster_Index1A00)
-                  20001ffc    00000030     PD4Master.obj (.data:TestMaster_Index1A01)
-                  2000202c    00000030     PD4Master.obj (.data:TestMaster_Index1A02)
-                  2000205c    00000030     PD4Master.obj (.data:TestMaster_Index1A03)
-                  2000208c    00000030     tasks.obj (.data)
-                  200020bc    00000024     PD4Master.obj (.data:TestMaster_Index1600)
-                  200020e0    00000024     PD4Master.obj (.data:TestMaster_Index1601)
-                  20002104    00000024     PD4Master.obj (.data:TestMaster_Index1602)
-                  20002128    00000024     PD4Master.obj (.data:TestMaster_Index1603)
-                  2000214c    00000024     PD4Master.obj (.data:TestMaster_Index1F22)
-                  20002170    0000001c     CO_driver.obj (.data)
-                  2000218c    0000001c     PD4Master.obj (.data:TestMaster_Index1800_callbacks)
-                  200021a8    0000001c     PD4Master.obj (.data:TestMaster_Index1801_callbacks)
-                  200021c4    0000001c     PD4Master.obj (.data:TestMaster_Index1802_callbacks)
-                  200021e0    0000001c     PD4Master.obj (.data:TestMaster_Index1803_callbacks)
-                  200021fc    00000018     MA3encoder.obj (.data)
-                  20002214    00000018     PD4Master.obj (.data:TestMaster_Index1016)
-                  2000222c    00000010     PD4Master.obj (.data:PD4_Position)
-                  2000223c    00000010     PD4Master.obj (.data:PD4_SubMode)
-                  2000224c    0000000c     rtsv7M4_T_le_v4SPD16_eabi.lib : exit.obj (.data:$O1$$)
-                  20002258    0000000c     PD4Master.obj (.data:TestMaster_Index1000)
-                  20002264    0000000c     PD4Master.obj (.data:TestMaster_Index1001)
-                  20002270    0000000c     PD4Master.obj (.data:TestMaster_Index1005)
-                  2000227c    0000000c     PD4Master.obj (.data:TestMaster_Index1006)
-                  20002288    0000000c     PD4Master.obj (.data:TestMaster_Index1014)
-                  20002294    0000000c     PD4Master.obj (.data:TestMaster_Index2011)
-                  200022a0    0000000c     PD4Master.obj (.data:TestMaster_Index2012)
-                  200022ac    0000000c     PD4Master.obj (.data:TestMaster_Index2013)
-                  200022b8    0000000c     PD4Master.obj (.data:TestMaster_Index2014)
-                  200022c4    0000000c     PD4Master.obj (.data:TestMaster_Index2015)
-                  200022d0    0000000c     PD4Master.obj (.data:TestMaster_Index2021)
-                  200022dc    0000000c     PD4Master.obj (.data:TestMaster_Index2022)
-                  200022e8    0000000c     PD4Master.obj (.data:TestMaster_Index2023)
-                  200022f4    0000000c     PD4Master.obj (.data:TestMaster_Index2024)
-                  20002300    0000000c     PD4Master.obj (.data:TestMaster_Index2025)
-                  2000230c    0000000c     PD4Master.obj (.data:TestMaster_Index2031)
-                  20002318    0000000c     PD4Master.obj (.data:TestMaster_Index2032)
-                  20002324    0000000c     PD4Master.obj (.data:TestMaster_Index2033)
-                  20002330    0000000c     PD4Master.obj (.data:TestMaster_Index2034)
-                  2000233c    0000000c     PD4Master.obj (.data:TestMaster_Index2035)
-                  20002348    0000000c     PD4Master.obj (.data:TestMaster_Index2041)
-                  20002354    0000000c     PD4Master.obj (.data:TestMaster_Index2042)
-                  20002360    0000000c     PD4Master.obj (.data:TestMaster_Index2043)
-                  2000236c    0000000c     PD4Master.obj (.data:TestMaster_Index2044)
-                  20002378    0000000c     PD4Master.obj (.data:TestMaster_Index2045)
-                  20002384    0000000c     PD4Master.obj (.data:TestMaster_obj1A00)
-                  20002390    0000000c     PD4Master.obj (.data:TestMaster_obj1A01)
-                  2000239c    0000000c     PD4Master.obj (.data:TestMaster_obj1A02)
-                  200023a8    0000000c     PD4Master.obj (.data:TestMaster_obj1A03)
-                  200023b4    0000000c     timer.obj (.data)
-                  200023c0    00000008     rtsv7M4_T_le_v4SPD16_eabi.lib : _lock.obj (.data:$O1$$)
-                  200023c8    00000008     PD4Master.obj (.data:PD4_Controlword)
-                  200023d0    00000008     PD4Master.obj (.data:PD4_Status)
-                  200023d8    00000008     PD4_task.obj (.data)
-                  200023e0    00000008     PD4Master.obj (.data:TestMaster_obj1600)
-                  200023e8    00000008     PD4Master.obj (.data:TestMaster_obj1601)
-                  200023f0    00000008     PD4Master.obj (.data:TestMaster_obj1602)
-                  200023f8    00000008     PD4Master.obj (.data:TestMaster_obj1603)
-                  20002400    00000008     PD4Master.obj (.data:TestMaster_obj1F22)
-                  20002408    00000008     heap_2.obj (.data)
-                  20002410    00000005     uartstdio.obj (.data)
-                  20002415    00000004     PD4Master.obj (.data:PD4_Mode)
-                  20002419    00000003     cmdUart.obj (.data)
-                  2000241c    00000004     PD4Master.obj (.data:TestMaster_Index1005_callbacks)
-                  20002420    00000004     PD4Master.obj (.data:TestMaster_Index1006_callbacks)
-                  20002424    00000004     PD4Master.obj (.data:TestMaster_obj1003)
-                  20002428    00000004     PD4Master.obj (.data:TestMaster_obj1016)
-                  2000242c    00000004     PD4_task.obj (.data:g_trip_bit4)
-                  20002430    00000004     port.obj (.data)
-                  20002434    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : stkdepth_vars.obj (.data)
+.data      0    20001fd8    00000c50     UNINITIALIZED
+                  20001fd8    0000023c     PD4Master.obj (.data:TestMaster_Data)
+                  20002214    000000ee     PD4Master.obj (.data)
+                  20002302    00000002     PD4Master.obj (.data:TestMaster_heartBeatTimers)
+                  20002304    000000c0     timer.obj (.data:timers)
+                  200023c4    00000054     PD4Master.obj (.data:TestMaster_Index1401)
+                  20002418    00000054     PD4Master.obj (.data:TestMaster_Index1402)
+                  2000246c    00000054     PD4Master.obj (.data:TestMaster_Index1403)
+                  200024c0    00000054     PD4Master.obj (.data:TestMaster_Index1800)
+                  20002514    00000054     PD4Master.obj (.data:TestMaster_Index1801)
+                  20002568    00000054     PD4Master.obj (.data:TestMaster_Index1802)
+                  200025bc    00000054     PD4Master.obj (.data:TestMaster_Index1803)
+                  20002610    00000048     PD4Master.obj (.data:TestMaster_Index1400)
+                  20002658    00000048     PD4Master.obj (.data:TestMaster_PDO_status)
+                  200026a0    0000003c     PD4Master.obj (.data:TestMaster_Index1018)
+                  200026dc    00000030     PD4Master.obj (.data:TestMaster_Index1280)
+                  2000270c    00000030     PD4Master.obj (.data:TestMaster_Index1281)
+                  2000273c    00000030     PD4Master.obj (.data:TestMaster_Index1282)
+                  2000276c    00000030     PD4Master.obj (.data:TestMaster_Index1283)
+                  2000279c    00000030     PD4Master.obj (.data:TestMaster_Index1A00)
+                  200027cc    00000030     PD4Master.obj (.data:TestMaster_Index1A01)
+                  200027fc    00000030     PD4Master.obj (.data:TestMaster_Index1A02)
+                  2000282c    00000030     PD4Master.obj (.data:TestMaster_Index1A03)
+                  2000285c    00000030     tasks.obj (.data)
+                  2000288c    00000024     PD4Master.obj (.data:TestMaster_Index1600)
+                  200028b0    00000024     PD4Master.obj (.data:TestMaster_Index1601)
+                  200028d4    00000024     PD4Master.obj (.data:TestMaster_Index1602)
+                  200028f8    00000024     PD4Master.obj (.data:TestMaster_Index1603)
+                  2000291c    00000024     PD4Master.obj (.data:TestMaster_Index1F22)
+                  20002940    0000001c     CO_driver.obj (.data)
+                  2000295c    0000001c     PD4Master.obj (.data:TestMaster_Index1800_callbacks)
+                  20002978    0000001c     PD4Master.obj (.data:TestMaster_Index1801_callbacks)
+                  20002994    0000001c     PD4Master.obj (.data:TestMaster_Index1802_callbacks)
+                  200029b0    0000001c     PD4Master.obj (.data:TestMaster_Index1803_callbacks)
+                  200029cc    00000018     MA3encoder.obj (.data)
+                  200029e4    00000018     PD4Master.obj (.data:TestMaster_Index1016)
+                  200029fc    00000010     PD4Master.obj (.data:PD4_Position)
+                  20002a0c    00000010     PD4Master.obj (.data:PD4_SubMode)
+                  20002a1c    00000010     PD4_task.obj (.data:__homing_step)
+                  20002a2c    00000010     PD4_task.obj (.data:g_need_init)
+                  20002a3c    0000000c     rtsv7M4_T_le_v4SPD16_eabi.lib : exit.obj (.data:$O1$$)
+                  20002a48    0000000c     PD4Master.obj (.data:TestMaster_Index1000)
+                  20002a54    0000000c     PD4Master.obj (.data:TestMaster_Index1001)
+                  20002a60    0000000c     PD4Master.obj (.data:TestMaster_Index1005)
+                  20002a6c    0000000c     PD4Master.obj (.data:TestMaster_Index1006)
+                  20002a78    0000000c     PD4Master.obj (.data:TestMaster_Index1014)
+                  20002a84    0000000c     PD4Master.obj (.data:TestMaster_Index2011)
+                  20002a90    0000000c     PD4Master.obj (.data:TestMaster_Index2012)
+                  20002a9c    0000000c     PD4Master.obj (.data:TestMaster_Index2013)
+                  20002aa8    0000000c     PD4Master.obj (.data:TestMaster_Index2014)
+                  20002ab4    0000000c     PD4Master.obj (.data:TestMaster_Index2015)
+                  20002ac0    0000000c     PD4Master.obj (.data:TestMaster_Index2021)
+                  20002acc    0000000c     PD4Master.obj (.data:TestMaster_Index2022)
+                  20002ad8    0000000c     PD4Master.obj (.data:TestMaster_Index2023)
+                  20002ae4    0000000c     PD4Master.obj (.data:TestMaster_Index2024)
+                  20002af0    0000000c     PD4Master.obj (.data:TestMaster_Index2025)
+                  20002afc    0000000c     PD4Master.obj (.data:TestMaster_Index2031)
+                  20002b08    0000000c     PD4Master.obj (.data:TestMaster_Index2032)
+                  20002b14    0000000c     PD4Master.obj (.data:TestMaster_Index2033)
+                  20002b20    0000000c     PD4Master.obj (.data:TestMaster_Index2034)
+                  20002b2c    0000000c     PD4Master.obj (.data:TestMaster_Index2035)
+                  20002b38    0000000c     PD4Master.obj (.data:TestMaster_Index2041)
+                  20002b44    0000000c     PD4Master.obj (.data:TestMaster_Index2042)
+                  20002b50    0000000c     PD4Master.obj (.data:TestMaster_Index2043)
+                  20002b5c    0000000c     PD4Master.obj (.data:TestMaster_Index2044)
+                  20002b68    0000000c     PD4Master.obj (.data:TestMaster_Index2045)
+                  20002b74    0000000c     PD4Master.obj (.data:TestMaster_obj1A00)
+                  20002b80    0000000c     PD4Master.obj (.data:TestMaster_obj1A01)
+                  20002b8c    0000000c     PD4Master.obj (.data:TestMaster_obj1A02)
+                  20002b98    0000000c     PD4Master.obj (.data:TestMaster_obj1A03)
+                  20002ba4    0000000c     timer.obj (.data)
+                  20002bb0    00000008     rtsv7M4_T_le_v4SPD16_eabi.lib : _lock.obj (.data:$O1$$)
+                  20002bb8    00000008     PD4Master.obj (.data:PD4_Controlword)
+                  20002bc0    00000008     PD4Master.obj (.data:PD4_Status)
+                  20002bc8    00000008     PD4_task.obj (.data)
+                  20002bd0    00000008     PD4Master.obj (.data:TestMaster_obj1600)
+                  20002bd8    00000008     PD4Master.obj (.data:TestMaster_obj1601)
+                  20002be0    00000008     PD4Master.obj (.data:TestMaster_obj1602)
+                  20002be8    00000008     PD4Master.obj (.data:TestMaster_obj1603)
+                  20002bf0    00000008     PD4Master.obj (.data:TestMaster_obj1F22)
+                  20002bf8    00000008     heap_2.obj (.data)
+                  20002c00    00000005     uartstdio.obj (.data)
+                  20002c05    00000004     PD4Master.obj (.data:PD4_Mode)
+                  20002c09    00000003     cmdUart.obj (.data)
+                  20002c0c    00000004     PD4Master.obj (.data:TestMaster_Index1005_callbacks)
+                  20002c10    00000004     PD4Master.obj (.data:TestMaster_Index1006_callbacks)
+                  20002c14    00000004     PD4Master.obj (.data:TestMaster_obj1003)
+                  20002c18    00000004     PD4Master.obj (.data:TestMaster_obj1016)
+                  20002c1c    00000004     PD4_task.obj (.data:g_trip_bit4)
+                  20002c20    00000004     port.obj (.data)
+                  20002c24    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : stkdepth_vars.obj (.data)
 
-.stack     0    20002438    00000100     UNINITIALIZED
-                  20002438    00000100     --HOLE--
+.stack     0    20002c28    00000100     UNINITIALIZED
+                  20002c28    00000100     --HOLE--
 
 MODULE SUMMARY
 
@@ -441,28 +435,29 @@ MODULE SUMMARY
        Total:                     678     1050      2760   
                                                            
     .\app\
-       led_task.obj               132     0         0      
+       led_task.obj               316     0         0      
     +--+--------------------------+-------+---------+---------+
-       Total:                     132     0         0      
+       Total:                     316     0         0      
                                                            
     .\app\CMD\
-       cmd_task.obj               424     0         4      
+       cmd_task.obj               0       0         4      
     +--+--------------------------+-------+---------+---------+
-       Total:                     424     0         4      
+       Total:                     0       0         4      
                                                            
     .\app\PD4\
-       PD4_task.obj               886     0         28     
-       Master.obj                 860     0         4      
+       PD4_task.obj               956     0         60     
+       Master.obj                 512     0         0      
+       CANopen_task.obj           108     0         4      
     +--+--------------------------+-------+---------+---------+
-       Total:                     1746    0         32     
+       Total:                     1576    0         64     
                                                            
     .\bsp\
-       CO_driver.obj              908     0         80     
-       cmdUart.obj                416     0         15     
+       CO_driver.obj              912     0         80     
        MA3encoder.obj             396     0         24     
+       cmdUart.obj                344     0         15     
        driver.obj                 232     0         0      
     +--+--------------------------+-------+---------+---------+
-       Total:                     1952    0         119    
+       Total:                     1884    0         119    
                                                            
     .\third_party\CanFestival\src\
        sdo.obj                    5738    0         0      
@@ -480,10 +475,10 @@ MODULE SUMMARY
                                                            
     .\third_party\FreeRTOS\Source\
        tasks.obj                  2324    0         476    
-       queue.obj                  1262    0         0      
+       queue.obj                  1176    0         0      
        list.obj                   140     0         0      
     +--+--------------------------+-------+---------+---------+
-       Total:                     3726    0         476    
+       Total:                     3640    0         476    
                                                            
     .\third_party\FreeRTOS\Source\portable\CCS\ARM_CM4F\
        port.obj                   236     4         4      
@@ -492,9 +487,9 @@ MODULE SUMMARY
        Total:                     446     4         4      
                                                            
     .\third_party\FreeRTOS\Source\portable\MemMang\
-       heap_2.obj                 284     0         5024   
+       heap_2.obj                 288     0         7024   
     +--+--------------------------+-------+---------+---------+
-       Total:                     284     0         5024   
+       Total:                     288     0         7024   
                                                            
     .\utils\
        uartstdio.obj              684     24        5      
@@ -535,22 +530,22 @@ MODULE SUMMARY
        Total:                     918     0         24     
                                                            
        Stack:                     0       0         256    
-       Linker Generated:          0       1004      0      
+       Linker Generated:          0       1001      0      
     +--+--------------------------+-------+---------+---------+
-       Grand Total:               23022   3186      9528   
+       Grand Total:               22462   3183      11560  
 
 
 LINKER GENERATED COPY TABLES
 
-__TI_cinit_table @ 00006650 records: 3, size/record: 8, table size: 24
-	.data: load addr=00006278, load size=000003b8 bytes, run addr=20001808, run size=00000c30 bytes, compression=lzss
-	.bss: load addr=00006640, load size=00000008 bytes, run addr=2000026c, run size=0000159c bytes, compression=zero_init
-	.vtable: load addr=00006648, load size=00000008 bytes, run addr=20000000, run size=0000026c bytes, compression=zero_init
+__TI_cinit_table @ 00006420 records: 3, size/record: 8, table size: 24
+	.data: load addr=00006048, load size=000003b5 bytes, run addr=20001fd8, run size=00000c50 bytes, compression=lzss
+	.bss: load addr=00006410, load size=00000008 bytes, run addr=2000026c, run size=00001d6c bytes, compression=zero_init
+	.vtable: load addr=00006418, load size=00000008 bytes, run addr=20000000, run size=0000026c bytes, compression=zero_init
 
 
 LINKER GENERATED HANDLER TABLE
 
-__TI_handler_table @ 00006630 records: 3, size/record: 4, table size: 12
+__TI_handler_table @ 00006400 records: 3, size/record: 4, table size: 12
 	index: 0, handler: __TI_zero_init
 	index: 1, handler: __TI_decompress_lzss
 	index: 2, handler: __TI_decompress_none
@@ -560,462 +555,457 @@ GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name
 
 address   name                                                   
 -------   ----                                                   
-000048c9  C$$EXIT                                                
-00002b5d  CAN0IntHandler                                         
-0000597d  CANIntRegister                                         
-00004725  CO_TimerIntHandler                                     
-00003b2d  CO_Timerinit                                           
-00005bbd  CO_driver_init                                         
-0000513d  CO_start_listening                                     
-000058a5  CO_timer_start                                         
-00005bc9  CPUcpsie                                               
-00003941  CanOpen_Change_Param                                   
-00004779  CanOpen_Reset_RPDO                                     
-00004a63  CanOpen_Reset_TPDO                                     
-00004a15  CanOpen_setMaster                                      
-000045c9  Captureinit                                            
-00004145  ConfigureUART                                          
-000053f5  ConsumerHeartbeatAlarm                                 
-000031b9  CopyBits                                               
-000052dd  DelAlarm                                               
-00005c2d  GPIOIntClear                                           
-00005bd5  GPIOIntEnable                                          
-00005995  GPIOIntRegister                                        
-00004c2d  GetSDOClientFromNodeId                                 
-00004271  GuardTimeAlarm                                         
-00003fa5  IntEnable                                              
-00005b2f  IntMasterEnable                                        
-000056a5  IntPrioritySet                                         
-00005171  IntRegister                                            
-000051a5  LEDTaskInit                                            
-00005be1  MA3_encoder_get_value                                  
-00004335  MA3_encoder_init                                       
-00005c11  OnCOB_ID_SyncUpdate                                    
-00005ad5  OnHeartbeatProducerUpdate                              
-00005ae7  OnNodeGuardUpdate                                      
-0000541f  OnNumberOfErrorsUpdate                                 
-000051d9  PD4Master_confSlaveNode                                
-00005b41  PD4Master_get_encoder                                  
-000056c9  PD4Master_get_flag                                     
-00001e0f  PD4Master_heartbeatError                               
-00005735  PD4Master_initialisation                               
-00005865  PD4Master_operational                                  
-0000520d  PD4Master_post_SlaveStateChange                        
-000025af  PD4Master_post_TPDO                                    
-00004971  PD4Master_post_emcy                                    
-00002de3  PD4Master_post_sync                                    
-00005759  PD4Master_preOperational                               
-0000530d  PD4Master_set_ctrl                                     
-000047cd  PD4Master_set_pos                                      
-000054c9  PD4Master_set_speed                                    
-00005885  PD4Master_stop                                         
-000058f9  PD4Master_stopped                                      
-00003ba1  PD4Master_taskInit                                     
-00003579  PD4Master_writeSlaveParam                              
-200023c8  PD4_Controlword                                        
-20002415  PD4_Mode                                               
-2000222c  PD4_Position                                           
-200023d0  PD4_Status                                             
-2000223c  PD4_SubMode                                            
-0000577b  PDOEventTimerAlarm                                     
-000056ed  PDOInhibitTimerAlarm                                   
-00004ab1  PDOInit                                                
-000041a9  PDOStop                                                
-00004c75  ProducerHeartbeatAlarm                                 
-00005631  RegisterSetODentryCallBack                             
-00005c33  ResetISR                                               
-00003c15  SDOTimeoutAlarm                                        
-00005095  SDOlineToObjdict                                       
-00004ee3  SDOtoLine                                              
+000047d5  C$$EXIT                                                
+00002b95  CAN0IntHandler                                         
+00005755  CANIntRegister                                         
+00004b71  CANopen_taskInit                                       
+00004685  CO_TimerIntHandler                                     
+00003ae1  CO_Timerinit                                           
+00005985  CO_driver_init                                         
+00004f61  CO_start_listening                                     
+0000567d  CO_timer_start                                         
+00005991  CPUcpsie                                               
+000048cf  CanOpen_setMaster                                      
+0000457d  Captureinit                                            
+000040f9  ConfigureUART                                          
+000051e5  ConsumerHeartbeatAlarm                                 
+000031f5  CopyBits                                               
+000050cd  DelAlarm                                               
+000059f5  GPIOIntClear                                           
+0000599d  GPIOIntEnable                                          
+0000576d  GPIOIntRegister                                        
+00004a99  GetSDOClientFromNodeId                                 
+00004225  GuardTimeAlarm                                         
+00003f59  IntEnable                                              
+00005907  IntMasterEnable                                        
+000054e1  IntPrioritySet                                         
+00004f95  IntRegister                                            
+00004fc9  LEDTaskInit                                            
+000059a9  MA3_encoder_get_value                                  
+000042e9  MA3_encoder_init                                       
+000059d9  OnCOB_ID_SyncUpdate                                    
+000058ad  OnHeartbeatProducerUpdate                              
+000058bf  OnNodeGuardUpdate                                      
+0000520f  OnNumberOfErrorsUpdate                                 
+000048cf  PD4Master_confSlaveNode                                
+00002e1f  PD4Master_heartbeatError                               
+0000554d  PD4Master_initialisation                               
+0000565d  PD4Master_operational                                  
+00004ffd  PD4Master_post_SlaveStateChange                        
+000039ef  PD4Master_post_TPDO                                    
+0000487d  PD4Master_post_emcy                                    
+00003e0b  PD4Master_post_sync                                    
+00005571  PD4Master_preOperational                               
+000050fd  PD4Master_set_ctrl                                     
+000046d9  PD4Master_set_pos                                      
+000052e1  PD4Master_set_speed                                    
+000056d1  PD4Master_stopped                                      
+00003b55  PD4Master_taskInit                                     
+00003765  PD4Master_writeSlaveParam                              
+20002bb8  PD4_Controlword                                        
+20002c05  PD4_Mode                                               
+200029fc  PD4_Position                                           
+20002bc0  PD4_Status                                             
+20002a0c  PD4_SubMode                                            
+00005593  PDOEventTimerAlarm                                     
+00005505  PDOInhibitTimerAlarm                                   
+0000491d  PDOInit                                                
+0000415d  PDOStop                                                
+00004ae1  ProducerHeartbeatAlarm                                 
+00005449  RegisterSetODentryCallBack                             
+000059fb  ResetISR                                               
+00003bc9  SDOTimeoutAlarm                                        
+00004eb9  SDOlineToObjdict                                       
+00004d07  SDOtoLine                                              
 UNDEFED   SHT$$INIT_ARRAY$$Base                                  
 UNDEFED   SHT$$INIT_ARRAY$$Limit                                 
-00003311  SetAlarm                                               
-00005c51  SyncAlarm                                              
-00002189  SysCtlClockGet                                         
-00005241  SysCtlPeripheralEnable                                 
-00003ec9  TPDO_Communication_Parameter_Callback                  
-20001808  TestMaster_Data                                        
-20002258  TestMaster_Index1000                                   
-20002264  TestMaster_Index1001                                   
-20002270  TestMaster_Index1005                                   
-2000241c  TestMaster_Index1005_callbacks                         
-2000227c  TestMaster_Index1006                                   
-20002420  TestMaster_Index1006_callbacks                         
-20002288  TestMaster_Index1014                                   
-20002214  TestMaster_Index1016                                   
-20001ed0  TestMaster_Index1018                                   
-20001f0c  TestMaster_Index1280                                   
-20001f3c  TestMaster_Index1281                                   
-20001f6c  TestMaster_Index1282                                   
-20001f9c  TestMaster_Index1283                                   
-20001e40  TestMaster_Index1400                                   
-20001bf4  TestMaster_Index1401                                   
-20001c48  TestMaster_Index1402                                   
-20001c9c  TestMaster_Index1403                                   
-200020bc  TestMaster_Index1600                                   
-200020e0  TestMaster_Index1601                                   
-20002104  TestMaster_Index1602                                   
-20002128  TestMaster_Index1603                                   
-20001cf0  TestMaster_Index1800                                   
-2000218c  TestMaster_Index1800_callbacks                         
-20001d44  TestMaster_Index1801                                   
-200021a8  TestMaster_Index1801_callbacks                         
-20001d98  TestMaster_Index1802                                   
-200021c4  TestMaster_Index1802_callbacks                         
-20001dec  TestMaster_Index1803                                   
-200021e0  TestMaster_Index1803_callbacks                         
-20001fcc  TestMaster_Index1A00                                   
-20001ffc  TestMaster_Index1A01                                   
-2000202c  TestMaster_Index1A02                                   
-2000205c  TestMaster_Index1A03                                   
-2000214c  TestMaster_Index1F22                                   
-20002294  TestMaster_Index2011                                   
-200022a0  TestMaster_Index2012                                   
-200022ac  TestMaster_Index2013                                   
-200022b8  TestMaster_Index2014                                   
-200022c4  TestMaster_Index2015                                   
-200022d0  TestMaster_Index2021                                   
-200022dc  TestMaster_Index2022                                   
-200022e8  TestMaster_Index2023                                   
-200022f4  TestMaster_Index2024                                   
-20002300  TestMaster_Index2025                                   
-2000230c  TestMaster_Index2031                                   
-20002318  TestMaster_Index2032                                   
-20002324  TestMaster_Index2033                                   
-20002330  TestMaster_Index2034                                   
-2000233c  TestMaster_Index2035                                   
-20002348  TestMaster_Index2041                                   
-20002354  TestMaster_Index2042                                   
-20002360  TestMaster_Index2043                                   
-2000236c  TestMaster_Index2044                                   
-20002378  TestMaster_Index2045                                   
-00006272  TestMaster_ObjdictSize                                 
-20001e88  TestMaster_PDO_status                                  
-20001a44  TestMaster_bDeviceNodeId                               
-00006240  TestMaster_firstIndex                                  
-20001b32  TestMaster_heartBeatTimers                             
-20001a4d  TestMaster_highestSubIndex_obj1003                     
-20001a60  TestMaster_highestSubIndex_obj1016                     
-20001a64  TestMaster_highestSubIndex_obj1018                     
-20001a78  TestMaster_highestSubIndex_obj1280                     
-20001a85  TestMaster_highestSubIndex_obj1281                     
-20001a91  TestMaster_highestSubIndex_obj1282                     
-20001a9d  TestMaster_highestSubIndex_obj1283                     
-20001aa9  TestMaster_highestSubIndex_obj1400                     
-20001ab8  TestMaster_highestSubIndex_obj1401                     
-20001ac9  TestMaster_highestSubIndex_obj1402                     
-20001ad9  TestMaster_highestSubIndex_obj1403                     
-20001ae9  TestMaster_highestSubIndex_obj1600                     
-20001aea  TestMaster_highestSubIndex_obj1601                     
-20001aeb  TestMaster_highestSubIndex_obj1602                     
-20001aec  TestMaster_highestSubIndex_obj1603                     
-20001aed  TestMaster_highestSubIndex_obj1800                     
-20001afd  TestMaster_highestSubIndex_obj1801                     
-20001b0d  TestMaster_highestSubIndex_obj1802                     
-20001b1d  TestMaster_highestSubIndex_obj1803                     
-20001b2d  TestMaster_highestSubIndex_obj1A00                     
-20001b2e  TestMaster_highestSubIndex_obj1A01                     
-20001b2f  TestMaster_highestSubIndex_obj1A02                     
-20001b30  TestMaster_highestSubIndex_obj1A03                     
-20001b31  TestMaster_highestSubIndex_obj1F22                     
-00006270  TestMaster_iam_a_slave                                 
-0000624c  TestMaster_lastIndex                                   
-20001a48  TestMaster_obj1000                                     
-20001a4c  TestMaster_obj1001                                     
-20002424  TestMaster_obj1003                                     
-20001a50  TestMaster_obj1005                                     
-20001a54  TestMaster_obj1006                                     
-20001a58  TestMaster_obj100C                                     
-20001a5a  TestMaster_obj100D                                     
-20001a5c  TestMaster_obj1014                                     
-20002428  TestMaster_obj1016                                     
-20001a62  TestMaster_obj1017                                     
-20001a6c  TestMaster_obj1018_Product_Code                        
-20001a70  TestMaster_obj1018_Revision_Number                     
-20001a74  TestMaster_obj1018_Serial_Number                       
-20001a68  TestMaster_obj1018_Vendor_ID                           
-20001a7c  TestMaster_obj1280_COB_ID_Client_to_Server_Transmit_SDO
-20001a80  TestMaster_obj1280_COB_ID_Server_to_Client_Receive_SDO 
-20001a84  TestMaster_obj1280_Node_ID_of_the_SDO_Server           
-20001a88  TestMaster_obj1281_COB_ID_Client_to_Server_Transmit_SDO
-20001a8c  TestMaster_obj1281_COB_ID_Server_to_Client_Receive_SDO 
-20001a90  TestMaster_obj1281_Node_ID_of_the_SDO_Server           
-20001a94  TestMaster_obj1282_COB_ID_Client_to_Server_Transmit_SDO
-20001a98  TestMaster_obj1282_COB_ID_Server_to_Client_Receive_SDO 
-20001a9c  TestMaster_obj1282_Node_ID_of_the_SDO_Server           
-20001aa0  TestMaster_obj1283_COB_ID_Client_to_Server_Transmit_SDO
-20001aa4  TestMaster_obj1283_COB_ID_Server_to_Client_Receive_SDO 
-20001aa8  TestMaster_obj1283_Node_ID_of_the_SDO_Server           
-20001aac  TestMaster_obj1400_COB_ID_used_by_PDO                  
-20001ab4  TestMaster_obj1400_Compatibility_Entry                 
-20001ab6  TestMaster_obj1400_Event_Timer                         
-20001ab2  TestMaster_obj1400_Inhibit_Time                        
-20001ab0  TestMaster_obj1400_Transmission_Type                   
-20001abc  TestMaster_obj1401_COB_ID_used_by_PDO                  
-20001ac4  TestMaster_obj1401_Compatibility_Entry                 
-20001ac6  TestMaster_obj1401_Event_Timer                         
-20001ac2  TestMaster_obj1401_Inhibit_Time                        
-20001ac8  TestMaster_obj1401_SYNC_start_value                    
-20001ac0  TestMaster_obj1401_Transmission_Type                   
-20001acc  TestMaster_obj1402_COB_ID_used_by_PDO                  
-20001ad4  TestMaster_obj1402_Compatibility_Entry                 
-20001ad6  TestMaster_obj1402_Event_Timer                         
-20001ad2  TestMaster_obj1402_Inhibit_Time                        
-20001ad8  TestMaster_obj1402_SYNC_start_value                    
-20001ad0  TestMaster_obj1402_Transmission_Type                   
-20001adc  TestMaster_obj1403_COB_ID_used_by_PDO                  
-20001ae4  TestMaster_obj1403_Compatibility_Entry                 
-20001ae6  TestMaster_obj1403_Event_Timer                         
-20001ae2  TestMaster_obj1403_Inhibit_Time                        
-20001ae8  TestMaster_obj1403_SYNC_start_value                    
-20001ae0  TestMaster_obj1403_Transmission_Type                   
-200023e0  TestMaster_obj1600                                     
-200023e8  TestMaster_obj1601                                     
-200023f0  TestMaster_obj1602                                     
-200023f8  TestMaster_obj1603                                     
-20001af0  TestMaster_obj1800_COB_ID_used_by_PDO                  
-20001af8  TestMaster_obj1800_Compatibility_Entry                 
-20001afa  TestMaster_obj1800_Event_Timer                         
-20001af6  TestMaster_obj1800_Inhibit_Time                        
-20001afc  TestMaster_obj1800_SYNC_start_value                    
-20001af4  TestMaster_obj1800_Transmission_Type                   
-20001b00  TestMaster_obj1801_COB_ID_used_by_PDO                  
-20001b08  TestMaster_obj1801_Compatibility_Entry                 
-20001b0a  TestMaster_obj1801_Event_Timer                         
-20001b06  TestMaster_obj1801_Inhibit_Time                        
-20001b0c  TestMaster_obj1801_SYNC_start_value                    
-20001b04  TestMaster_obj1801_Transmission_Type                   
-20001b10  TestMaster_obj1802_COB_ID_used_by_PDO                  
-20001b18  TestMaster_obj1802_Compatibility_Entry                 
-20001b1a  TestMaster_obj1802_Event_Timer                         
-20001b16  TestMaster_obj1802_Inhibit_Time                        
-20001b1c  TestMaster_obj1802_SYNC_start_value                    
-20001b14  TestMaster_obj1802_Transmission_Type                   
-20001b20  TestMaster_obj1803_COB_ID_used_by_PDO                  
-20001b28  TestMaster_obj1803_Compatibility_Entry                 
-20001b2a  TestMaster_obj1803_Event_Timer                         
-20001b26  TestMaster_obj1803_Inhibit_Time                        
-20001b2c  TestMaster_obj1803_SYNC_start_value                    
-20001b24  TestMaster_obj1803_Transmission_Type                   
-20002384  TestMaster_obj1A00                                     
-20002390  TestMaster_obj1A01                                     
-2000239c  TestMaster_obj1A02                                     
-200023a8  TestMaster_obj1A03                                     
-20002400  TestMaster_obj1F22                                     
-00005c5c  TestMaster_objdict                                     
-000012e5  TestMaster_scanIndexOD                                 
-000059ad  TestMaster_valueRangeTest                              
-00003101  TimeDispatch                                           
-000059c5  TimerIntRegister                                       
-00005ba1  UARTCharGetNonBlocking                                 
-00005c39  UARTClockSourceSet                                     
-00005c1b  UARTFIFOEnable                                         
-000059dd  UARTIntRegister                                        
-00004395  UARTStdioConfig                                        
-00005915  UARTprintf                                             
-00001965  UARTvprintf                                            
-00004cbd  UARTwrite                                              
-200023dc  _PD4_pos_tmp                                           
-200023d8  _PD4_speed_tmp                                         
-00003a3b  _RxPDO_EventTimers_Handler                             
-20002538  __STACK_END                                            
+00003351  SetAlarm                                               
+00005a19  SyncAlarm                                              
+000020b9  SysCtlClockGet                                         
+00005031  SysCtlPeripheralEnable                                 
+00003e7d  TPDO_Communication_Parameter_Callback                  
+20001fd8  TestMaster_Data                                        
+20002a48  TestMaster_Index1000                                   
+20002a54  TestMaster_Index1001                                   
+20002a60  TestMaster_Index1005                                   
+20002c0c  TestMaster_Index1005_callbacks                         
+20002a6c  TestMaster_Index1006                                   
+20002c10  TestMaster_Index1006_callbacks                         
+20002a78  TestMaster_Index1014                                   
+200029e4  TestMaster_Index1016                                   
+200026a0  TestMaster_Index1018                                   
+200026dc  TestMaster_Index1280                                   
+2000270c  TestMaster_Index1281                                   
+2000273c  TestMaster_Index1282                                   
+2000276c  TestMaster_Index1283                                   
+20002610  TestMaster_Index1400                                   
+200023c4  TestMaster_Index1401                                   
+20002418  TestMaster_Index1402                                   
+2000246c  TestMaster_Index1403                                   
+2000288c  TestMaster_Index1600                                   
+200028b0  TestMaster_Index1601                                   
+200028d4  TestMaster_Index1602                                   
+200028f8  TestMaster_Index1603                                   
+200024c0  TestMaster_Index1800                                   
+2000295c  TestMaster_Index1800_callbacks                         
+20002514  TestMaster_Index1801                                   
+20002978  TestMaster_Index1801_callbacks                         
+20002568  TestMaster_Index1802                                   
+20002994  TestMaster_Index1802_callbacks                         
+200025bc  TestMaster_Index1803                                   
+200029b0  TestMaster_Index1803_callbacks                         
+2000279c  TestMaster_Index1A00                                   
+200027cc  TestMaster_Index1A01                                   
+200027fc  TestMaster_Index1A02                                   
+2000282c  TestMaster_Index1A03                                   
+2000291c  TestMaster_Index1F22                                   
+20002a84  TestMaster_Index2011                                   
+20002a90  TestMaster_Index2012                                   
+20002a9c  TestMaster_Index2013                                   
+20002aa8  TestMaster_Index2014                                   
+20002ab4  TestMaster_Index2015                                   
+20002ac0  TestMaster_Index2021                                   
+20002acc  TestMaster_Index2022                                   
+20002ad8  TestMaster_Index2023                                   
+20002ae4  TestMaster_Index2024                                   
+20002af0  TestMaster_Index2025                                   
+20002afc  TestMaster_Index2031                                   
+20002b08  TestMaster_Index2032                                   
+20002b14  TestMaster_Index2033                                   
+20002b20  TestMaster_Index2034                                   
+20002b2c  TestMaster_Index2035                                   
+20002b38  TestMaster_Index2041                                   
+20002b44  TestMaster_Index2042                                   
+20002b50  TestMaster_Index2043                                   
+20002b5c  TestMaster_Index2044                                   
+20002b68  TestMaster_Index2045                                   
+00006042  TestMaster_ObjdictSize                                 
+20002658  TestMaster_PDO_status                                  
+20002214  TestMaster_bDeviceNodeId                               
+00006010  TestMaster_firstIndex                                  
+20002302  TestMaster_heartBeatTimers                             
+2000221d  TestMaster_highestSubIndex_obj1003                     
+20002230  TestMaster_highestSubIndex_obj1016                     
+20002234  TestMaster_highestSubIndex_obj1018                     
+20002248  TestMaster_highestSubIndex_obj1280                     
+20002255  TestMaster_highestSubIndex_obj1281                     
+20002261  TestMaster_highestSubIndex_obj1282                     
+2000226d  TestMaster_highestSubIndex_obj1283                     
+20002279  TestMaster_highestSubIndex_obj1400                     
+20002288  TestMaster_highestSubIndex_obj1401                     
+20002299  TestMaster_highestSubIndex_obj1402                     
+200022a9  TestMaster_highestSubIndex_obj1403                     
+200022b9  TestMaster_highestSubIndex_obj1600                     
+200022ba  TestMaster_highestSubIndex_obj1601                     
+200022bb  TestMaster_highestSubIndex_obj1602                     
+200022bc  TestMaster_highestSubIndex_obj1603                     
+200022bd  TestMaster_highestSubIndex_obj1800                     
+200022cd  TestMaster_highestSubIndex_obj1801                     
+200022dd  TestMaster_highestSubIndex_obj1802                     
+200022ed  TestMaster_highestSubIndex_obj1803                     
+200022fd  TestMaster_highestSubIndex_obj1A00                     
+200022fe  TestMaster_highestSubIndex_obj1A01                     
+200022ff  TestMaster_highestSubIndex_obj1A02                     
+20002300  TestMaster_highestSubIndex_obj1A03                     
+20002301  TestMaster_highestSubIndex_obj1F22                     
+00006040  TestMaster_iam_a_slave                                 
+0000601c  TestMaster_lastIndex                                   
+20002218  TestMaster_obj1000                                     
+2000221c  TestMaster_obj1001                                     
+20002c14  TestMaster_obj1003                                     
+20002220  TestMaster_obj1005                                     
+20002224  TestMaster_obj1006                                     
+20002228  TestMaster_obj100C                                     
+2000222a  TestMaster_obj100D                                     
+2000222c  TestMaster_obj1014                                     
+20002c18  TestMaster_obj1016                                     
+20002232  TestMaster_obj1017                                     
+2000223c  TestMaster_obj1018_Product_Code                        
+20002240  TestMaster_obj1018_Revision_Number                     
+20002244  TestMaster_obj1018_Serial_Number                       
+20002238  TestMaster_obj1018_Vendor_ID                           
+2000224c  TestMaster_obj1280_COB_ID_Client_to_Server_Transmit_SDO
+20002250  TestMaster_obj1280_COB_ID_Server_to_Client_Receive_SDO 
+20002254  TestMaster_obj1280_Node_ID_of_the_SDO_Server           
+20002258  TestMaster_obj1281_COB_ID_Client_to_Server_Transmit_SDO
+2000225c  TestMaster_obj1281_COB_ID_Server_to_Client_Receive_SDO 
+20002260  TestMaster_obj1281_Node_ID_of_the_SDO_Server           
+20002264  TestMaster_obj1282_COB_ID_Client_to_Server_Transmit_SDO
+20002268  TestMaster_obj1282_COB_ID_Server_to_Client_Receive_SDO 
+2000226c  TestMaster_obj1282_Node_ID_of_the_SDO_Server           
+20002270  TestMaster_obj1283_COB_ID_Client_to_Server_Transmit_SDO
+20002274  TestMaster_obj1283_COB_ID_Server_to_Client_Receive_SDO 
+20002278  TestMaster_obj1283_Node_ID_of_the_SDO_Server           
+2000227c  TestMaster_obj1400_COB_ID_used_by_PDO                  
+20002284  TestMaster_obj1400_Compatibility_Entry                 
+20002286  TestMaster_obj1400_Event_Timer                         
+20002282  TestMaster_obj1400_Inhibit_Time                        
+20002280  TestMaster_obj1400_Transmission_Type                   
+2000228c  TestMaster_obj1401_COB_ID_used_by_PDO                  
+20002294  TestMaster_obj1401_Compatibility_Entry                 
+20002296  TestMaster_obj1401_Event_Timer                         
+20002292  TestMaster_obj1401_Inhibit_Time                        
+20002298  TestMaster_obj1401_SYNC_start_value                    
+20002290  TestMaster_obj1401_Transmission_Type                   
+2000229c  TestMaster_obj1402_COB_ID_used_by_PDO                  
+200022a4  TestMaster_obj1402_Compatibility_Entry                 
+200022a6  TestMaster_obj1402_Event_Timer                         
+200022a2  TestMaster_obj1402_Inhibit_Time                        
+200022a8  TestMaster_obj1402_SYNC_start_value                    
+200022a0  TestMaster_obj1402_Transmission_Type                   
+200022ac  TestMaster_obj1403_COB_ID_used_by_PDO                  
+200022b4  TestMaster_obj1403_Compatibility_Entry                 
+200022b6  TestMaster_obj1403_Event_Timer                         
+200022b2  TestMaster_obj1403_Inhibit_Time                        
+200022b8  TestMaster_obj1403_SYNC_start_value                    
+200022b0  TestMaster_obj1403_Transmission_Type                   
+20002bd0  TestMaster_obj1600                                     
+20002bd8  TestMaster_obj1601                                     
+20002be0  TestMaster_obj1602                                     
+20002be8  TestMaster_obj1603                                     
+200022c0  TestMaster_obj1800_COB_ID_used_by_PDO                  
+200022c8  TestMaster_obj1800_Compatibility_Entry                 
+200022ca  TestMaster_obj1800_Event_Timer                         
+200022c6  TestMaster_obj1800_Inhibit_Time                        
+200022cc  TestMaster_obj1800_SYNC_start_value                    
+200022c4  TestMaster_obj1800_Transmission_Type                   
+200022d0  TestMaster_obj1801_COB_ID_used_by_PDO                  
+200022d8  TestMaster_obj1801_Compatibility_Entry                 
+200022da  TestMaster_obj1801_Event_Timer                         
+200022d6  TestMaster_obj1801_Inhibit_Time                        
+200022dc  TestMaster_obj1801_SYNC_start_value                    
+200022d4  TestMaster_obj1801_Transmission_Type                   
+200022e0  TestMaster_obj1802_COB_ID_used_by_PDO                  
+200022e8  TestMaster_obj1802_Compatibility_Entry                 
+200022ea  TestMaster_obj1802_Event_Timer                         
+200022e6  TestMaster_obj1802_Inhibit_Time                        
+200022ec  TestMaster_obj1802_SYNC_start_value                    
+200022e4  TestMaster_obj1802_Transmission_Type                   
+200022f0  TestMaster_obj1803_COB_ID_used_by_PDO                  
+200022f8  TestMaster_obj1803_Compatibility_Entry                 
+200022fa  TestMaster_obj1803_Event_Timer                         
+200022f6  TestMaster_obj1803_Inhibit_Time                        
+200022fc  TestMaster_obj1803_SYNC_start_value                    
+200022f4  TestMaster_obj1803_Transmission_Type                   
+20002b74  TestMaster_obj1A00                                     
+20002b80  TestMaster_obj1A01                                     
+20002b8c  TestMaster_obj1A02                                     
+20002b98  TestMaster_obj1A03                                     
+20002bf0  TestMaster_obj1F22                                     
+00005a2c  TestMaster_objdict                                     
+00001581  TestMaster_scanIndexOD                                 
+00005785  TestMaster_valueRangeTest                              
+0000313d  TimeDispatch                                           
+0000579d  TimerIntRegister                                       
+00005969  UARTCharGetNonBlocking                                 
+00005a01  UARTClockSourceSet                                     
+000059e3  UARTFIFOEnable                                         
+000057b5  UARTIntRegister                                        
+00004349  UARTStdioConfig                                        
+000056ed  UARTprintf                                             
+000019fd  UARTvprintf                                            
+00004b29  UARTwrite                                              
+20002bcc  _PD4_pos_tmp                                           
+20002bc8  _PD4_speed_tmp                                         
+00003f57  _RxPDO_EventTimers_Handler                             
+20002d28  __STACK_END                                            
 00000100  __STACK_SIZE                                           
-20002538  __STACK_TOP                                            
-00006650  __TI_CINIT_Base                                        
-00006668  __TI_CINIT_Limit                                       
-00006630  __TI_Handler_Table_Base                                
-0000663c  __TI_Handler_Table_Limit                               
-00003e59  __TI_auto_init                                         
-2000224c  __TI_cleanup_ptr                                       
-00004075  __TI_decompress_lzss                                   
-00005baf  __TI_decompress_none                                   
-20002250  __TI_dtors_ptr                                         
-20002254  __TI_enable_exit_profile_output                        
+20002d28  __STACK_TOP                                            
+00006420  __TI_CINIT_Base                                        
+00006438  __TI_CINIT_Limit                                       
+00006400  __TI_Handler_Table_Base                                
+0000640c  __TI_Handler_Table_Limit                               
+00003e0d  __TI_auto_init                                         
+20002a3c  __TI_cleanup_ptr                                       
+00004029  __TI_decompress_lzss                                   
+00005977  __TI_decompress_none                                   
+20002a40  __TI_dtors_ptr                                         
+20002a44  __TI_enable_exit_profile_output                        
 ffffffff  __TI_pprof_out_hndl                                    
 ffffffff  __TI_prof_data_size                                    
 ffffffff  __TI_prof_data_start                                   
 00000000  __TI_static_base__                                     
-00005bed  __TI_zero_init                                         
-00005a83  __aeabi_idiv0                                          
-000039c1  __aeabi_memclr                                         
-000039c1  __aeabi_memclr4                                        
-000039c1  __aeabi_memclr8                                        
-000033b1  __aeabi_memcpy                                         
-000033b1  __aeabi_memcpy4                                        
-000033b1  __aeabi_memcpy8                                        
-000039c3  __aeabi_memset                                         
-000039c3  __aeabi_memset4                                        
-000039c3  __aeabi_memset8                                        
-00004f65  __aeabi_uidiv                                          
-00004f65  __aeabi_uidivmod                                       
+000059b5  __TI_zero_init                                         
+00005a25  __aeabi_idiv0                                          
+00003975  __aeabi_memclr                                         
+00003975  __aeabi_memclr4                                        
+00003975  __aeabi_memclr8                                        
+000033f1  __aeabi_memcpy                                         
+000033f1  __aeabi_memcpy4                                        
+000033f1  __aeabi_memcpy8                                        
+00003977  __aeabi_memset                                         
+00003977  __aeabi_memset4                                        
+00003977  __aeabi_memset8                                        
+00004d89  __aeabi_uidiv                                          
+00004d89  __aeabi_uidivmod                                       
 ffffffff  __binit__                                              
 ffffffff  __c_args__                                             
-00005b3f  __mpu_init                                             
-20002438  __stack                                                
-00005a0d  _args_main                                             
-00004875  _c_int00                                               
-2000241a  _cur_pos                                               
-00002f7d  _getODentry                                            
-00003e57  _heartbeatError                                        
-00003fa3  _initialisation                                        
-2000241b  _len                                                   
-200023c0  _lock                                                  
-000049c3  _nodeguardError                                        
-00005a93  _nop                                                   
-00004aaf  _operational                                           
-00004f23  _post_SlaveBootup                                      
-0000513b  _post_SlaveStateChange                                 
-000053c7  _post_TPDO                                             
-000054c7  _post_emcy                                             
-000056a3  _post_sync                                             
-00005b51  _preOperational                                        
-00005a8b  _register_lock                                         
-00005a85  _register_unlock                                       
-00001f55  _sendPDOevent                                          
-000027ad  _setODentry                                            
-20002419  _start_flag                                            
-00005757  _stopped                                               
-00005803  _storeODSubIndex                                       
-00005c59  _system_post_cinit                                     
-00005c55  _system_pre_init                                       
-200023c4  _unlock                                                
-00001cb5  _writeNetworkDict                                      
-000048cd  abort                                                  
+20002a1c  __homing_step                                          
+00005a27  __mpu_init                                             
+20002c28  __stack                                                
+000057e5  _args_main                                             
+00004781  _c_int00                                               
+20002c0a  _cur_pos                                               
+00002fb9  _getODentry                                            
+00004683  _heartbeatError                                        
+00004d47  _initialisation                                        
+20002c0b  _len                                                   
+20002bb0  _lock                                                  
+00004f5f  _nodeguardError                                        
+0000586b  _nop                                                   
+000051b7  _operational                                           
+000052b7  _post_SlaveBootup                                      
+000054bb  _post_SlaveStateChange                                 
+0000556f  _post_TPDO                                             
+0000561b  _post_emcy                                             
+0000585b  _post_sync                                             
+00005917  _preOperational                                        
+00005863  _register_lock                                         
+0000585d  _register_unlock                                       
+00001e85  _sendPDOevent                                          
+000027e5  _setODentry                                            
+20002c09  _start_flag                                            
+00005957  _stopped                                               
+00005a21  _storeODSubIndex                                       
+00005a29  _system_post_cinit                                     
+00005a1d  _system_pre_init                                       
+20002bb4  _unlock                                                
+00001be7  _writeNetworkDict                                      
+000047d9  abort                                                  
 ffffffff  binit                                                  
-00002c39  buildPDO                                               
-0000400d  canDispatch                                            
-000054f1  canSend                                                
-00002de5  can_init                                               
-00004d91  can_write                                              
-20002204  circle                                                 
-00005275  closeSDOtransfer                                       
-00004dd5  cmd_taskInit                                           
-0000344d  cmd_uart_init                                          
-00003041  cmd_uart_init_handler                                  
-00004d05  cmd_uart_send                                          
-00004b95  copy_in                                                
-20002208  dir                                                    
-000037b5  driver_init_hardware                                   
-0000513d  driver_init_system                                     
-00005825  emergencyInit                                          
-000058a3  emergencyStop                                          
-000048d5  exit                                                   
-00003f37  failedSDO                                              
-200017f4  g_PD4_Semaphore                                        
-200017c0  g_RxMessage                                            
-200017f8  g_SDO_Mutex                                            
-200017fc  g_SDO_Semaphore                                        
-20001800  g_Slave_Queue                                          
-20001804  g_cmd_Queue                                            
-200017cc  g_cmd_uart_fifo                                        
+00002c75  buildPDO                                               
+00003fc1  canDispatch                                            
+00005309  canSend                                                
+00002e21  can_init                                               
+00004bf9  can_write                                              
+200029d4  circle                                                 
+00005065  closeSDOtransfer                                       
+0000348d  cmd_uart_init                                          
+0000307d  cmd_uart_init_handler                                  
+00004a01  copy_in                                                
+200029d8  dir                                                    
+000037e9  driver_init_hardware                                   
+00004f61  driver_init_system                                     
+0000561d  emergencyInit                                          
+00005a23  emergencyStop                                          
+000047e1  exit                                                   
+00003eeb  failedSDO                                              
+20001fc0  g_MSG_Queue                                            
+20001fc4  g_PD4_Semaphore                                        
+20001f90  g_RxMessage                                            
+20001fc8  g_SDO_Mutex                                            
+20001fcc  g_SDO_Semaphore                                        
+20001fd0  g_Slave_Queue                                          
+20001fd4  g_cmd_Queue                                            
+20001f9c  g_cmd_uart_fifo                                        
+20002a2c  g_need_init                                            
 20000000  g_pfnRAMVectors                                        
 00000000  g_pfnVectors                                           
-20001798  g_sCAN0RxMessage                                       
-200017ac  g_sCAN0TxMessage                                       
-2000242c  g_trip_bit4                                            
-20002170  g_ui32ErrFlag                                          
-20002174  g_ui32RXMsgCount                                       
-20002178  g_ui32TXMsgCount                                       
-00005519  getElapsedTime                                         
-00005c3f  getNodeId                                              
-0000592f  getSDOfreeLine                                         
-0000536d  getSDOlineOnUse                                        
-00005949  getSDOlineRestBytes                                    
-00005449  getSDOlineToClose                                      
-00003a3d  heartbeatInit                                          
-00005105  heartbeatStop                                          
-00003609  initSDOline                                            
-00002eb5  inputInt                                               
-20002200  last_pulse                                             
-200023b8  last_timer_raw                                         
-00005b61  lifeGuardInit                                          
-00005b71  lifeGuardStop                                          
-00004e19  lineToSDO                                              
-00005541  main                                                   
-20002434  main_func_sp                                           
-0000579d  masterSendNMTnodeguard                                 
-00005569  masterSendNMTstateChange                               
-00005711  memcmp                                                 
-000033b1  memcpy                                                 
-000039c9  memset                                                 
-00003c89  nodeguardInit                                          
-00005af9  nodeguardStop                                          
-00004ea1  objdictToSDOline                                       
-000057bf  proceedEMCY                                            
-000034e5  proceedNMTstateChange                                  
-000026b1  proceedNODE_GUARD                                      
-0000153d  proceedPDO                                             
+20001f68  g_sCAN0RxMessage                                       
+20001f7c  g_sCAN0TxMessage                                       
+20002c1c  g_trip_bit4                                            
+20002940  g_ui32ErrFlag                                          
+20002944  g_ui32RXMsgCount                                       
+20002948  g_ui32TXMsgCount                                       
+00005331  getElapsedTime                                         
+00005a07  getNodeId                                              
+00005707  getSDOfreeLine                                         
+0000515d  getSDOlineOnUse                                        
+00005721  getSDOlineRestBytes                                    
+00005239  getSDOlineToClose                                      
+000039f1  heartbeatInit                                          
+00004f29  heartbeatStop                                          
+000035b9  initSDOline                                            
+00002ef1  inputInt                                               
+200029d0  last_pulse                                             
+20002ba8  last_timer_raw                                         
+00005927  lifeGuardInit                                          
+00005937  lifeGuardStop                                          
+00004c3d  lineToSDO                                              
+00005359  main                                                   
+20002c24  main_func_sp                                           
+000055b5  masterSendNMTnodeguard                                 
+00005381  masterSendNMTstateChange                               
+00005529  memcmp                                                 
+000033f1  memcpy                                                 
+0000397d  memset                                                 
+00003c3d  nodeguardInit                                          
+000058d1  nodeguardStop                                          
+00004cc5  objdictToSDOline                                       
+000055d7  proceedEMCY                                            
+00003525  proceedNMTstateChange                                  
+000026e9  proceedNODE_GUARD                                      
+000017d9  proceedPDO                                             
 0000026d  proceedSDO                                             
-00005473  proceedSYNC                                            
-200021fc  pulse                                                  
-00003269  pvPortMalloc                                           
-000059f5  pvTaskIncrementMutexHeldCount                          
-2000208c  pxCurrentTCB                                           
-000055b9  pxPortInitialiseStack                                  
-00005c45  resetSDO                                               
-000052a9  resetSDOline                                           
-00005b1d  scanIndexOD                                            
-000028a1  sendOnePDOevent                                        
-00004679  sendPDOrequest                                         
-00003cfd  sendSDO                                                
-0000505b  sendSDOabort                                           
-00005a99  sendSYNC                                               
-000057e1  sendSYNCMessage                                        
-00001e11  setNodeId                                              
-00005aad  setSDOlineRestBytes                                    
-000024ad  setState                                               
-000055e1  setTimer                                               
-0000549d  slaveSendBootUp                                        
-000040dd  startSYNC                                              
-0000539b  stopSYNC                                               
-00002299  switchCommunicationState                               
-200023bc  tdcount                                                
-20001b34  timers                                                 
-20002210  toff                                                   
-2000220c  ton                                                    
-200023b4  total_sleep_time                                       
-00006274  ulMaxSyscallInterruptPriority                          
-00002d21  ulPortGetIPSR                                          
-00005845  uxListRemove                                           
-00005c5b  vApplicationStackOverflowHook                          
-00005a6d  vListInitialise                                        
-00005c4b  vListInitialiseItem                                    
-000050cd  vListInsert                                            
-00005a25  vListInsertEnd                                         
-00002dd5  vPortEnableVFP                                         
-000058dd  vPortEnterCritical                                     
-00005a3d  vPortExitCritical                                      
-00004e5d  vPortFree                                              
-00002d99  vPortSVCHandler                                        
-00005ac1  vPortSetupTimerInterrupt                               
-00002db9  vPortStartFirstTask                                    
-00004511  vTaskDelay                                             
-00003839  vTaskDelayUntil                                        
-00005bf9  vTaskMissedYield                                       
-0000420d  vTaskPlaceOnEventList                                  
-00003699  vTaskPriorityInherit                                   
-00005a55  vTaskSetTimeOutState                                   
-00004455  vTaskStartScheduler                                    
-00005b91  vTaskSuspendAll                                        
-00003729  vTaskSwitchContext                                     
-00005609  writeNetworkDictCallBack                               
-00002d39  xPortPendSVHandler                                     
-00004fa5  xPortStartScheduler                                    
-000053c9  xPortSysTickHandler                                    
-00004be1  xQueueCreateMutex                                      
-00004fe5  xQueueGenericCreate                                    
-00002071  xQueueGenericReceive                                   
-000038bd  xQueueGenericReset                                     
-00002991  xQueueGenericSend                                      
-0000456d  xQueueGenericSendFromISR                               
-000046cf  xQueueGiveFromISR                                      
-0000491d  xTaskCheckForTimeOut                                   
-000025b1  xTaskGenericCreate                                     
-00005c05  xTaskGetTickCount                                      
-000023a9  xTaskIncrementTick                                     
-00003ab5  xTaskPriorityDisinherit                                
-00003d71  xTaskRemoveFromEventList                               
-00002a79  xTaskResumeAll                                         
+00005263  proceedSYNC                                            
+200029cc  pulse                                                  
+000032a5  pvPortMalloc                                           
+000057cd  pvTaskIncrementMutexHeldCount                          
+2000285c  pxCurrentTCB                                           
+000053d1  pxPortInitialiseStack                                  
+00005a0d  resetSDO                                               
+00005099  resetSDOline                                           
+000058f5  scanIndexOD                                            
+000028d9  sendOnePDOevent                                        
+0000462d  sendPDOrequest                                         
+00003cb1  sendSDO                                                
+00004e7f  sendSDOabort                                           
+00005871  sendSYNC                                               
+000055f9  sendSYNCMessage                                        
+00001d41  setNodeId                                              
+00005885  setSDOlineRestBytes                                    
+000024e5  setState                                               
+000053f9  setTimer                                               
+0000528d  slaveSendBootUp                                        
+00004091  startSYNC                                              
+0000518b  stopSYNC                                               
+000021c9  switchCommunicationState                               
+20002bac  tdcount                                                
+20002304  timers                                                 
+200029e0  toff                                                   
+200029dc  ton                                                    
+20002ba4  total_sleep_time                                       
+00006044  ulMaxSyscallInterruptPriority                          
+00002d5d  ulPortGetIPSR                                          
+0000563d  uxListRemove                                           
+00005a2b  vApplicationStackOverflowHook                          
+00005845  vListInitialise                                        
+00005a13  vListInitialiseItem                                    
+00004ef1  vListInsert                                            
+000057fd  vListInsertEnd                                         
+00002e11  vPortEnableVFP                                         
+000056b5  vPortEnterCritical                                     
+00005815  vPortExitCritical                                      
+00004c81  vPortFree                                              
+00002dd5  vPortSVCHandler                                        
+00005899  vPortSetupTimerInterrupt                               
+00002df5  vPortStartFirstTask                                    
+000044c5  vTaskDelay                                             
+0000386d  vTaskDelayUntil                                        
+000059c1  vTaskMissedYield                                       
+000041c1  vTaskPlaceOnEventList                                  
+00003649  vTaskPriorityInherit                                   
+0000582d  vTaskSetTimeOutState                                   
+00004409  vTaskStartScheduler                                    
+00005959  vTaskSuspendAll                                        
+000036d9  vTaskSwitchContext                                     
+00005421  writeNetworkDictCallBack                               
+00002d75  xPortPendSVHandler                                     
+00004dc9  xPortStartScheduler                                    
+000051b9  xPortSysTickHandler                                    
+00004a4d  xQueueCreateMutex                                      
+00004e09  xQueueGenericCreate                                    
+00001fa1  xQueueGenericReceive                                   
+000038f1  xQueueGenericReset                                     
+000029c9  xQueueGenericSend                                      
+00004521  xQueueGenericSendFromISR                               
+00004829  xTaskCheckForTimeOut                                   
+000025e9  xTaskGenericCreate                                     
+000059cd  xTaskGetTickCount                                      
+000023e1  xTaskIncrementTick                                     
+00003a69  xTaskPriorityDisinherit                                
+00003d25  xTaskRemoveFromEventList                               
+00002ab1  xTaskResumeAll                                         
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -1026,450 +1016,445 @@ address   name
 00000000  g_pfnVectors                                           
 00000100  __STACK_SIZE                                           
 0000026d  proceedSDO                                             
-000012e5  TestMaster_scanIndexOD                                 
-0000153d  proceedPDO                                             
-00001965  UARTvprintf                                            
-00001cb5  _writeNetworkDict                                      
-00001e0f  PD4Master_heartbeatError                               
-00001e11  setNodeId                                              
-00001f55  _sendPDOevent                                          
-00002071  xQueueGenericReceive                                   
-00002189  SysCtlClockGet                                         
-00002299  switchCommunicationState                               
-000023a9  xTaskIncrementTick                                     
-000024ad  setState                                               
-000025af  PD4Master_post_TPDO                                    
-000025b1  xTaskGenericCreate                                     
-000026b1  proceedNODE_GUARD                                      
-000027ad  _setODentry                                            
-000028a1  sendOnePDOevent                                        
-00002991  xQueueGenericSend                                      
-00002a79  xTaskResumeAll                                         
-00002b5d  CAN0IntHandler                                         
-00002c39  buildPDO                                               
-00002d21  ulPortGetIPSR                                          
-00002d39  xPortPendSVHandler                                     
-00002d99  vPortSVCHandler                                        
-00002db9  vPortStartFirstTask                                    
-00002dd5  vPortEnableVFP                                         
-00002de3  PD4Master_post_sync                                    
-00002de5  can_init                                               
-00002eb5  inputInt                                               
-00002f7d  _getODentry                                            
-00003041  cmd_uart_init_handler                                  
-00003101  TimeDispatch                                           
-000031b9  CopyBits                                               
-00003269  pvPortMalloc                                           
-00003311  SetAlarm                                               
-000033b1  __aeabi_memcpy                                         
-000033b1  __aeabi_memcpy4                                        
-000033b1  __aeabi_memcpy8                                        
-000033b1  memcpy                                                 
-0000344d  cmd_uart_init                                          
-000034e5  proceedNMTstateChange                                  
-00003579  PD4Master_writeSlaveParam                              
-00003609  initSDOline                                            
-00003699  vTaskPriorityInherit                                   
-00003729  vTaskSwitchContext                                     
-000037b5  driver_init_hardware                                   
-00003839  vTaskDelayUntil                                        
-000038bd  xQueueGenericReset                                     
-00003941  CanOpen_Change_Param                                   
-000039c1  __aeabi_memclr                                         
-000039c1  __aeabi_memclr4                                        
-000039c1  __aeabi_memclr8                                        
-000039c3  __aeabi_memset                                         
-000039c3  __aeabi_memset4                                        
-000039c3  __aeabi_memset8                                        
-000039c9  memset                                                 
-00003a3b  _RxPDO_EventTimers_Handler                             
-00003a3d  heartbeatInit                                          
-00003ab5  xTaskPriorityDisinherit                                
-00003b2d  CO_Timerinit                                           
-00003ba1  PD4Master_taskInit                                     
-00003c15  SDOTimeoutAlarm                                        
-00003c89  nodeguardInit                                          
-00003cfd  sendSDO                                                
-00003d71  xTaskRemoveFromEventList                               
-00003e57  _heartbeatError                                        
-00003e59  __TI_auto_init                                         
-00003ec9  TPDO_Communication_Parameter_Callback                  
-00003f37  failedSDO                                              
-00003fa3  _initialisation                                        
-00003fa5  IntEnable                                              
-0000400d  canDispatch                                            
-00004075  __TI_decompress_lzss                                   
-000040dd  startSYNC                                              
-00004145  ConfigureUART                                          
-000041a9  PDOStop                                                
-0000420d  vTaskPlaceOnEventList                                  
-00004271  GuardTimeAlarm                                         
-00004335  MA3_encoder_init                                       
-00004395  UARTStdioConfig                                        
-00004455  vTaskStartScheduler                                    
-00004511  vTaskDelay                                             
-0000456d  xQueueGenericSendFromISR                               
-000045c9  Captureinit                                            
-00004679  sendPDOrequest                                         
-000046cf  xQueueGiveFromISR                                      
-00004725  CO_TimerIntHandler                                     
-00004779  CanOpen_Reset_RPDO                                     
-000047cd  PD4Master_set_pos                                      
-00004875  _c_int00                                               
-000048c9  C$$EXIT                                                
-000048cd  abort                                                  
-000048d5  exit                                                   
-0000491d  xTaskCheckForTimeOut                                   
-00004971  PD4Master_post_emcy                                    
-000049c3  _nodeguardError                                        
-00004a15  CanOpen_setMaster                                      
-00004a63  CanOpen_Reset_TPDO                                     
-00004aaf  _operational                                           
-00004ab1  PDOInit                                                
-00004b95  copy_in                                                
-00004be1  xQueueCreateMutex                                      
-00004c2d  GetSDOClientFromNodeId                                 
-00004c75  ProducerHeartbeatAlarm                                 
-00004cbd  UARTwrite                                              
-00004d05  cmd_uart_send                                          
-00004d91  can_write                                              
-00004dd5  cmd_taskInit                                           
-00004e19  lineToSDO                                              
-00004e5d  vPortFree                                              
-00004ea1  objdictToSDOline                                       
-00004ee3  SDOtoLine                                              
-00004f23  _post_SlaveBootup                                      
-00004f65  __aeabi_uidiv                                          
-00004f65  __aeabi_uidivmod                                       
-00004fa5  xPortStartScheduler                                    
-00004fe5  xQueueGenericCreate                                    
-0000505b  sendSDOabort                                           
-00005095  SDOlineToObjdict                                       
-000050cd  vListInsert                                            
-00005105  heartbeatStop                                          
-0000513b  _post_SlaveStateChange                                 
-0000513d  CO_start_listening                                     
-0000513d  driver_init_system                                     
-00005171  IntRegister                                            
-000051a5  LEDTaskInit                                            
-000051d9  PD4Master_confSlaveNode                                
-0000520d  PD4Master_post_SlaveStateChange                        
-00005241  SysCtlPeripheralEnable                                 
-00005275  closeSDOtransfer                                       
-000052a9  resetSDOline                                           
-000052dd  DelAlarm                                               
-0000530d  PD4Master_set_ctrl                                     
-0000536d  getSDOlineOnUse                                        
-0000539b  stopSYNC                                               
-000053c7  _post_TPDO                                             
-000053c9  xPortSysTickHandler                                    
-000053f5  ConsumerHeartbeatAlarm                                 
-0000541f  OnNumberOfErrorsUpdate                                 
-00005449  getSDOlineToClose                                      
-00005473  proceedSYNC                                            
-0000549d  slaveSendBootUp                                        
-000054c7  _post_emcy                                             
-000054c9  PD4Master_set_speed                                    
-000054f1  canSend                                                
-00005519  getElapsedTime                                         
-00005541  main                                                   
-00005569  masterSendNMTstateChange                               
-000055b9  pxPortInitialiseStack                                  
-000055e1  setTimer                                               
-00005609  writeNetworkDictCallBack                               
-00005631  RegisterSetODentryCallBack                             
-000056a3  _post_sync                                             
-000056a5  IntPrioritySet                                         
-000056c9  PD4Master_get_flag                                     
-000056ed  PDOInhibitTimerAlarm                                   
-00005711  memcmp                                                 
-00005735  PD4Master_initialisation                               
-00005757  _stopped                                               
-00005759  PD4Master_preOperational                               
-0000577b  PDOEventTimerAlarm                                     
-0000579d  masterSendNMTnodeguard                                 
-000057bf  proceedEMCY                                            
-000057e1  sendSYNCMessage                                        
-00005803  _storeODSubIndex                                       
-00005825  emergencyInit                                          
-00005845  uxListRemove                                           
-00005865  PD4Master_operational                                  
-00005885  PD4Master_stop                                         
-000058a3  emergencyStop                                          
-000058a5  CO_timer_start                                         
-000058dd  vPortEnterCritical                                     
-000058f9  PD4Master_stopped                                      
-00005915  UARTprintf                                             
-0000592f  getSDOfreeLine                                         
-00005949  getSDOlineRestBytes                                    
-0000597d  CANIntRegister                                         
-00005995  GPIOIntRegister                                        
-000059ad  TestMaster_valueRangeTest                              
-000059c5  TimerIntRegister                                       
-000059dd  UARTIntRegister                                        
-000059f5  pvTaskIncrementMutexHeldCount                          
-00005a0d  _args_main                                             
-00005a25  vListInsertEnd                                         
-00005a3d  vPortExitCritical                                      
-00005a55  vTaskSetTimeOutState                                   
-00005a6d  vListInitialise                                        
-00005a83  __aeabi_idiv0                                          
-00005a85  _register_unlock                                       
-00005a8b  _register_lock                                         
-00005a93  _nop                                                   
-00005a99  sendSYNC                                               
-00005aad  setSDOlineRestBytes                                    
-00005ac1  vPortSetupTimerInterrupt                               
-00005ad5  OnHeartbeatProducerUpdate                              
-00005ae7  OnNodeGuardUpdate                                      
-00005af9  nodeguardStop                                          
-00005b1d  scanIndexOD                                            
-00005b2f  IntMasterEnable                                        
-00005b3f  __mpu_init                                             
-00005b41  PD4Master_get_encoder                                  
-00005b51  _preOperational                                        
-00005b61  lifeGuardInit                                          
-00005b71  lifeGuardStop                                          
-00005b91  vTaskSuspendAll                                        
-00005ba1  UARTCharGetNonBlocking                                 
-00005baf  __TI_decompress_none                                   
-00005bbd  CO_driver_init                                         
-00005bc9  CPUcpsie                                               
-00005bd5  GPIOIntEnable                                          
-00005be1  MA3_encoder_get_value                                  
-00005bed  __TI_zero_init                                         
-00005bf9  vTaskMissedYield                                       
-00005c05  xTaskGetTickCount                                      
-00005c11  OnCOB_ID_SyncUpdate                                    
-00005c1b  UARTFIFOEnable                                         
-00005c2d  GPIOIntClear                                           
-00005c33  ResetISR                                               
-00005c39  UARTClockSourceSet                                     
-00005c3f  getNodeId                                              
-00005c45  resetSDO                                               
-00005c4b  vListInitialiseItem                                    
-00005c51  SyncAlarm                                              
-00005c55  _system_pre_init                                       
-00005c59  _system_post_cinit                                     
-00005c5b  vApplicationStackOverflowHook                          
-00005c5c  TestMaster_objdict                                     
-00006240  TestMaster_firstIndex                                  
-0000624c  TestMaster_lastIndex                                   
-00006270  TestMaster_iam_a_slave                                 
-00006272  TestMaster_ObjdictSize                                 
-00006274  ulMaxSyscallInterruptPriority                          
-00006630  __TI_Handler_Table_Base                                
-0000663c  __TI_Handler_Table_Limit                               
-00006650  __TI_CINIT_Base                                        
-00006668  __TI_CINIT_Limit                                       
+00001581  TestMaster_scanIndexOD                                 
+000017d9  proceedPDO                                             
+000019fd  UARTvprintf                                            
+00001be7  _writeNetworkDict                                      
+00001d41  setNodeId                                              
+00001e85  _sendPDOevent                                          
+00001fa1  xQueueGenericReceive                                   
+000020b9  SysCtlClockGet                                         
+000021c9  switchCommunicationState                               
+000023e1  xTaskIncrementTick                                     
+000024e5  setState                                               
+000025e9  xTaskGenericCreate                                     
+000026e9  proceedNODE_GUARD                                      
+000027e5  _setODentry                                            
+000028d9  sendOnePDOevent                                        
+000029c9  xQueueGenericSend                                      
+00002ab1  xTaskResumeAll                                         
+00002b95  CAN0IntHandler                                         
+00002c75  buildPDO                                               
+00002d5d  ulPortGetIPSR                                          
+00002d75  xPortPendSVHandler                                     
+00002dd5  vPortSVCHandler                                        
+00002df5  vPortStartFirstTask                                    
+00002e11  vPortEnableVFP                                         
+00002e1f  PD4Master_heartbeatError                               
+00002e21  can_init                                               
+00002ef1  inputInt                                               
+00002fb9  _getODentry                                            
+0000307d  cmd_uart_init_handler                                  
+0000313d  TimeDispatch                                           
+000031f5  CopyBits                                               
+000032a5  pvPortMalloc                                           
+00003351  SetAlarm                                               
+000033f1  __aeabi_memcpy                                         
+000033f1  __aeabi_memcpy4                                        
+000033f1  __aeabi_memcpy8                                        
+000033f1  memcpy                                                 
+0000348d  cmd_uart_init                                          
+00003525  proceedNMTstateChange                                  
+000035b9  initSDOline                                            
+00003649  vTaskPriorityInherit                                   
+000036d9  vTaskSwitchContext                                     
+00003765  PD4Master_writeSlaveParam                              
+000037e9  driver_init_hardware                                   
+0000386d  vTaskDelayUntil                                        
+000038f1  xQueueGenericReset                                     
+00003975  __aeabi_memclr                                         
+00003975  __aeabi_memclr4                                        
+00003975  __aeabi_memclr8                                        
+00003977  __aeabi_memset                                         
+00003977  __aeabi_memset4                                        
+00003977  __aeabi_memset8                                        
+0000397d  memset                                                 
+000039ef  PD4Master_post_TPDO                                    
+000039f1  heartbeatInit                                          
+00003a69  xTaskPriorityDisinherit                                
+00003ae1  CO_Timerinit                                           
+00003b55  PD4Master_taskInit                                     
+00003bc9  SDOTimeoutAlarm                                        
+00003c3d  nodeguardInit                                          
+00003cb1  sendSDO                                                
+00003d25  xTaskRemoveFromEventList                               
+00003e0b  PD4Master_post_sync                                    
+00003e0d  __TI_auto_init                                         
+00003e7d  TPDO_Communication_Parameter_Callback                  
+00003eeb  failedSDO                                              
+00003f57  _RxPDO_EventTimers_Handler                             
+00003f59  IntEnable                                              
+00003fc1  canDispatch                                            
+00004029  __TI_decompress_lzss                                   
+00004091  startSYNC                                              
+000040f9  ConfigureUART                                          
+0000415d  PDOStop                                                
+000041c1  vTaskPlaceOnEventList                                  
+00004225  GuardTimeAlarm                                         
+000042e9  MA3_encoder_init                                       
+00004349  UARTStdioConfig                                        
+00004409  vTaskStartScheduler                                    
+000044c5  vTaskDelay                                             
+00004521  xQueueGenericSendFromISR                               
+0000457d  Captureinit                                            
+0000462d  sendPDOrequest                                         
+00004683  _heartbeatError                                        
+00004685  CO_TimerIntHandler                                     
+000046d9  PD4Master_set_pos                                      
+00004781  _c_int00                                               
+000047d5  C$$EXIT                                                
+000047d9  abort                                                  
+000047e1  exit                                                   
+00004829  xTaskCheckForTimeOut                                   
+0000487d  PD4Master_post_emcy                                    
+000048cf  CanOpen_setMaster                                      
+000048cf  PD4Master_confSlaveNode                                
+0000491d  PDOInit                                                
+00004a01  copy_in                                                
+00004a4d  xQueueCreateMutex                                      
+00004a99  GetSDOClientFromNodeId                                 
+00004ae1  ProducerHeartbeatAlarm                                 
+00004b29  UARTwrite                                              
+00004b71  CANopen_taskInit                                       
+00004bf9  can_write                                              
+00004c3d  lineToSDO                                              
+00004c81  vPortFree                                              
+00004cc5  objdictToSDOline                                       
+00004d07  SDOtoLine                                              
+00004d47  _initialisation                                        
+00004d89  __aeabi_uidiv                                          
+00004d89  __aeabi_uidivmod                                       
+00004dc9  xPortStartScheduler                                    
+00004e09  xQueueGenericCreate                                    
+00004e7f  sendSDOabort                                           
+00004eb9  SDOlineToObjdict                                       
+00004ef1  vListInsert                                            
+00004f29  heartbeatStop                                          
+00004f5f  _nodeguardError                                        
+00004f61  CO_start_listening                                     
+00004f61  driver_init_system                                     
+00004f95  IntRegister                                            
+00004fc9  LEDTaskInit                                            
+00004ffd  PD4Master_post_SlaveStateChange                        
+00005031  SysCtlPeripheralEnable                                 
+00005065  closeSDOtransfer                                       
+00005099  resetSDOline                                           
+000050cd  DelAlarm                                               
+000050fd  PD4Master_set_ctrl                                     
+0000515d  getSDOlineOnUse                                        
+0000518b  stopSYNC                                               
+000051b7  _operational                                           
+000051b9  xPortSysTickHandler                                    
+000051e5  ConsumerHeartbeatAlarm                                 
+0000520f  OnNumberOfErrorsUpdate                                 
+00005239  getSDOlineToClose                                      
+00005263  proceedSYNC                                            
+0000528d  slaveSendBootUp                                        
+000052b7  _post_SlaveBootup                                      
+000052e1  PD4Master_set_speed                                    
+00005309  canSend                                                
+00005331  getElapsedTime                                         
+00005359  main                                                   
+00005381  masterSendNMTstateChange                               
+000053d1  pxPortInitialiseStack                                  
+000053f9  setTimer                                               
+00005421  writeNetworkDictCallBack                               
+00005449  RegisterSetODentryCallBack                             
+000054bb  _post_SlaveStateChange                                 
+000054e1  IntPrioritySet                                         
+00005505  PDOInhibitTimerAlarm                                   
+00005529  memcmp                                                 
+0000554d  PD4Master_initialisation                               
+0000556f  _post_TPDO                                             
+00005571  PD4Master_preOperational                               
+00005593  PDOEventTimerAlarm                                     
+000055b5  masterSendNMTnodeguard                                 
+000055d7  proceedEMCY                                            
+000055f9  sendSYNCMessage                                        
+0000561b  _post_emcy                                             
+0000561d  emergencyInit                                          
+0000563d  uxListRemove                                           
+0000565d  PD4Master_operational                                  
+0000567d  CO_timer_start                                         
+000056b5  vPortEnterCritical                                     
+000056d1  PD4Master_stopped                                      
+000056ed  UARTprintf                                             
+00005707  getSDOfreeLine                                         
+00005721  getSDOlineRestBytes                                    
+00005755  CANIntRegister                                         
+0000576d  GPIOIntRegister                                        
+00005785  TestMaster_valueRangeTest                              
+0000579d  TimerIntRegister                                       
+000057b5  UARTIntRegister                                        
+000057cd  pvTaskIncrementMutexHeldCount                          
+000057e5  _args_main                                             
+000057fd  vListInsertEnd                                         
+00005815  vPortExitCritical                                      
+0000582d  vTaskSetTimeOutState                                   
+00005845  vListInitialise                                        
+0000585b  _post_sync                                             
+0000585d  _register_unlock                                       
+00005863  _register_lock                                         
+0000586b  _nop                                                   
+00005871  sendSYNC                                               
+00005885  setSDOlineRestBytes                                    
+00005899  vPortSetupTimerInterrupt                               
+000058ad  OnHeartbeatProducerUpdate                              
+000058bf  OnNodeGuardUpdate                                      
+000058d1  nodeguardStop                                          
+000058f5  scanIndexOD                                            
+00005907  IntMasterEnable                                        
+00005917  _preOperational                                        
+00005927  lifeGuardInit                                          
+00005937  lifeGuardStop                                          
+00005957  _stopped                                               
+00005959  vTaskSuspendAll                                        
+00005969  UARTCharGetNonBlocking                                 
+00005977  __TI_decompress_none                                   
+00005985  CO_driver_init                                         
+00005991  CPUcpsie                                               
+0000599d  GPIOIntEnable                                          
+000059a9  MA3_encoder_get_value                                  
+000059b5  __TI_zero_init                                         
+000059c1  vTaskMissedYield                                       
+000059cd  xTaskGetTickCount                                      
+000059d9  OnCOB_ID_SyncUpdate                                    
+000059e3  UARTFIFOEnable                                         
+000059f5  GPIOIntClear                                           
+000059fb  ResetISR                                               
+00005a01  UARTClockSourceSet                                     
+00005a07  getNodeId                                              
+00005a0d  resetSDO                                               
+00005a13  vListInitialiseItem                                    
+00005a19  SyncAlarm                                              
+00005a1d  _system_pre_init                                       
+00005a21  _storeODSubIndex                                       
+00005a23  emergencyStop                                          
+00005a25  __aeabi_idiv0                                          
+00005a27  __mpu_init                                             
+00005a29  _system_post_cinit                                     
+00005a2b  vApplicationStackOverflowHook                          
+00005a2c  TestMaster_objdict                                     
+00006010  TestMaster_firstIndex                                  
+0000601c  TestMaster_lastIndex                                   
+00006040  TestMaster_iam_a_slave                                 
+00006042  TestMaster_ObjdictSize                                 
+00006044  ulMaxSyscallInterruptPriority                          
+00006400  __TI_Handler_Table_Base                                
+0000640c  __TI_Handler_Table_Limit                               
+00006420  __TI_CINIT_Base                                        
+00006438  __TI_CINIT_Limit                                       
 20000000  g_pfnRAMVectors                                        
-20001798  g_sCAN0RxMessage                                       
-200017ac  g_sCAN0TxMessage                                       
-200017c0  g_RxMessage                                            
-200017cc  g_cmd_uart_fifo                                        
-200017f4  g_PD4_Semaphore                                        
-200017f8  g_SDO_Mutex                                            
-200017fc  g_SDO_Semaphore                                        
-20001800  g_Slave_Queue                                          
-20001804  g_cmd_Queue                                            
-20001808  TestMaster_Data                                        
-20001a44  TestMaster_bDeviceNodeId                               
-20001a48  TestMaster_obj1000                                     
-20001a4c  TestMaster_obj1001                                     
-20001a4d  TestMaster_highestSubIndex_obj1003                     
-20001a50  TestMaster_obj1005                                     
-20001a54  TestMaster_obj1006                                     
-20001a58  TestMaster_obj100C                                     
-20001a5a  TestMaster_obj100D                                     
-20001a5c  TestMaster_obj1014                                     
-20001a60  TestMaster_highestSubIndex_obj1016                     
-20001a62  TestMaster_obj1017                                     
-20001a64  TestMaster_highestSubIndex_obj1018                     
-20001a68  TestMaster_obj1018_Vendor_ID                           
-20001a6c  TestMaster_obj1018_Product_Code                        
-20001a70  TestMaster_obj1018_Revision_Number                     
-20001a74  TestMaster_obj1018_Serial_Number                       
-20001a78  TestMaster_highestSubIndex_obj1280                     
-20001a7c  TestMaster_obj1280_COB_ID_Client_to_Server_Transmit_SDO
-20001a80  TestMaster_obj1280_COB_ID_Server_to_Client_Receive_SDO 
-20001a84  TestMaster_obj1280_Node_ID_of_the_SDO_Server           
-20001a85  TestMaster_highestSubIndex_obj1281                     
-20001a88  TestMaster_obj1281_COB_ID_Client_to_Server_Transmit_SDO
-20001a8c  TestMaster_obj1281_COB_ID_Server_to_Client_Receive_SDO 
-20001a90  TestMaster_obj1281_Node_ID_of_the_SDO_Server           
-20001a91  TestMaster_highestSubIndex_obj1282                     
-20001a94  TestMaster_obj1282_COB_ID_Client_to_Server_Transmit_SDO
-20001a98  TestMaster_obj1282_COB_ID_Server_to_Client_Receive_SDO 
-20001a9c  TestMaster_obj1282_Node_ID_of_the_SDO_Server           
-20001a9d  TestMaster_highestSubIndex_obj1283                     
-20001aa0  TestMaster_obj1283_COB_ID_Client_to_Server_Transmit_SDO
-20001aa4  TestMaster_obj1283_COB_ID_Server_to_Client_Receive_SDO 
-20001aa8  TestMaster_obj1283_Node_ID_of_the_SDO_Server           
-20001aa9  TestMaster_highestSubIndex_obj1400                     
-20001aac  TestMaster_obj1400_COB_ID_used_by_PDO                  
-20001ab0  TestMaster_obj1400_Transmission_Type                   
-20001ab2  TestMaster_obj1400_Inhibit_Time                        
-20001ab4  TestMaster_obj1400_Compatibility_Entry                 
-20001ab6  TestMaster_obj1400_Event_Timer                         
-20001ab8  TestMaster_highestSubIndex_obj1401                     
-20001abc  TestMaster_obj1401_COB_ID_used_by_PDO                  
-20001ac0  TestMaster_obj1401_Transmission_Type                   
-20001ac2  TestMaster_obj1401_Inhibit_Time                        
-20001ac4  TestMaster_obj1401_Compatibility_Entry                 
-20001ac6  TestMaster_obj1401_Event_Timer                         
-20001ac8  TestMaster_obj1401_SYNC_start_value                    
-20001ac9  TestMaster_highestSubIndex_obj1402                     
-20001acc  TestMaster_obj1402_COB_ID_used_by_PDO                  
-20001ad0  TestMaster_obj1402_Transmission_Type                   
-20001ad2  TestMaster_obj1402_Inhibit_Time                        
-20001ad4  TestMaster_obj1402_Compatibility_Entry                 
-20001ad6  TestMaster_obj1402_Event_Timer                         
-20001ad8  TestMaster_obj1402_SYNC_start_value                    
-20001ad9  TestMaster_highestSubIndex_obj1403                     
-20001adc  TestMaster_obj1403_COB_ID_used_by_PDO                  
-20001ae0  TestMaster_obj1403_Transmission_Type                   
-20001ae2  TestMaster_obj1403_Inhibit_Time                        
-20001ae4  TestMaster_obj1403_Compatibility_Entry                 
-20001ae6  TestMaster_obj1403_Event_Timer                         
-20001ae8  TestMaster_obj1403_SYNC_start_value                    
-20001ae9  TestMaster_highestSubIndex_obj1600                     
-20001aea  TestMaster_highestSubIndex_obj1601                     
-20001aeb  TestMaster_highestSubIndex_obj1602                     
-20001aec  TestMaster_highestSubIndex_obj1603                     
-20001aed  TestMaster_highestSubIndex_obj1800                     
-20001af0  TestMaster_obj1800_COB_ID_used_by_PDO                  
-20001af4  TestMaster_obj1800_Transmission_Type                   
-20001af6  TestMaster_obj1800_Inhibit_Time                        
-20001af8  TestMaster_obj1800_Compatibility_Entry                 
-20001afa  TestMaster_obj1800_Event_Timer                         
-20001afc  TestMaster_obj1800_SYNC_start_value                    
-20001afd  TestMaster_highestSubIndex_obj1801                     
-20001b00  TestMaster_obj1801_COB_ID_used_by_PDO                  
-20001b04  TestMaster_obj1801_Transmission_Type                   
-20001b06  TestMaster_obj1801_Inhibit_Time                        
-20001b08  TestMaster_obj1801_Compatibility_Entry                 
-20001b0a  TestMaster_obj1801_Event_Timer                         
-20001b0c  TestMaster_obj1801_SYNC_start_value                    
-20001b0d  TestMaster_highestSubIndex_obj1802                     
-20001b10  TestMaster_obj1802_COB_ID_used_by_PDO                  
-20001b14  TestMaster_obj1802_Transmission_Type                   
-20001b16  TestMaster_obj1802_Inhibit_Time                        
-20001b18  TestMaster_obj1802_Compatibility_Entry                 
-20001b1a  TestMaster_obj1802_Event_Timer                         
-20001b1c  TestMaster_obj1802_SYNC_start_value                    
-20001b1d  TestMaster_highestSubIndex_obj1803                     
-20001b20  TestMaster_obj1803_COB_ID_used_by_PDO                  
-20001b24  TestMaster_obj1803_Transmission_Type                   
-20001b26  TestMaster_obj1803_Inhibit_Time                        
-20001b28  TestMaster_obj1803_Compatibility_Entry                 
-20001b2a  TestMaster_obj1803_Event_Timer                         
-20001b2c  TestMaster_obj1803_SYNC_start_value                    
-20001b2d  TestMaster_highestSubIndex_obj1A00                     
-20001b2e  TestMaster_highestSubIndex_obj1A01                     
-20001b2f  TestMaster_highestSubIndex_obj1A02                     
-20001b30  TestMaster_highestSubIndex_obj1A03                     
-20001b31  TestMaster_highestSubIndex_obj1F22                     
-20001b32  TestMaster_heartBeatTimers                             
-20001b34  timers                                                 
-20001bf4  TestMaster_Index1401                                   
-20001c48  TestMaster_Index1402                                   
-20001c9c  TestMaster_Index1403                                   
-20001cf0  TestMaster_Index1800                                   
-20001d44  TestMaster_Index1801                                   
-20001d98  TestMaster_Index1802                                   
-20001dec  TestMaster_Index1803                                   
-20001e40  TestMaster_Index1400                                   
-20001e88  TestMaster_PDO_status                                  
-20001ed0  TestMaster_Index1018                                   
-20001f0c  TestMaster_Index1280                                   
-20001f3c  TestMaster_Index1281                                   
-20001f6c  TestMaster_Index1282                                   
-20001f9c  TestMaster_Index1283                                   
-20001fcc  TestMaster_Index1A00                                   
-20001ffc  TestMaster_Index1A01                                   
-2000202c  TestMaster_Index1A02                                   
-2000205c  TestMaster_Index1A03                                   
-2000208c  pxCurrentTCB                                           
-200020bc  TestMaster_Index1600                                   
-200020e0  TestMaster_Index1601                                   
-20002104  TestMaster_Index1602                                   
-20002128  TestMaster_Index1603                                   
-2000214c  TestMaster_Index1F22                                   
-20002170  g_ui32ErrFlag                                          
-20002174  g_ui32RXMsgCount                                       
-20002178  g_ui32TXMsgCount                                       
-2000218c  TestMaster_Index1800_callbacks                         
-200021a8  TestMaster_Index1801_callbacks                         
-200021c4  TestMaster_Index1802_callbacks                         
-200021e0  TestMaster_Index1803_callbacks                         
-200021fc  pulse                                                  
-20002200  last_pulse                                             
-20002204  circle                                                 
-20002208  dir                                                    
-2000220c  ton                                                    
-20002210  toff                                                   
-20002214  TestMaster_Index1016                                   
-2000222c  PD4_Position                                           
-2000223c  PD4_SubMode                                            
-2000224c  __TI_cleanup_ptr                                       
-20002250  __TI_dtors_ptr                                         
-20002254  __TI_enable_exit_profile_output                        
-20002258  TestMaster_Index1000                                   
-20002264  TestMaster_Index1001                                   
-20002270  TestMaster_Index1005                                   
-2000227c  TestMaster_Index1006                                   
-20002288  TestMaster_Index1014                                   
-20002294  TestMaster_Index2011                                   
-200022a0  TestMaster_Index2012                                   
-200022ac  TestMaster_Index2013                                   
-200022b8  TestMaster_Index2014                                   
-200022c4  TestMaster_Index2015                                   
-200022d0  TestMaster_Index2021                                   
-200022dc  TestMaster_Index2022                                   
-200022e8  TestMaster_Index2023                                   
-200022f4  TestMaster_Index2024                                   
-20002300  TestMaster_Index2025                                   
-2000230c  TestMaster_Index2031                                   
-20002318  TestMaster_Index2032                                   
-20002324  TestMaster_Index2033                                   
-20002330  TestMaster_Index2034                                   
-2000233c  TestMaster_Index2035                                   
-20002348  TestMaster_Index2041                                   
-20002354  TestMaster_Index2042                                   
-20002360  TestMaster_Index2043                                   
-2000236c  TestMaster_Index2044                                   
-20002378  TestMaster_Index2045                                   
-20002384  TestMaster_obj1A00                                     
-20002390  TestMaster_obj1A01                                     
-2000239c  TestMaster_obj1A02                                     
-200023a8  TestMaster_obj1A03                                     
-200023b4  total_sleep_time                                       
-200023b8  last_timer_raw                                         
-200023bc  tdcount                                                
-200023c0  _lock                                                  
-200023c4  _unlock                                                
-200023c8  PD4_Controlword                                        
-200023d0  PD4_Status                                             
-200023d8  _PD4_speed_tmp                                         
-200023dc  _PD4_pos_tmp                                           
-200023e0  TestMaster_obj1600                                     
-200023e8  TestMaster_obj1601                                     
-200023f0  TestMaster_obj1602                                     
-200023f8  TestMaster_obj1603                                     
-20002400  TestMaster_obj1F22                                     
-20002415  PD4_Mode                                               
-20002419  _start_flag                                            
-2000241a  _cur_pos                                               
-2000241b  _len                                                   
-2000241c  TestMaster_Index1005_callbacks                         
-20002420  TestMaster_Index1006_callbacks                         
-20002424  TestMaster_obj1003                                     
-20002428  TestMaster_obj1016                                     
-2000242c  g_trip_bit4                                            
-20002434  main_func_sp                                           
-20002438  __stack                                                
-20002538  __STACK_END                                            
-20002538  __STACK_TOP                                            
+20001f68  g_sCAN0RxMessage                                       
+20001f7c  g_sCAN0TxMessage                                       
+20001f90  g_RxMessage                                            
+20001f9c  g_cmd_uart_fifo                                        
+20001fc0  g_MSG_Queue                                            
+20001fc4  g_PD4_Semaphore                                        
+20001fc8  g_SDO_Mutex                                            
+20001fcc  g_SDO_Semaphore                                        
+20001fd0  g_Slave_Queue                                          
+20001fd4  g_cmd_Queue                                            
+20001fd8  TestMaster_Data                                        
+20002214  TestMaster_bDeviceNodeId                               
+20002218  TestMaster_obj1000                                     
+2000221c  TestMaster_obj1001                                     
+2000221d  TestMaster_highestSubIndex_obj1003                     
+20002220  TestMaster_obj1005                                     
+20002224  TestMaster_obj1006                                     
+20002228  TestMaster_obj100C                                     
+2000222a  TestMaster_obj100D                                     
+2000222c  TestMaster_obj1014                                     
+20002230  TestMaster_highestSubIndex_obj1016                     
+20002232  TestMaster_obj1017                                     
+20002234  TestMaster_highestSubIndex_obj1018                     
+20002238  TestMaster_obj1018_Vendor_ID                           
+2000223c  TestMaster_obj1018_Product_Code                        
+20002240  TestMaster_obj1018_Revision_Number                     
+20002244  TestMaster_obj1018_Serial_Number                       
+20002248  TestMaster_highestSubIndex_obj1280                     
+2000224c  TestMaster_obj1280_COB_ID_Client_to_Server_Transmit_SDO
+20002250  TestMaster_obj1280_COB_ID_Server_to_Client_Receive_SDO 
+20002254  TestMaster_obj1280_Node_ID_of_the_SDO_Server           
+20002255  TestMaster_highestSubIndex_obj1281                     
+20002258  TestMaster_obj1281_COB_ID_Client_to_Server_Transmit_SDO
+2000225c  TestMaster_obj1281_COB_ID_Server_to_Client_Receive_SDO 
+20002260  TestMaster_obj1281_Node_ID_of_the_SDO_Server           
+20002261  TestMaster_highestSubIndex_obj1282                     
+20002264  TestMaster_obj1282_COB_ID_Client_to_Server_Transmit_SDO
+20002268  TestMaster_obj1282_COB_ID_Server_to_Client_Receive_SDO 
+2000226c  TestMaster_obj1282_Node_ID_of_the_SDO_Server           
+2000226d  TestMaster_highestSubIndex_obj1283                     
+20002270  TestMaster_obj1283_COB_ID_Client_to_Server_Transmit_SDO
+20002274  TestMaster_obj1283_COB_ID_Server_to_Client_Receive_SDO 
+20002278  TestMaster_obj1283_Node_ID_of_the_SDO_Server           
+20002279  TestMaster_highestSubIndex_obj1400                     
+2000227c  TestMaster_obj1400_COB_ID_used_by_PDO                  
+20002280  TestMaster_obj1400_Transmission_Type                   
+20002282  TestMaster_obj1400_Inhibit_Time                        
+20002284  TestMaster_obj1400_Compatibility_Entry                 
+20002286  TestMaster_obj1400_Event_Timer                         
+20002288  TestMaster_highestSubIndex_obj1401                     
+2000228c  TestMaster_obj1401_COB_ID_used_by_PDO                  
+20002290  TestMaster_obj1401_Transmission_Type                   
+20002292  TestMaster_obj1401_Inhibit_Time                        
+20002294  TestMaster_obj1401_Compatibility_Entry                 
+20002296  TestMaster_obj1401_Event_Timer                         
+20002298  TestMaster_obj1401_SYNC_start_value                    
+20002299  TestMaster_highestSubIndex_obj1402                     
+2000229c  TestMaster_obj1402_COB_ID_used_by_PDO                  
+200022a0  TestMaster_obj1402_Transmission_Type                   
+200022a2  TestMaster_obj1402_Inhibit_Time                        
+200022a4  TestMaster_obj1402_Compatibility_Entry                 
+200022a6  TestMaster_obj1402_Event_Timer                         
+200022a8  TestMaster_obj1402_SYNC_start_value                    
+200022a9  TestMaster_highestSubIndex_obj1403                     
+200022ac  TestMaster_obj1403_COB_ID_used_by_PDO                  
+200022b0  TestMaster_obj1403_Transmission_Type                   
+200022b2  TestMaster_obj1403_Inhibit_Time                        
+200022b4  TestMaster_obj1403_Compatibility_Entry                 
+200022b6  TestMaster_obj1403_Event_Timer                         
+200022b8  TestMaster_obj1403_SYNC_start_value                    
+200022b9  TestMaster_highestSubIndex_obj1600                     
+200022ba  TestMaster_highestSubIndex_obj1601                     
+200022bb  TestMaster_highestSubIndex_obj1602                     
+200022bc  TestMaster_highestSubIndex_obj1603                     
+200022bd  TestMaster_highestSubIndex_obj1800                     
+200022c0  TestMaster_obj1800_COB_ID_used_by_PDO                  
+200022c4  TestMaster_obj1800_Transmission_Type                   
+200022c6  TestMaster_obj1800_Inhibit_Time                        
+200022c8  TestMaster_obj1800_Compatibility_Entry                 
+200022ca  TestMaster_obj1800_Event_Timer                         
+200022cc  TestMaster_obj1800_SYNC_start_value                    
+200022cd  TestMaster_highestSubIndex_obj1801                     
+200022d0  TestMaster_obj1801_COB_ID_used_by_PDO                  
+200022d4  TestMaster_obj1801_Transmission_Type                   
+200022d6  TestMaster_obj1801_Inhibit_Time                        
+200022d8  TestMaster_obj1801_Compatibility_Entry                 
+200022da  TestMaster_obj1801_Event_Timer                         
+200022dc  TestMaster_obj1801_SYNC_start_value                    
+200022dd  TestMaster_highestSubIndex_obj1802                     
+200022e0  TestMaster_obj1802_COB_ID_used_by_PDO                  
+200022e4  TestMaster_obj1802_Transmission_Type                   
+200022e6  TestMaster_obj1802_Inhibit_Time                        
+200022e8  TestMaster_obj1802_Compatibility_Entry                 
+200022ea  TestMaster_obj1802_Event_Timer                         
+200022ec  TestMaster_obj1802_SYNC_start_value                    
+200022ed  TestMaster_highestSubIndex_obj1803                     
+200022f0  TestMaster_obj1803_COB_ID_used_by_PDO                  
+200022f4  TestMaster_obj1803_Transmission_Type                   
+200022f6  TestMaster_obj1803_Inhibit_Time                        
+200022f8  TestMaster_obj1803_Compatibility_Entry                 
+200022fa  TestMaster_obj1803_Event_Timer                         
+200022fc  TestMaster_obj1803_SYNC_start_value                    
+200022fd  TestMaster_highestSubIndex_obj1A00                     
+200022fe  TestMaster_highestSubIndex_obj1A01                     
+200022ff  TestMaster_highestSubIndex_obj1A02                     
+20002300  TestMaster_highestSubIndex_obj1A03                     
+20002301  TestMaster_highestSubIndex_obj1F22                     
+20002302  TestMaster_heartBeatTimers                             
+20002304  timers                                                 
+200023c4  TestMaster_Index1401                                   
+20002418  TestMaster_Index1402                                   
+2000246c  TestMaster_Index1403                                   
+200024c0  TestMaster_Index1800                                   
+20002514  TestMaster_Index1801                                   
+20002568  TestMaster_Index1802                                   
+200025bc  TestMaster_Index1803                                   
+20002610  TestMaster_Index1400                                   
+20002658  TestMaster_PDO_status                                  
+200026a0  TestMaster_Index1018                                   
+200026dc  TestMaster_Index1280                                   
+2000270c  TestMaster_Index1281                                   
+2000273c  TestMaster_Index1282                                   
+2000276c  TestMaster_Index1283                                   
+2000279c  TestMaster_Index1A00                                   
+200027cc  TestMaster_Index1A01                                   
+200027fc  TestMaster_Index1A02                                   
+2000282c  TestMaster_Index1A03                                   
+2000285c  pxCurrentTCB                                           
+2000288c  TestMaster_Index1600                                   
+200028b0  TestMaster_Index1601                                   
+200028d4  TestMaster_Index1602                                   
+200028f8  TestMaster_Index1603                                   
+2000291c  TestMaster_Index1F22                                   
+20002940  g_ui32ErrFlag                                          
+20002944  g_ui32RXMsgCount                                       
+20002948  g_ui32TXMsgCount                                       
+2000295c  TestMaster_Index1800_callbacks                         
+20002978  TestMaster_Index1801_callbacks                         
+20002994  TestMaster_Index1802_callbacks                         
+200029b0  TestMaster_Index1803_callbacks                         
+200029cc  pulse                                                  
+200029d0  last_pulse                                             
+200029d4  circle                                                 
+200029d8  dir                                                    
+200029dc  ton                                                    
+200029e0  toff                                                   
+200029e4  TestMaster_Index1016                                   
+200029fc  PD4_Position                                           
+20002a0c  PD4_SubMode                                            
+20002a1c  __homing_step                                          
+20002a2c  g_need_init                                            
+20002a3c  __TI_cleanup_ptr                                       
+20002a40  __TI_dtors_ptr                                         
+20002a44  __TI_enable_exit_profile_output                        
+20002a48  TestMaster_Index1000                                   
+20002a54  TestMaster_Index1001                                   
+20002a60  TestMaster_Index1005                                   
+20002a6c  TestMaster_Index1006                                   
+20002a78  TestMaster_Index1014                                   
+20002a84  TestMaster_Index2011                                   
+20002a90  TestMaster_Index2012                                   
+20002a9c  TestMaster_Index2013                                   
+20002aa8  TestMaster_Index2014                                   
+20002ab4  TestMaster_Index2015                                   
+20002ac0  TestMaster_Index2021                                   
+20002acc  TestMaster_Index2022                                   
+20002ad8  TestMaster_Index2023                                   
+20002ae4  TestMaster_Index2024                                   
+20002af0  TestMaster_Index2025                                   
+20002afc  TestMaster_Index2031                                   
+20002b08  TestMaster_Index2032                                   
+20002b14  TestMaster_Index2033                                   
+20002b20  TestMaster_Index2034                                   
+20002b2c  TestMaster_Index2035                                   
+20002b38  TestMaster_Index2041                                   
+20002b44  TestMaster_Index2042                                   
+20002b50  TestMaster_Index2043                                   
+20002b5c  TestMaster_Index2044                                   
+20002b68  TestMaster_Index2045                                   
+20002b74  TestMaster_obj1A00                                     
+20002b80  TestMaster_obj1A01                                     
+20002b8c  TestMaster_obj1A02                                     
+20002b98  TestMaster_obj1A03                                     
+20002ba4  total_sleep_time                                       
+20002ba8  last_timer_raw                                         
+20002bac  tdcount                                                
+20002bb0  _lock                                                  
+20002bb4  _unlock                                                
+20002bb8  PD4_Controlword                                        
+20002bc0  PD4_Status                                             
+20002bc8  _PD4_speed_tmp                                         
+20002bcc  _PD4_pos_tmp                                           
+20002bd0  TestMaster_obj1600                                     
+20002bd8  TestMaster_obj1601                                     
+20002be0  TestMaster_obj1602                                     
+20002be8  TestMaster_obj1603                                     
+20002bf0  TestMaster_obj1F22                                     
+20002c05  PD4_Mode                                               
+20002c09  _start_flag                                            
+20002c0a  _cur_pos                                               
+20002c0b  _len                                                   
+20002c0c  TestMaster_Index1005_callbacks                         
+20002c10  TestMaster_Index1006_callbacks                         
+20002c14  TestMaster_obj1003                                     
+20002c18  TestMaster_obj1016                                     
+20002c1c  g_trip_bit4                                            
+20002c24  main_func_sp                                           
+20002c28  __stack                                                
+20002d28  __STACK_END                                            
+20002d28  __STACK_TOP                                            
 ffffffff  __TI_pprof_out_hndl                                    
 ffffffff  __TI_prof_data_size                                    
 ffffffff  __TI_prof_data_start                                   
@@ -1479,4 +1464,4 @@ ffffffff  binit
 UNDEFED   SHT$$INIT_ARRAY$$Base                                  
 UNDEFED   SHT$$INIT_ARRAY$$Limit                                 
 
-[456 symbols]
+[451 symbols]

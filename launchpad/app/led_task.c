@@ -33,6 +33,7 @@
 #define LED_TOGGLE_DELAY        5
 
 extern SemaphoreHandle_t g_PD4_Semaphore;
+extern int g_need_init[4];
 //*****************************************************************************
 //
 // This task toggles the user selected LED at a user selected frequency. User
@@ -59,33 +60,52 @@ LEDTask(void *pvParameters)
     //
     // Loop forever.
     //
+    while(g_need_init[1])
+    {
+        UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[1], PD4_Controlword[1], PD4_Position[1]);
+        vTaskDelay(1000);
+    }
 
-    //while((PD4_Status[1] & 0x67) != 0x27)
-    //{
-    //    vTaskDelay(100);
-    //}
-    //int pos = 20000;
-    //PD4Master_set_speed(2, 350);
+    while((PD4_Status[1] & 0x67) != 0x27)
+    {
+        vTaskDelay(100);
+    }
+
+    int pos = 50000;
+    PD4Master_set_speed(2, 350);
 
     while(1)
     {
-        //PD4Master_set_pos(2, pos);
+        PD4Master_set_pos(2, pos);
         //_tick++;
         //if(_tick == 200)
         //{
         //    _tick = 0;
         //    UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[1], PD4_Controlword[1], PD4_Position[1]);
         //}
-        //vTaskDelay(50);
+        vTaskDelay(50);
 
-        //while(!(PD4_Status[1] & 0x400))
-        //{
-        //    vTaskDelay(100);
-        //}
-        //vTaskDelay(50);
+        while(!(PD4_Status[1] & 0x400))
+        {
+            vTaskDelay(100);
+        }
+        vTaskDelay(50);
         int encoder = MA3_encoder_get_value();
         UARTprintf("2s:0x%X,c:0x%X,p:%d,e:%d\n", PD4_Status[1], PD4_Controlword[1], PD4_Position[1],encoder);
-        //pos = -pos;
+
+        vTaskDelay(1500);
+
+        PD4Master_set_pos(2, 200);
+        vTaskDelay(50);
+
+        while(!(PD4_Status[1] & 0x400))
+        {
+            vTaskDelay(100);
+        }
+        vTaskDelay(50);
+        encoder = MA3_encoder_get_value();
+        UARTprintf("2s:0x%X,c:0x%X,p:%d,e:%d\n", PD4_Status[1], PD4_Controlword[1], PD4_Position[1],encoder);
+
         vTaskDelay(1500);
         //UARTprintf("3s:0x%X,c:0x%X,p:%d\n", PD4_Status[2], PD4_Controlword[2], PD4_Position[2]);
 

@@ -14,6 +14,7 @@ ORDERED_OBJS += \
 "./main.obj" \
 "./startup_ccs.obj" \
 "./app/CMD/cmd_task.obj" \
+"./app/PD4/CANopen_task.obj" \
 "./app/PD4/Master.obj" \
 "./app/PD4/PD4_task.obj" \
 "./app/led_task.obj" \
@@ -21,7 +22,6 @@ ORDERED_OBJS += \
 "./bsp/CO_driver.obj" \
 "./bsp/MA3encoder.obj" \
 "./bsp/cmdUart.obj" \
-"./bsp/delay.obj" \
 "./bsp/driver.obj" \
 "./bsp/io.obj" \
 "./third_party/CanFestival/src/dcf.obj" \
@@ -210,9 +210,9 @@ launchpad.bin: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "PD4Master.obj" "main.obj" "startup_ccs.obj" "app\CMD\cmd_task.obj" "app\PD4\Master.obj" "app\PD4\PD4_task.obj" "app\led_task.obj" "bsp\Bumper.obj" "bsp\CO_driver.obj" "bsp\MA3encoder.obj" "bsp\cmdUart.obj" "bsp\delay.obj" "bsp\driver.obj" "bsp\io.obj" "third_party\CanFestival\src\dcf.obj" "third_party\CanFestival\src\emcy.obj" "third_party\CanFestival\src\lifegrd.obj" "third_party\CanFestival\src\lss.obj" "third_party\CanFestival\src\nmtMaster.obj" "third_party\CanFestival\src\nmtSlave.obj" "third_party\CanFestival\src\objacces.obj" "third_party\CanFestival\src\pdo.obj" "third_party\CanFestival\src\sdo.obj" "third_party\CanFestival\src\states.obj" "third_party\CanFestival\src\sync.obj" "third_party\CanFestival\src\timer.obj" "third_party\FreeRTOS\Source\croutine.obj" "third_party\FreeRTOS\Source\event_groups.obj" "third_party\FreeRTOS\Source\list.obj" "third_party\FreeRTOS\Source\queue.obj" "third_party\FreeRTOS\Source\tasks.obj" "third_party\FreeRTOS\Source\timers.obj" "third_party\FreeRTOS\Source\portable\CCS\ARM_CM4F\port.obj" 
+	-$(RM) "PD4Master.obj" "main.obj" "startup_ccs.obj" "app\CMD\cmd_task.obj" "app\PD4\CANopen_task.obj" "app\PD4\Master.obj" "app\PD4\PD4_task.obj" "app\led_task.obj" "bsp\Bumper.obj" "bsp\CO_driver.obj" "bsp\MA3encoder.obj" "bsp\cmdUart.obj" "bsp\driver.obj" "bsp\io.obj" "third_party\CanFestival\src\dcf.obj" "third_party\CanFestival\src\emcy.obj" "third_party\CanFestival\src\lifegrd.obj" "third_party\CanFestival\src\lss.obj" "third_party\CanFestival\src\nmtMaster.obj" "third_party\CanFestival\src\nmtSlave.obj" "third_party\CanFestival\src\objacces.obj" "third_party\CanFestival\src\pdo.obj" "third_party\CanFestival\src\sdo.obj" "third_party\CanFestival\src\states.obj" "third_party\CanFestival\src\sync.obj" "third_party\CanFestival\src\timer.obj" "third_party\FreeRTOS\Source\croutine.obj" "third_party\FreeRTOS\Source\event_groups.obj" "third_party\FreeRTOS\Source\list.obj" "third_party\FreeRTOS\Source\queue.obj" "third_party\FreeRTOS\Source\tasks.obj" "third_party\FreeRTOS\Source\timers.obj" "third_party\FreeRTOS\Source\portable\CCS\ARM_CM4F\port.obj" 
 	-$(RM) "third_party\FreeRTOS\Source\portable\CCS\ARM_CM4F\portasm.obj" "third_party\FreeRTOS\Source\portable\MemMang\heap_2.obj" "utils\uartstdio.obj" "utils\ustdlib.obj" 
-	-$(RM) "PD4Master.d" "main.d" "startup_ccs.d" "app\CMD\cmd_task.d" "app\PD4\Master.d" "app\PD4\PD4_task.d" "app\led_task.d" "bsp\Bumper.d" "bsp\CO_driver.d" "bsp\MA3encoder.d" "bsp\cmdUart.d" "bsp\delay.d" "bsp\driver.d" "bsp\io.d" "third_party\CanFestival\src\dcf.d" "third_party\CanFestival\src\emcy.d" "third_party\CanFestival\src\lifegrd.d" "third_party\CanFestival\src\lss.d" "third_party\CanFestival\src\nmtMaster.d" "third_party\CanFestival\src\nmtSlave.d" "third_party\CanFestival\src\objacces.d" "third_party\CanFestival\src\pdo.d" "third_party\CanFestival\src\sdo.d" "third_party\CanFestival\src\states.d" "third_party\CanFestival\src\sync.d" "third_party\CanFestival\src\timer.d" "third_party\FreeRTOS\Source\croutine.d" "third_party\FreeRTOS\Source\event_groups.d" "third_party\FreeRTOS\Source\list.d" "third_party\FreeRTOS\Source\queue.d" "third_party\FreeRTOS\Source\tasks.d" "third_party\FreeRTOS\Source\timers.d" "third_party\FreeRTOS\Source\portable\CCS\ARM_CM4F\port.d" "third_party\FreeRTOS\Source\portable\MemMang\heap_2.d" 
+	-$(RM) "PD4Master.d" "main.d" "startup_ccs.d" "app\CMD\cmd_task.d" "app\PD4\CANopen_task.d" "app\PD4\Master.d" "app\PD4\PD4_task.d" "app\led_task.d" "bsp\Bumper.d" "bsp\CO_driver.d" "bsp\MA3encoder.d" "bsp\cmdUart.d" "bsp\driver.d" "bsp\io.d" "third_party\CanFestival\src\dcf.d" "third_party\CanFestival\src\emcy.d" "third_party\CanFestival\src\lifegrd.d" "third_party\CanFestival\src\lss.d" "third_party\CanFestival\src\nmtMaster.d" "third_party\CanFestival\src\nmtSlave.d" "third_party\CanFestival\src\objacces.d" "third_party\CanFestival\src\pdo.d" "third_party\CanFestival\src\sdo.d" "third_party\CanFestival\src\states.d" "third_party\CanFestival\src\sync.d" "third_party\CanFestival\src\timer.d" "third_party\FreeRTOS\Source\croutine.d" "third_party\FreeRTOS\Source\event_groups.d" "third_party\FreeRTOS\Source\list.d" "third_party\FreeRTOS\Source\queue.d" "third_party\FreeRTOS\Source\tasks.d" "third_party\FreeRTOS\Source\timers.d" "third_party\FreeRTOS\Source\portable\CCS\ARM_CM4F\port.d" "third_party\FreeRTOS\Source\portable\MemMang\heap_2.d" 
 	-$(RM) "utils\uartstdio.d" "utils\ustdlib.d" 
 	-$(RM) "third_party\FreeRTOS\Source\portable\CCS\ARM_CM4F\portasm.d" 
 	-@echo 'Finished clean'

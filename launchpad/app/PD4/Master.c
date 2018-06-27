@@ -31,7 +31,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 extern xQueueHandle g_Slave_Queue;
 extern SemaphoreHandle_t g_SDO_Semaphore;
 extern SemaphoreHandle_t g_SDO_Mutex;
-static int __init_step;
+//static int __init_step;
 
 UNS32 CanOpen_Read_Param(CO_Data* d, UNS8 nodeId, UNS16 index, UNS8 subindex, UNS8 datatype)
 {
@@ -79,7 +79,7 @@ static void CheckSDOAndContinue(CO_Data* d, UNS8 nodeId)
 	/* Finalise last SDO transfer with this node */
 	closeSDOtransfer(&TestMaster_Data, nodeId, SDO_CLIENT);
 
-	xSemaphoreGiveFromISR(g_SDO_Semaphore, NULL);
+	xSemaphoreGive(g_SDO_Semaphore);
 }
 
 void PD4Master_writeSlaveParam(CO_Data* d, UNS8 nodeId, UNS16 index,
@@ -98,7 +98,7 @@ void PD4Master_writeSlaveParam(CO_Data* d, UNS8 nodeId, UNS16 index,
 		CheckSDOAndContinue, /*SDOCallback_t Callback*/
 		0); /* use block mode */
 	taskENABLE_INTERRUPTS();
-	__init_step++;
+	//__init_step++;
 	xSemaphoreTake(g_SDO_Semaphore, 0xffff);
 	xSemaphoreGive(g_SDO_Mutex);
 }
@@ -132,24 +132,6 @@ void CanOpen_Change_Param(CO_Data* d, UNS8 nodeId)
 {
 	UNS8 data8 = 0x01;
 	int32_t data = 0;
-
-	data = 3000;
-	PD4Master_writeSlaveParam(&TestMaster_Data, /*CO_Data* d*/
-		nodeId, /*UNS8 nodeId*/
-		0x6081, /*UNS16 index*/
-		0x00, /*UNS16 index*/
-		4, /*UNS8 count*/
-		uint32, /*UNS8 dataType*/
-		&data); /* use block mode */
-
-    data = 800000;
-    PD4Master_writeSlaveParam(&TestMaster_Data, /*CO_Data* d*/
-		nodeId, /*UNS8 nodeId*/
-        0x607a, /*UNS16 index*/
-        0x00, /*UNS16 index*/
-        4, /*UNS8 count*/
-        int32, /*UNS8 dataType*/
-        &data); /* use block mode */
 
 	data = 1;
 	PD4Master_writeSlaveParam(&TestMaster_Data, /*CO_Data* d*/
@@ -238,15 +220,17 @@ void PD4Master_confSlaveNode(CO_Data* d, UNS8 nodeId)
 {
 	/* Master configure heartbeat producer time at 1000 ms 
 	 * for slave node-id 0x02 by DCF concise */
-    __init_step = 0;
+    //__init_step = 0;
 	//UARTprintf("Master : ConfigureSlaveNode %X\n", nodeId);
 	CanOpen_setMaster(d, nodeId);
+	/*
 	if(nodeId == 3)
 	{
 	    CanOpen_Reset_TPDO(d, nodeId);
 	    CanOpen_Change_Param(d, nodeId);
 	    CanOpen_Reset_RPDO(d, nodeId);
 	}
+	*/
 	/* Put the master in operational mode */
 	//setState(d, Operational);
 	//Contolword2 = 0x86;
@@ -292,7 +276,7 @@ void PD4Master_post_SlaveStateChange(CO_Data* d, UNS8 nodeId, e_nodeState newNod
 		masterSendNMTstateChange(&TestMaster_Data, nodeId, NMT_Enter_PreOperational);
 		break;
 	case Pre_operational:
-		xQueueSendToBackFromISR( g_Slave_Queue, ( void* )&nodeId, 0 );
+		xQueueSendToBack( g_Slave_Queue, ( void* )&nodeId, 0 );
 	    break;
 	default:
 		break;

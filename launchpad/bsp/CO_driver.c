@@ -7,7 +7,6 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "can.h"
 #include "inc/hw_gpio.h"
 #include "inc/hw_memmap.h"
 #include "inc/hw_can.h"
@@ -29,6 +28,7 @@
 #include "utils/uartstdio.h"
 
 extern CO_Data TestMaster_Data;
+extern xQueueHandle g_MSG_Queue;
 
 // window ID:3  ID:0  ID:1  ID:2 door
 // wheels: F:  0   2
@@ -250,8 +250,8 @@ void CAN0IntHandler(void)
         }
 
         g_RxMessage.cob_id = g_sCAN0RxMessage.ui32MsgID;
-
-        canDispatch(&TestMaster_Data, &g_RxMessage);
+        xQueueSendToBackFromISR( g_MSG_Queue, ( void* )&g_RxMessage, 0 );
+        //canDispatch(&TestMaster_Data, &g_RxMessage);
         // Clear the message object interrupt.
         while(HWREG(CAN0_BASE + CAN_O_IF2CRQ) & CAN_IF1CRQ_BUSY) { }
         // Only change the interrupt pending state by setting only the CAN_IF1CMSK_CLRINTPND bit.

@@ -79,7 +79,7 @@ void cmd_uart_init_handler(void)
 					_len = 0;
 					_cur_pos = 0;
 					_start_flag = 0;
-					xQueueSendToFrontFromISR(g_cmd_Queue, (void*)g_cmd_uart_fifo, NULL);
+					xQueueSendToBackFromISR(g_cmd_Queue, (void*)g_cmd_uart_fifo, NULL);
 				}
 			}
         }

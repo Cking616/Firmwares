@@ -31,6 +31,7 @@ SemaphoreHandle_t g_SDO_Semaphore;
 SemaphoreHandle_t g_SDO_Mutex;
 SemaphoreHandle_t g_PD4_Semaphore;
 bool g_trip_bit4[4] = { 0, 0, 0, 0 };
+int g_need_init[4] = { 0, 1, 0, 0 };
 
 int _PD4_speed_tmp = 0;
 int _PD4_pos_tmp = 0;
@@ -86,13 +87,111 @@ unsigned char PD4Master_get_flag(unsigned char nodeID)
 void PD4Master_stop(unsigned char nodeID)
 {
     taskDISABLE_INTERRUPTS();
-    PD4Master_set_ctrl(nodeID, 0x2);
+    PD4Master_set_ctrl(nodeID, 0xB);
     taskENABLE_INTERRUPTS();
 }
 
 inline int PD4Master_get_encoder(unsigned char nodeID)
 {
 	return PD4_Position[nodeID - 1];
+}
+
+int __homing_step[4] = { 0, 0, 0, 0 };
+
+inline void PD4_home_loop(int _i)
+{
+	switch (__homing_step[_i])
+	{
+	case 0:
+	{
+		if (PD4_Status[_i] & 0x40)
+		{
+			PD4_Controlword[_i] = 0x6;
+		}
+		else if (PD4_Status[_i] & 0x20)
+		{
+			if (PD4_Status[_i] & 0x2)
+			{
+				PD4_Controlword[_i] = 0xF;
+			}
+			else
+			{
+				PD4_Controlword[_i] = 0x7;
+			}
+		}
+
+		if ((PD4_Status[_i] & 0x67) == 0x27)
+		{
+			PD4_Controlword[_i] = 0x3F;
+			__homing_step[_i]++;
+		}
+		break;
+	}
+	case 1:
+	{
+		if ((PD4_Status[_i] & 0x3400) == 0x1400)
+		{
+			PD4_Controlword[_i] = 0x6;
+			__homing_step[_i]++;
+		}
+		else if ((PD4_Status[_i] & 0x3400) == 0x2000)
+		{
+			PD4_Controlword[_i] = 0x6;
+			__homing_step[_i] = 0;
+		}
+
+		break;
+	}
+	case 2:
+	{
+		if ((PD4_Status[_i] & 0x006F) == 0x21)
+		{
+			g_need_init[_i] = 0;
+            PD4_Mode[_i] = 1;
+			__homing_step[_i] = 0;
+		}
+		break;
+	}
+	default:
+	{
+		break;
+	}
+	}
+
+}
+
+inline void PD4_running_loop(int _i)
+{
+	if (PD4_Status[_i] & 0x40)
+	{
+		PD4_Controlword[_i] = 0x6;
+	}
+	else if (PD4_Status[_i] & 0x20)
+	{
+		if (PD4_Status[_i] & 0x2)
+		{
+			PD4_Controlword[_i] = 0xF;
+		}
+		else
+		{
+			PD4_Controlword[_i] = 0x7;
+		}
+	}
+
+	if ((PD4_Status[_i] & 0x67) == 0x27)
+	{
+		if (g_trip_bit4[_i])
+		{
+			PD4_Controlword[_i] = 0x3F;
+			taskDISABLE_INTERRUPTS();
+			g_trip_bit4[_i] = 0;
+			taskENABLE_INTERRUPTS();
+		}
+		else
+		{
+			PD4_Controlword[_i] = 0x2F;
+		}
+	}
 }
 //*****************************************************************************
 //
@@ -174,7 +273,6 @@ PD4Master_task(void *pvParameters)
     {
         int _i = 0;
 
-        //sendPDOevent(&TestMaster_Data);
         for (_i = 0; _i < 4; _i++)
         {
             if (!PD4_bConnected[_i])
@@ -194,36 +292,14 @@ PD4Master_task(void *pvParameters)
                 continue;
             }
 
-            if (PD4_Status[_i] & 0x40)
-            {
-                PD4_Controlword[_i] = 0x6;
-            }
-            else if (PD4_Status[_i] & 0x20)
-            {
-                if (PD4_Status[_i] & 0x2)
-                {
-                    PD4_Controlword[_i] = 0xF;
-                }
-                else
-                {
-                    PD4_Controlword[_i] = 0x7;
-                }
-            }
-
-            if ((PD4_Status[_i] & 0x67) == 0x27)
-            {
-                if (g_trip_bit4[_i])
-                {
-                    PD4_Controlword[_i] = 0x3F;
-                    taskDISABLE_INTERRUPTS();
-                    g_trip_bit4[_i] = 0;
-                    taskENABLE_INTERRUPTS();
-                }
-                else
-                {
-                    PD4_Controlword[_i] = 0x2F;
-                }
-            }
+			if (!g_need_init[_i])
+			{
+				PD4_running_loop(_i);
+			}
+			else
+			{
+				PD4_home_loop(_i);
+			}
         }
 
         vTaskDelayUntil(&ui32WakeTime, ui32PD4ToggleDelay / portTICK_RATE_MS);

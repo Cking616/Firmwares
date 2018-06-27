@@ -10,7 +10,6 @@ C_SRCS += \
 ../bsp/CO_driver.c \
 ../bsp/MA3encoder.c \
 ../bsp/cmdUart.c \
-../bsp/delay.c \
 ../bsp/driver.c \
 ../bsp/io.c 
 
@@ -19,7 +18,6 @@ C_DEPS += \
 ./bsp/CO_driver.d \
 ./bsp/MA3encoder.d \
 ./bsp/cmdUart.d \
-./bsp/delay.d \
 ./bsp/driver.d \
 ./bsp/io.d 
 
@@ -28,7 +26,6 @@ OBJS += \
 ./bsp/CO_driver.obj \
 ./bsp/MA3encoder.obj \
 ./bsp/cmdUart.obj \
-./bsp/delay.obj \
 ./bsp/driver.obj \
 ./bsp/io.obj 
 
@@ -37,7 +34,6 @@ OBJS__QUOTED += \
 "bsp\CO_driver.obj" \
 "bsp\MA3encoder.obj" \
 "bsp\cmdUart.obj" \
-"bsp\delay.obj" \
 "bsp\driver.obj" \
 "bsp\io.obj" 
 
@@ -46,7 +42,6 @@ C_DEPS__QUOTED += \
 "bsp\CO_driver.d" \
 "bsp\MA3encoder.d" \
 "bsp\cmdUart.d" \
-"bsp\delay.d" \
 "bsp\driver.d" \
 "bsp\io.d" 
 
@@ -55,7 +50,6 @@ C_SRCS__QUOTED += \
 "../bsp/CO_driver.c" \
 "../bsp/MA3encoder.c" \
 "../bsp/cmdUart.c" \
-"../bsp/delay.c" \
 "../bsp/driver.c" \
 "../bsp/io.c" 
 
