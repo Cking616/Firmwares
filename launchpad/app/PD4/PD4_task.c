@@ -31,7 +31,7 @@ SemaphoreHandle_t g_SDO_Semaphore;
 SemaphoreHandle_t g_SDO_Mutex;
 SemaphoreHandle_t g_PD4_Semaphore;
 bool g_trip_bit4[4] = { 0, 0, 0, 0 };
-int g_need_init[4] = { 0, 1, 0, 0 };
+int g_need_init[4] = { 1, 1, 0, 0 };
 
 int _PD4_speed_tmp = 0;
 int _PD4_pos_tmp = 0;
@@ -239,6 +239,8 @@ PD4Master_task(void *pvParameters)
     // Loop forever.
     //
     //UARTprintf("PD4 init 2\n");
+    masterSendNMTstateChange(&TestMaster_Data, 0x01, NMT_Enter_PreOperational);
+    vTaskDelay(10);
     masterSendNMTstateChange(&TestMaster_Data, 0x02, NMT_Enter_PreOperational);
     vTaskDelayUntil(&ui32WakeTime, 200 / portTICK_RATE_MS);
 
@@ -253,13 +255,15 @@ PD4Master_task(void *pvParameters)
             PD4_Controlword[nodeId - 1] = 0x86;
 
 
-			if(PD4_bConnected[1])
+			if(PD4_bConnected[1] && PD4_bConnected[0])
 			{
 				//UARTprintf("op mode\n");
 			    //masterSendNMTstateChange (&TestMaster_Data, 1, NMT_Start_Node);
 			    //vTaskDelay(10);
 			    //masterSendNMTstateChange (&TestMaster_Data, 4, NMT_Start_Node);
 			    //vTaskDelay(10);
+                masterSendNMTstateChange (&TestMaster_Data, 1, NMT_Start_Node);
+                vTaskDelay(10);
 			    masterSendNMTstateChange (&TestMaster_Data, 2, NMT_Start_Node);
 			    vTaskDelay(10);
 				setState(&TestMaster_Data, Operational);
