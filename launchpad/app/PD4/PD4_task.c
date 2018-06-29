@@ -262,8 +262,9 @@ PD4Master_task(void *pvParameters)
 			    //vTaskDelay(10);
 			    //masterSendNMTstateChange (&TestMaster_Data, 4, NMT_Start_Node);
 			    //vTaskDelay(10);
-                masterSendNMTstateChange (&TestMaster_Data, 1, NMT_Start_Node);
-                vTaskDelay(10);
+			    PD4_bConnected[0] = 0;
+                //masterSendNMTstateChange (&TestMaster_Data, 1, NMT_Start_Node);
+                //vTaskDelay(10);
 			    masterSendNMTstateChange (&TestMaster_Data, 2, NMT_Start_Node);
 			    vTaskDelay(10);
 				setState(&TestMaster_Data, Operational);

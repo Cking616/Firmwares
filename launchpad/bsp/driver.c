@@ -75,7 +75,7 @@ void driver_init_hardware(void)
     // Check if the peripheral access is enabled.
     while(!ROM_SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOA)) { }
 
-    MA3_encoder_init();
+    //MA3_encoder_init();
     CO_driver_init();
     cmd_uart_init();
     //bumper_init();

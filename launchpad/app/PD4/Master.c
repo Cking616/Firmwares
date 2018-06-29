@@ -99,7 +99,7 @@ void PD4Master_writeSlaveParam(CO_Data* d, UNS8 nodeId, UNS16 index,
 		0); /* use block mode */
 	taskENABLE_INTERRUPTS();
 	//__init_step++;
-	xSemaphoreTake(g_SDO_Semaphore, 0xffff);
+	xSemaphoreTake(g_SDO_Semaphore, 0x3000);
 	xSemaphoreGive(g_SDO_Mutex);
 }
 

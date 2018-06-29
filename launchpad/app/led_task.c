@@ -56,28 +56,30 @@ LEDTask(void *pvParameters)
     // Get the current tick count.
     //
     ui32WakeTime = xTaskGetTickCount();
+
+    int Nodeid = 2;
     //int _tick = 0;
     //
     // Loop forever.
     //
-    while(g_need_init[0])
+    while(g_need_init[Nodeid - 1])
     {
-        UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[0], PD4_Controlword[0], PD4_Position[0]);
+        UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[Nodeid - 1], PD4_Controlword[Nodeid - 1], PD4_Position[Nodeid - 1]);
         vTaskDelay(1000);
     }
 
-    while((PD4_Status[0] & 0x67) != 0x27)
+    while((PD4_Status[Nodeid - 1] & 0x67) != 0x27)
     {
-        UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[0], PD4_Controlword[0], PD4_Position[0]);
+        UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[Nodeid - 1], PD4_Controlword[Nodeid - 1], PD4_Position[Nodeid - 1]);
         vTaskDelay(1000);
     }
 
-    int pos = 5000;
-    PD4Master_set_speed(1, 200);
+    int pos = 52000;
+    PD4Master_set_speed(Nodeid, 250);
 
     while(1)
     {
-        PD4Master_set_pos(1, pos);
+        PD4Master_set_pos(Nodeid, pos);
         //_tick++;
         //if(_tick == 200)
         //{
@@ -86,28 +88,28 @@ LEDTask(void *pvParameters)
         //}
         vTaskDelay(50);
 
-        while(!(PD4_Status[0] & 0x400))
+        while(!(PD4_Status[Nodeid - 1] & 0x400))
         {
-            UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[0], PD4_Controlword[0], PD4_Position[0]);
+            UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[Nodeid - 1], PD4_Controlword[Nodeid - 1], PD4_Position[Nodeid - 1]);
             vTaskDelay(1000);
         }
         vTaskDelay(50);
-        int encoder = MA3_encoder_get_value();
-        UARTprintf("2s:0x%X,c:0x%X,p:%d,e:%d\n", PD4_Status[0], PD4_Controlword[0], PD4_Position[0],encoder);
+        //int encoder = MA3_encoder_get_value();
+        UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[Nodeid - 1], PD4_Controlword[Nodeid - 1], PD4_Position[Nodeid - 1]);
 
         vTaskDelay(1500);
 
-        PD4Master_set_pos(1,10);
+        PD4Master_set_pos(Nodeid,100);
         vTaskDelay(50);
 
-        while(!(PD4_Status[0] & 0x400))
+        while(!(PD4_Status[Nodeid - 1] & 0x400))
         {
-            UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[0], PD4_Controlword[0], PD4_Position[0]);
+            UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[Nodeid - 1], PD4_Controlword[Nodeid - 1], PD4_Position[Nodeid - 1]);
             vTaskDelay(1000);
         }
         vTaskDelay(50);
-        encoder = MA3_encoder_get_value();
-        UARTprintf("2s:0x%X,c:0x%X,p:%d,e:%d\n", PD4_Status[0], PD4_Controlword[0], PD4_Position[0],encoder);
+        //encoder = MA3_encoder_get_value();
+        UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[Nodeid - 1], PD4_Controlword[Nodeid - 1], PD4_Position[Nodeid - 1]);
 
         vTaskDelay(1500);
         //UARTprintf("3s:0x%X,c:0x%X,p:%d\n", PD4_Status[2], PD4_Controlword[2], PD4_Position[2]);
