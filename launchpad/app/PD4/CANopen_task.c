@@ -34,8 +34,7 @@ CANopen_task(void *pvParameters)
 
 uint32_t CANopen_taskInit(void)
 {
-    g_MSG_Queue = xQueueCreate( 5 , sizeof( Message ) );
-    //UARTprintf("Create PD4\n");
+    g_MSG_Queue = xQueueCreate( 40, sizeof( Message ));
     //
     // Create the LED task.
     //

@@ -19,6 +19,7 @@ typedef struct
     float       kp;
     float       ki;
     //float       kd;
+    float       a;
 
     int         last_encoder; // 4000 pulse per round
 

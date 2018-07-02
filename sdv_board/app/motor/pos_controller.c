@@ -14,13 +14,15 @@ volatile pos_controller_state pos_state[2];
 void pos_controller_init(int num)
 {
     pos_state[num].kp = 0.0036;
+    pos_state[num].kp2 = 0.0008;
     pos_state[num].ki = 0.000007;
     pos_state[num].kd = 0.000022;
+    pos_state[num].a  = 0.78;
     pos_state[num].last_err = 0;
     pos_state[num].last_speed = 0;
     pos_state[num].target_pos = speed_controller_get_encoder(num);
     pos_state[num].max_speed = 24;
-    pos_state[num].max_acc = 0.74;
+    pos_state[num].max_acc = 0.80;
 	pos_state[num].flag = 1;
 }
 
@@ -48,7 +50,6 @@ inline void pos_controller_set_max_speed(int num, int max_speed)
 
 void pos_controller_period(int num)
 {
-    static float a = 0.63;
     float speed =  pos_state[num].last_speed;
     int err = pos_state[num].target_pos - encoder_get_value(num);
     int abs_err = err > 0? err: -err;
@@ -60,7 +61,7 @@ void pos_controller_period(int num)
     }
     else if(abs_err > 10 && abs_err <= 300)
     {
-        float increase = pos_state[num].ki * err +  pos_state[num].kp * (err - pos_state[num].last_err) / 4;
+        float increase = pos_state[num].ki * err +  pos_state[num].kp * pos_state[num].kp2;
         speed = speed + increase;
 		pos_state[num].flag = 0;
     }
@@ -71,7 +72,7 @@ void pos_controller_period(int num)
 		err = 0;
     }
 
-    speed = a * speed + (1 - a) * pos_state[num].last_speed;
+    speed =  pos_state[num].a * speed + (1 -  pos_state[num].a) * pos_state[num].last_speed;
     float acc = speed - pos_state[num].last_speed;
 
     if(acc > pos_state[num].max_acc)

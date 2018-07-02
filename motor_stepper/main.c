@@ -17,7 +17,8 @@ int main()
 
     UARTprintf("\n\nInit System!\n");
     UARTprintf("Address:%d!\n", driver_get_address());
-
+    //step_motor_set_speed(0, -500, 1750);
+    //step_motor_set_speed(1, -500, 1750);
     while(1)
     {
         distance_thread();

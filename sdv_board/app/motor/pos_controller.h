@@ -15,6 +15,7 @@ typedef struct
     float       kp2;
     float       ki;
     float       kd;
+    float       a;
 
     int         target_pos;
     int         last_err;

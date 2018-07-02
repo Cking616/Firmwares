@@ -22,6 +22,7 @@
 #include "lights.h"
 #include "sonar.h"
 #include "stepmotor.h"
+#include "Bumper.h"
 
 volatile int _address = 0;
 
@@ -108,6 +109,8 @@ void driver_init_hardware(void)
     lights_init();
 
     step_motor_init();
+
+    bumper_init();
     // ************************************************************************************************************
     ROM_SysTickPeriodSet(80000);  // every 1mSec, @ 80Mhz
 }

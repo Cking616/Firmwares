@@ -30,8 +30,8 @@
 // The priorities of the various tasks.
 //
 //*****************************************************************************
-#define PRIORITY_MOT_TASK       4
-#define PRIORITY_CMD_TASK       8
+#define PRIORITY_MOT_TASK       8
+#define PRIORITY_CMD_TASK       7
 #define PRIORITY_PD4_TASK       3
 #define PRIORITY_LED_TASK       1
 

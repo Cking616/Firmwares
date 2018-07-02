@@ -31,7 +31,7 @@ SemaphoreHandle_t g_SDO_Semaphore;
 SemaphoreHandle_t g_SDO_Mutex;
 SemaphoreHandle_t g_PD4_Semaphore;
 bool g_trip_bit4[4] = { 0, 0, 0, 0 };
-int g_need_init[4] = { 1, 1, 0, 0 };
+int g_need_init[4] = { 1, 1, 1, 0 };
 
 int _PD4_speed_tmp = 0;
 int _PD4_pos_tmp = 0;
@@ -229,7 +229,7 @@ PD4Master_task(void *pvParameters)
     //
     // Initialize the LED Toggle Delay to default value.
     //
-    ui32PD4ToggleDelay = 20;
+    ui32PD4ToggleDelay = 10;
 
     //
     // Get the current tick count.
@@ -239,9 +239,13 @@ PD4Master_task(void *pvParameters)
     // Loop forever.
     //
     //UARTprintf("PD4 init 2\n");
-    masterSendNMTstateChange(&TestMaster_Data, 0x01, NMT_Enter_PreOperational);
+    masterSendNMTstateChange(&TestMaster_Data, 0x03, NMT_Enter_PreOperational);
     vTaskDelay(10);
     masterSendNMTstateChange(&TestMaster_Data, 0x02, NMT_Enter_PreOperational);
+    //vTaskDelay(10);
+    //masterSendNMTstateChange(&TestMaster_Data, 0x01, NMT_Enter_PreOperational);
+    //vTaskDelay(10);
+    //masterSendNMTstateChange(&TestMaster_Data, 0x04, NMT_Enter_PreOperational);
     vTaskDelayUntil(&ui32WakeTime, 200 / portTICK_RATE_MS);
 
     while(1)
@@ -255,18 +259,21 @@ PD4Master_task(void *pvParameters)
             PD4_Controlword[nodeId - 1] = 0x86;
 
 
-			if(PD4_bConnected[1] && PD4_bConnected[0])
+			if(PD4_bConnected[1]
+			    && PD4_bConnected[2])
 			{
 				//UARTprintf("op mode\n");
 			    //masterSendNMTstateChange (&TestMaster_Data, 1, NMT_Start_Node);
 			    //vTaskDelay(10);
 			    //masterSendNMTstateChange (&TestMaster_Data, 4, NMT_Start_Node);
 			    //vTaskDelay(10);
-			    PD4_bConnected[0] = 0;
+			    PD4_bConnected[1] = 0;
                 //masterSendNMTstateChange (&TestMaster_Data, 1, NMT_Start_Node);
                 //vTaskDelay(10);
-			    masterSendNMTstateChange (&TestMaster_Data, 2, NMT_Start_Node);
-			    vTaskDelay(10);
+			    //masterSendNMTstateChange (&TestMaster_Data, 2, NMT_Start_Node);
+			    //vTaskDelay(10);
+                masterSendNMTstateChange (&TestMaster_Data, 3, NMT_Start_Node);
+                vTaskDelay(10);
 				setState(&TestMaster_Data, Operational);
 				xSemaphoreGive(g_PD4_Semaphore);
 				break;
@@ -288,6 +295,7 @@ PD4Master_task(void *pvParameters)
             taskDISABLE_INTERRUPTS();
             sendPDOrequest(&TestMaster_Data, 0x1400 + _i);
             taskENABLE_INTERRUPTS();
+            vTaskDelay(3);
         }
 
         for (_i = 0; _i < 4; _i++)
@@ -307,7 +315,8 @@ PD4Master_task(void *pvParameters)
 			}
         }
 
-        vTaskDelayUntil(&ui32WakeTime, ui32PD4ToggleDelay / portTICK_RATE_MS);
+        //vTaskDelay(10);
+        //vTaskDelayUntil(&ui32WakeTime, ui32PD4ToggleDelay / portTICK_RATE_MS);
 
         for (_i = 0; _i < 4; _i++)
         {
@@ -318,6 +327,7 @@ PD4Master_task(void *pvParameters)
             taskDISABLE_INTERRUPTS();
             sendOnePDOevent(&TestMaster_Data, _i);
             taskENABLE_INTERRUPTS();
+            vTaskDelay(3);
         }
     }
 }

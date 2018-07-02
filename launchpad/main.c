@@ -55,7 +55,7 @@ int main(void)
         {
         }
     }
-
+//#ifdef 0
     if(PD4Master_taskInit() != 0)
     {
 
@@ -83,7 +83,7 @@ int main(void)
         {
         }
     }
-
+//#endif
     // Start the scheduler.  This should not return.
     //
     vTaskStartScheduler();

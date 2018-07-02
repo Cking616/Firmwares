@@ -18,6 +18,7 @@ void speed_controller_init(int num)
 {
     pid_state[num].kp = 34.56f;
     pid_state[num].ki = 1.448f;
+    pid_state[num].a = 0.925f;
 
     pid_state[num].last_encoder = encoder_get_value(num);
     pid_state[num].target_speed = 0;
@@ -31,7 +32,6 @@ void speed_controller_init(int num)
 
 void speed_controller_period(int num)
 {
-    static float a = 0.725f;
     float cur_pwm = 0.0f;
     int out_pwm = 0;
     int cur_encoder = encoder_get_value(num);
@@ -55,7 +55,7 @@ void speed_controller_period(int num)
         cur_pwm = -MOTOR_MAX_SPEED;
     }
 
-    cur_pwm = cur_pwm * a + pid_state[num].last_pwm * (1 - a);
+    cur_pwm = cur_pwm * pid_state[num].a + pid_state[num].last_pwm * (1 - pid_state[num].a);
     pid_state[num].last_pwm = cur_pwm;
 
     if ( cur_pwm > 0 )
@@ -93,7 +93,6 @@ inline void speed_controller_set_speed(int num, int speed)
         return;
     }
 
-
     if(pid_state[num].target_speed == 0 || pid_state[num].target_speed * speed < 0)
     {
         if(speed > 0)
@@ -124,6 +123,7 @@ void speed_controller_print(int num)
     int pwm = pid_state[num].last_pwm;
     UARTprintf("Pid:\nS:%d,ts:%d,E:%d,PWM:%d,err:%d\n", pid_state[num].rel_speed,pid_state[num].target_speed,pid_state[num].last_encoder,pwm,pid_state[num].last_err);
 }
+
 inline void  speed_controller_set_kp(int kp)
 {
     pid_state[0].kp = (float)kp / 100;

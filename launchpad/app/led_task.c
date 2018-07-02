@@ -57,7 +57,7 @@ LEDTask(void *pvParameters)
     //
     ui32WakeTime = xTaskGetTickCount();
 
-    int Nodeid = 2;
+    int Nodeid = 3;
     //int _tick = 0;
     //
     // Loop forever.
@@ -74,11 +74,12 @@ LEDTask(void *pvParameters)
         vTaskDelay(1000);
     }
 
-    int pos = 52000;
-    PD4Master_set_speed(Nodeid, 250);
+    int pos = 10000;
+    PD4Master_set_speed(Nodeid, 3000);
 
     while(1)
     {
+        //PD4Master_set_pos(Nodeid, 100);
         PD4Master_set_pos(Nodeid, pos);
         //_tick++;
         //if(_tick == 200)
@@ -99,7 +100,8 @@ LEDTask(void *pvParameters)
 
         vTaskDelay(1500);
 
-        PD4Master_set_pos(Nodeid,100);
+        //PD4Master_set_pos(Nodeid,0);
+        PD4Master_set_pos(Nodeid,pos);
         vTaskDelay(50);
 
         while(!(PD4_Status[Nodeid - 1] & 0x400))
