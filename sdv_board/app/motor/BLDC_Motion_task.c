@@ -35,29 +35,33 @@ SemaphoreHandle_t g_BLDC_Mutex;
 
 void _motion_function(int _tick)
 {
+    int add = 0;
 	if (_tick < g_inc_acc_tick)
 	{
-		g_cur_ol_encoder = g_cur_ol_encoder + g_dir * g_a_mol * _tick / g_a_den;
-		pos_controller_set_pos(0, g_cur_ol_encoder);
-		pos_controller_set_pos(1, g_cur_ol_encoder);
+	    add = g_dir * g_a_mol * _tick / g_a_den;
+		g_cur_ol_encoder = g_cur_ol_encoder + add;
+		pos_controller_set_pos(0, g_cur_ol_encoder, add);
+		pos_controller_set_pos(1, g_cur_ol_encoder, add);
 	}
 	else if (_tick >= g_inc_acc_tick && _tick < g_dec_acc_tick)
 	{
-		g_cur_ol_encoder = g_cur_ol_encoder + g_dir * g_speed;
-		pos_controller_set_pos(0, g_cur_ol_encoder);
-		pos_controller_set_pos(1, g_cur_ol_encoder);
+	    add = g_dir * g_speed;
+		g_cur_ol_encoder = g_cur_ol_encoder + add;
+		pos_controller_set_pos(0, g_cur_ol_encoder, add);
+		pos_controller_set_pos(1, g_cur_ol_encoder, add);
 	}
 	else if (_tick >= g_dec_acc_tick && _tick <= g_end_tick)
 	{
-		g_cur_ol_encoder = g_cur_ol_encoder + g_dir * g_a_mol * (g_end_tick - _tick) / g_a_den;
-		pos_controller_set_pos(0, g_cur_ol_encoder);
-		pos_controller_set_pos(1, g_cur_ol_encoder);
+	    add = g_dir * g_a_mol * (g_end_tick - _tick) / g_a_den;
+		g_cur_ol_encoder = g_cur_ol_encoder + add;
+		pos_controller_set_pos(0, g_cur_ol_encoder, add);
+		pos_controller_set_pos(1, g_cur_ol_encoder, add);
 	}
 	else
 	{
 	    g_cur_ol_encoder = g_target_pos;
-		pos_controller_set_pos(0, g_cur_ol_encoder);
-		pos_controller_set_pos(1, g_cur_ol_encoder);
+		pos_controller_set_pos(0, g_cur_ol_encoder, 0);
+		pos_controller_set_pos(1, g_cur_ol_encoder, 0);
 	}
 }
 
@@ -65,7 +69,7 @@ int BLDC_Motion_get_flag()
 {
 	int _encoder = pos_controller_get_encoder(0);
 	int flag = 0;
-	if (g_target_pos - _encoder < 20 && g_target_pos - _encoder > -20)
+	if (g_target_pos - _encoder <= 40 && g_target_pos - _encoder >= -40)
 	{
 	    flag =  1;
 	}
@@ -153,11 +157,11 @@ static void BLDC_Motion_task(void *pvParameters)
         {
             if(_start_motion)
             {
-                if (_i == g_end_tick + 3 || g_stop)
+                if (_i == g_end_tick + 5 || g_stop)
                 {
                     taskDISABLE_INTERRUPTS();
-					pos_controller_set_pos(0, g_cur_ol_encoder);
-					pos_controller_set_pos(1, g_cur_ol_encoder);
+					//pos_controller_set_pos(0, g_cur_ol_encoder);
+					//pos_controller_set_pos(1, g_cur_ol_encoder);
                     _start_motion = 0;
                     g_BLDC_flag = 1;
                     _i = 1;

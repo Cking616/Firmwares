@@ -22,13 +22,13 @@ typedef struct
     int         max_speed;   //unit: rpm / 4 ;300 rpm => (300 / 60 * 4000) pulse per millosecond = 20 pulse / ms
     float       max_acc;
     float       last_speed;
-	float       feedforward;
+	int         feedforward;
 
 	unsigned char	flag;
 }pos_controller_state;
 
 void pos_controller_init(int num);
-inline void pos_controller_set_pos(int num, int pos);
+inline void pos_controller_set_pos(int num, int pos, int add);
 inline int  pos_controller_get_encoder(int num);
 inline void pos_controller_set_max_speed(int num, int max_speed);
 inline int pos_controller_get_flag(int num);
