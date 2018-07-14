@@ -59,10 +59,19 @@ void pos_controller_period(int num)
     float speed =  pos_state[num].last_speed;
     int err = pos_state[num].target_pos - encoder_get_value(num);
     int abs_err = err > 0? err: -err;
-	
-    if(abs_err > 300)
+    int deltae = err - pos_state[num].last_err;
+
+    if(abs_err > 2000)
     {
-        speed = pos_state[num].kp * err + pos_state[num].kd * (err - pos_state[num].last_err);
+        if(deltae * err > 0)
+        {
+            speed = 1.8 * pos_state[num].kp * err + 1.5 * pos_state[num].kd * deltae;
+        }
+        else
+        {
+            speed = 1.2 * pos_state[num].kp * err;
+        }
+
         if(pos_state[num].feedforward < 0)
         {
             speed = speed + pos_state[num].feedforward * 0.101;
@@ -73,7 +82,28 @@ void pos_controller_period(int num)
         }
 		pos_state[num].flag = 0;
     }
-    else if(abs_err > 30 && abs_err <= 300)
+    else if(abs_err > 200 && abs_err <= 2000)
+    {
+        if(deltae * err > 0)
+        {
+            speed = pos_state[num].kp * err + 0.8 * pos_state[num].kd * deltae;
+        }
+        else
+        {
+            speed = 0.6 * pos_state[num].kp * err;
+        }
+
+        if(pos_state[num].feedforward < 0)
+        {
+            speed = speed + pos_state[num].feedforward * 0.097;
+        }
+        else
+        {
+            speed = speed + pos_state[num].feedforward * 0.085;
+        }
+        pos_state[num].flag = 0;
+    }
+    else if(abs_err > 30 && abs_err <= 200)
     {
         float increase = pos_state[num].ki * err + (err - pos_state[num].last_err) * pos_state[num].kp2;
         speed = speed + increase;
@@ -124,7 +154,6 @@ inline void pos_controller_set_kp(int kp)
 {
     pos_state[0].kp = (float)kp / 10000;
     pos_state[1].kp = (float)kp / 10000;
-
 }
 
 inline void pos_controller_set_ki(int ki)
