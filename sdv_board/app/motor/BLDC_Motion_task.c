@@ -140,6 +140,8 @@ static void BLDC_Motion_task(void *pvParameters)
             taskDISABLE_INTERRUPTS();
             _start_motion = 1;
             g_stop = 0;
+            //pos_controller_set_pos(0, g_cur_ol_encoder, 0);
+            //pos_controller_set_pos(1, g_cur_ol_encoder, 0);
             taskENABLE_INTERRUPTS();
         }
 
@@ -160,8 +162,9 @@ static void BLDC_Motion_task(void *pvParameters)
                 if (_i == g_end_tick + 5 || g_stop)
                 {
                     taskDISABLE_INTERRUPTS();
+                    //pos_controller_set_pos(0, g_cur_ol_encoder, 0);
 					//pos_controller_set_pos(0, g_cur_ol_encoder);
-					//pos_controller_set_pos(1, g_cur_ol_encoder);
+					//pos_controller_set_pos(1, g_cur_ol_encoder, 0);
                     _start_motion = 0;
                     g_BLDC_flag = 1;
                     _i = 1;

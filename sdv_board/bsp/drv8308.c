@@ -172,7 +172,7 @@ void drv8308_init(void)
          WriteDrv(N,0x02,0xff00);  // SPDREVS[15:8]=4 period before lock, MINSPD[7:0] min period x 2,56msec=450mSec, 25.6mSec = 39hz
          WriteDrv(N,0x03,0xe800);  // SPEEDTH[14:12]=1.56% MOD120=3970 scale  input dutt cycle
     //        WriteDrv(0x04,0x40d2);  // ESINE[8] TDRIVE[7:6]=5uS DTIME[5:3]=240nS IDRIVE[2:0]=10mA
-         WriteDrv(N,0x04,0x40fa);  // ESINE[8] TDRIVE[7:6]=5uS DTIME[5:3]=240nS IDRIVE[2:0]=10mA
+         WriteDrv(N,0x04,0x41d2);  // ESINE[8] TDRIVE[7:6]=5uS DTIME[5:3]=240nS IDRIVE[2:0]=10mA
          WriteDrv(N,0x05,0x0000);  // INTCLK[14:12]=6.3Mhz SPDGAI?N [11:0] speed compensator gain
          WriteDrv(N,0x06,0x0000);  // HALLPOL[15] FILK1[11:0]
          WriteDrv(N,0x07,0x0000);  // FILK2[11:0]
