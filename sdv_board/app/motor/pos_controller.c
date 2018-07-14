@@ -30,10 +30,12 @@ inline void pos_controller_set_pos(int num, int pos)
 {
     if(num == 0)
     {
+		pos_state[num].feedforward = pos - pos_state[num].target_pos;
         pos_state[num].target_pos = pos;
     }
     else
     {
+		pos_state[num].feedforward = -pos - pos_state[num].target_pos;
         pos_state[num].target_pos = -pos;
     }
 }
@@ -57,6 +59,7 @@ void pos_controller_period(int num)
     if(abs_err > 300)
     {
         speed = pos_state[num].kp * err + pos_state[num].kd * (err - pos_state[num].last_err);
+		speed = speed + pos_state[num].feedforward * 0.105;
 		pos_state[num].flag = 0;
     }
     else if(abs_err > 10 && abs_err <= 300)

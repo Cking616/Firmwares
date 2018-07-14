@@ -153,10 +153,11 @@ static void BLDC_Motion_task(void *pvParameters)
         {
             if(_start_motion)
             {
-                _motion_function(_i);
                 if (_i == g_end_tick + 3 || g_stop)
                 {
                     taskDISABLE_INTERRUPTS();
+					pos_controller_set_pos(0, g_cur_ol_encoder);
+					pos_controller_set_pos(1, g_cur_ol_encoder);
                     _start_motion = 0;
                     g_BLDC_flag = 1;
                     _i = 1;
@@ -164,6 +165,8 @@ static void BLDC_Motion_task(void *pvParameters)
 
                     xSemaphoreGive(g_BLDC_Mutex);
                 }
+
+				_motion_function(_i);
                 _i++;
             }
         }
