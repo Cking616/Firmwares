@@ -16,6 +16,7 @@
 #include "BLDC_Motion_task.h"
 #include "speed_controller.h"
 #include "pos_controller.h"
+#include "bsp/io.h"
 
 #define TESTTASKSTACKSIZE        256         // Stack size in words
 
@@ -69,7 +70,7 @@ int BLDC_Motion_get_flag()
 {
 	int _encoder = pos_controller_get_encoder(0);
 	int flag = 0;
-	if (g_target_pos - _encoder <= 40 && g_target_pos - _encoder >= -40)
+	if (g_target_pos - _encoder <= 15 && g_target_pos - _encoder >= -15)
 	{
 	    flag =  1;
 	}
@@ -140,6 +141,8 @@ static void BLDC_Motion_task(void *pvParameters)
             taskDISABLE_INTERRUPTS();
             _start_motion = 1;
             g_stop = 0;
+            io_manager_turn_sol(0, 0);
+            io_manager_turn_sol(1, 0);
             taskENABLE_INTERRUPTS();
         }
 
@@ -163,6 +166,8 @@ static void BLDC_Motion_task(void *pvParameters)
                     _start_motion = 0;
                     g_BLDC_flag = 1;
                     _i = 1;
+                    io_manager_turn_sol(0, 1);
+                    io_manager_turn_sol(1, 1);
                     taskENABLE_INTERRUPTS();
 
                     xSemaphoreGive(g_BLDC_Mutex);

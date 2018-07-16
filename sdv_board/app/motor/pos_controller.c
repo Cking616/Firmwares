@@ -61,28 +61,49 @@ void pos_controller_period(int num)
     int abs_err = err > 0? err: -err;
     int deltae = err - pos_state[num].last_err;
 
-    if(abs_err > 2000)
+    if(abs_err > 2500)
     {
         if(deltae * err > 0)
         {
-            speed = 1.8 * pos_state[num].kp * err + 1.5 * pos_state[num].kd * deltae;
+            speed = 2.0 * pos_state[num].kp * err + 2.0 * pos_state[num].kd * deltae;
+        }
+        else
+        {
+            speed = 1.3 * pos_state[num].kp * err;
+        }
+
+        //if(pos_state[num].feedforward < 0)
+        //{
+        //    speed = speed + pos_state[num].feedforward * 0.101;
+        //}
+        //else
+        //{
+        //    speed = speed + pos_state[num].feedforward * 0.085;
+        //}
+		pos_state[num].flag = 0;
+    }
+    else if(abs_err <= 2500 && abs_err > 1500)
+    {
+        if(deltae * err > 0)
+        {
+            speed = 1.25 * pos_state[num].kp * err + 1.1 * pos_state[num].kd * deltae;
         }
         else
         {
             speed = 1.2 * pos_state[num].kp * err;
         }
 
-        if(pos_state[num].feedforward < 0)
-        {
-            speed = speed + pos_state[num].feedforward * 0.101;
-        }
-        else
-        {
-            speed = speed + pos_state[num].feedforward * 0.085;
-        }
-		pos_state[num].flag = 0;
+        //if(pos_state[num].feedforward < 0)
+        //{
+        //    speed = speed + pos_state[num].feedforward * 0.101;
+        //}
+        //else
+        //{
+        //    speed = speed + pos_state[num].feedforward * 0.085;
+        //}
+        pos_state[num].flag = 0;
     }
-    else if(abs_err > 200 && abs_err <= 2000)
+    else if(abs_err > 300 && abs_err <= 1500)
     {
         if(deltae * err > 0)
         {
@@ -90,24 +111,42 @@ void pos_controller_period(int num)
         }
         else
         {
-            speed = 0.6 * pos_state[num].kp * err;
+            speed = 0.85 * pos_state[num].kp * err;
         }
 
-        if(pos_state[num].feedforward < 0)
-        {
-            speed = speed + pos_state[num].feedforward * 0.097;
-        }
-        else
-        {
-            speed = speed + pos_state[num].feedforward * 0.085;
-        }
+        //if(pos_state[num].feedforward < 0)
+        //{
+        //    speed = speed + pos_state[num].feedforward * 0.097;
+        //}
+        //else
+        //{
+        //    speed = speed + pos_state[num].feedforward * 0.085;
+        //}
         pos_state[num].flag = 0;
     }
-    else if(abs_err > 30 && abs_err <= 200)
+    else if(abs_err > 150 && abs_err <= 300)
     {
-        float increase = pos_state[num].ki * err + (err - pos_state[num].last_err) * pos_state[num].kp2;
+        float increase = 0.75 * pos_state[num].ki * err + 0.6 * (err - pos_state[num].last_err) * pos_state[num].kp2;
         speed = speed + increase;
 		pos_state[num].flag = 0;
+    }
+    else if(abs_err > 50 && abs_err <= 150)
+    {
+        float increase = 1.8 * pos_state[num].ki * err + 1.8 * (err - pos_state[num].last_err) * pos_state[num].kp2;
+        speed = speed + increase;
+        pos_state[num].flag = 0;
+    }
+    else if(abs_err > 30 && abs_err <= 50)
+    {
+        float increase = 2.8 * pos_state[num].ki * err + 2.8 * (err - pos_state[num].last_err) * pos_state[num].kp2;
+        speed = speed + increase;
+        pos_state[num].flag = 0;
+    }
+    else if(abs_err > 15 && abs_err <= 30)
+    {
+        float increase = 3.4 * pos_state[num].ki * err + 5 * (err - pos_state[num].last_err) * pos_state[num].kp2;
+        speed = speed + increase;
+        pos_state[num].flag = 0;
     }
     else
     {

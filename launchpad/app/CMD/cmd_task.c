@@ -45,7 +45,7 @@ static void
 cmd_task(void *pvParameters)
 {
     _cmd_message _t_cmd;
-    xSemaphoreTake(g_PD4_Semaphore, 0x10);
+    xSemaphoreTake(g_PD4_Semaphore, 0x1000);
     _t_cmd.cmd = '&';
     _t_cmd.len = 3;
     _send_cmd(&_t_cmd);
@@ -142,7 +142,7 @@ cmd_task(void *pvParameters)
 uint32_t
 cmd_taskInit(void)
 {
-    g_cmd_Queue = xQueueCreate( 10 , sizeof( _cmd_message ) );
+    g_cmd_Queue = xQueueCreate( 12 , sizeof( _cmd_message ) );
 
     //
     // Create the LED task.

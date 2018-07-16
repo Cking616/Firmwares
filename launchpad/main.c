@@ -64,13 +64,13 @@ int main(void)
         }
     }
 
-    //if(cmd_taskInit() != 0)
-    //{
+    if(cmd_taskInit() != 0)
+    {
 
-    //    while(1)
-    //    {
-    //    }
-    //}
+        while(1)
+        {
+        }
+    }
 
 
     //

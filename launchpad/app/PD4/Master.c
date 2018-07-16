@@ -269,7 +269,7 @@ void PD4Master_post_TPDO(CO_Data* d)
 
 void PD4Master_post_SlaveStateChange(CO_Data* d, UNS8 nodeId, e_nodeState newNodeState)
 {
-    UARTprintf("slave %x, state %x\n", nodeId, newNodeState);
+    //UARTprintf("slave %x, state %x\n", nodeId, newNodeState);
 	switch (newNodeState)
 	{
 	case Initialisation:
