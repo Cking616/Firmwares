@@ -57,23 +57,25 @@ LEDTask(void *pvParameters)
     //
     ui32WakeTime = xTaskGetTickCount();
 
+    vTaskDelay(3000);
     int Nodeid = 3;
-    int Nodeid2 = 2;
+    //int Nodeid2 = 2;
     //int _tick = 0;
     //
     // Loop forever.
     //
     while(g_need_init[Nodeid - 1])
     {
+        PD4Master_set_step_pos(4, 5000);
         UARTprintf("3s:0x%X,c:0x%X,p:%d\n", PD4_Status[Nodeid - 1], PD4_Controlword[Nodeid - 1], PD4_Position[Nodeid - 1]);
         vTaskDelay(1000);
     }
 
-    while(g_need_init[Nodeid2 - 1])
-    {
-        UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[Nodeid2 - 1], PD4_Controlword[Nodeid2 - 1], PD4_Position[Nodeid2 - 1]);
-        vTaskDelay(1000);
-    }
+    //while(g_need_init[Nodeid2 - 1])
+    //{
+    //    UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[Nodeid2 - 1], PD4_Controlword[Nodeid2 - 1], PD4_Position[Nodeid2 - 1]);
+    //    vTaskDelay(1000);
+    //}
 
     while((PD4_Status[Nodeid - 1] & 0x67) != 0x27)
     {
@@ -81,59 +83,59 @@ LEDTask(void *pvParameters)
         vTaskDelay(1000);
     }
 
-    while((PD4_Status[Nodeid2 - 1] & 0x67) != 0x27)
-    {
-        UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[Nodeid2 - 1], PD4_Controlword[Nodeid2 - 1], PD4_Position[Nodeid2 - 1]);
-        vTaskDelay(1000);
-    }
+    //while((PD4_Status[Nodeid2 - 1] & 0x67) != 0x27)
+    //{
+    //    UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[Nodeid2 - 1], PD4_Controlword[Nodeid2 - 1], PD4_Position[Nodeid2 - 1]);
+    //    vTaskDelay(1000);
+    //}
 
-    PD4Master_set_speed(Nodeid2, 350);
+    //PD4Master_set_speed(Nodeid2, 350);
     PD4Master_set_speed(Nodeid, 2500);
 
     while(1)
     {
         //PD4Master_set_pos(Nodeid, 100);
-        PD4Master_set_pos(Nodeid2, 55000);
+        //PD4Master_set_pos(Nodeid2, 55000);
         //_tick++;
         //if(_tick == 200)
         //{
         //    _tick = 0;
         //    UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[1], PD4_Controlword[1], PD4_Position[1]);
         //}
-        vTaskDelay(50);
+        //vTaskDelay(50);
 
-        while(!(PD4_Status[Nodeid2 - 1] & 0x400))
-        {
-            UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[Nodeid2 - 1], PD4_Controlword[Nodeid2 - 1], PD4_Position[Nodeid2 - 1]);
-            vTaskDelay(1000);
-        }
-        vTaskDelay(50);
+        //while(!(PD4_Status[Nodeid2 - 1] & 0x400))
+        //{
+        //    UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[Nodeid2 - 1], PD4_Controlword[Nodeid2 - 1], PD4_Position[Nodeid2 - 1]);
+        //    vTaskDelay(1000);
+        //}
+        //vTaskDelay(50);
         //int encoder = MA3_encoder_get_value();
-        UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[Nodeid2 - 1], PD4_Controlword[Nodeid2 - 1], PD4_Position[Nodeid2 - 1]);
+        //UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[Nodeid2 - 1], PD4_Controlword[Nodeid2 - 1], PD4_Position[Nodeid2 - 1]);
 
-        vTaskDelay(1500);
+        //vTaskDelay(1500);
 
-        PD4Master_set_pos(Nodeid2, 1000);
+        //PD4Master_set_pos(Nodeid2, 1000);
         //_tick++;
         //if(_tick == 200)
         //{
         //    _tick = 0;
         //    UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[1], PD4_Controlword[1], PD4_Position[1]);
         //}
-        vTaskDelay(50);
+        //vTaskDelay(50);
 
-        while(!(PD4_Status[Nodeid2 - 1] & 0x400))
-        {
-            UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[Nodeid2 - 1], PD4_Controlword[Nodeid2 - 1], PD4_Position[Nodeid2 - 1]);
-            vTaskDelay(1000);
-        }
-        vTaskDelay(50);
+        //while(!(PD4_Status[Nodeid2 - 1] & 0x400))
+        //{
+        //    UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[Nodeid2 - 1], PD4_Controlword[Nodeid2 - 1], PD4_Position[Nodeid2 - 1]);
+        //    vTaskDelay(1000);
+        //}
+        //vTaskDelay(50);
         //int encoder = MA3_encoder_get_value();
-        UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[Nodeid2 - 1], PD4_Controlword[Nodeid2 - 1], PD4_Position[Nodeid2 - 1]);
+        //UARTprintf("2s:0x%X,c:0x%X,p:%d\n", PD4_Status[Nodeid2 - 1], PD4_Controlword[Nodeid2 - 1], PD4_Position[Nodeid2 - 1]);
 
-        vTaskDelay(1500);
+        //vTaskDelay(1500);
 
-        PD4Master_set_pos(Nodeid, 10000);
+        PD4Master_set_pos(Nodeid, 10850);
         vTaskDelay(50);
 
         while(!(PD4_Status[Nodeid - 1] & 0x400))
@@ -147,7 +149,7 @@ LEDTask(void *pvParameters)
 
         vTaskDelay(1500);
 
-        PD4Master_set_pos(Nodeid, 0);
+        PD4Master_set_pos(Nodeid, 10850);
         vTaskDelay(50);
 
         while(!(PD4_Status[Nodeid - 1] & 0x400))

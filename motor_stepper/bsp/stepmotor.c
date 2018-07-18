@@ -165,3 +165,8 @@ void step_motor_set_dir(int Motor,  int dir)
         ROM_GPIOPinWrite(SDIR1_PORT,  SDIR1_PIN, (dir==0)? 0 : SDIR1_PIN ); // SDIR1
     }
 }
+
+int step_motor_get_cur()
+{
+    return _count;
+}

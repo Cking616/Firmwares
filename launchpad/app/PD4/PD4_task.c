@@ -35,6 +35,7 @@ int g_need_init[4] = { 1, 1, 1, 0 };
 
 int _PD4_speed_tmp = 0;
 int _PD4_pos_tmp = 0;
+int _PD4_pos_tmp2 = 0;
 
 void PD4Master_set_speed(UNS8 nodeID, int speed)
 {
@@ -58,6 +59,19 @@ void PD4Master_set_ctrl(UNS8 nodeID, UNS16 word)
                               2, /*UNS8 count*/
                               uint16, /*UNS8 dataType*/
                               & PD4_Controlword[nodeID - 1]); /* use block mode */
+}
+
+void PD4Master_set_step_pos(UNS8 nodeID, int pos)
+{
+    _PD4_pos_tmp2 = pos;
+    //UARTprintf("set id:%d, pos:%d\n", nodeID, pos);
+    PD4Master_writeSlaveParam(&TestMaster_Data, /*CO_Data* d*/
+                              nodeID, /*UNS8 nodeId*/
+                              0x2001, /*UNS16 index*/
+                              0x00, /*UNS16 index*/
+                              4, /*UNS8 count*/
+                              int32, /*UNS8 dataType*/
+                              &_PD4_pos_tmp); /* use block mode */
 }
 
 void PD4Master_set_pos(UNS8 nodeID, int pos)
@@ -242,10 +256,10 @@ PD4Master_task(void *pvParameters)
     masterSendNMTstateChange(&TestMaster_Data, 0x03, NMT_Enter_PreOperational);
     vTaskDelay(10);
     masterSendNMTstateChange(&TestMaster_Data, 0x02, NMT_Enter_PreOperational);
-    //vTaskDelay(10);
-    //masterSendNMTstateChange(&TestMaster_Data, 0x01, NMT_Enter_PreOperational);
-    //vTaskDelay(10);
-    //masterSendNMTstateChange(&TestMaster_Data, 0x04, NMT_Enter_PreOperational);
+    vTaskDelay(10);
+    masterSendNMTstateChange(&TestMaster_Data, 0x01, NMT_Enter_PreOperational);
+    vTaskDelay(10);
+    masterSendNMTstateChange(&TestMaster_Data, 0x04, NMT_Enter_PreOperational);
     vTaskDelayUntil(&ui32WakeTime, 200 / portTICK_RATE_MS);
 
     while(1)
@@ -259,24 +273,24 @@ PD4Master_task(void *pvParameters)
             PD4_Controlword[nodeId - 1] = 0x86;
 
 
-			if(PD4_bConnected[1]
-			    && PD4_bConnected[2])
+			if(PD4_bConnected[2])
 			{
 				//UARTprintf("op mode\n");
 			    //masterSendNMTstateChange (&TestMaster_Data, 1, NMT_Start_Node);
 			    //vTaskDelay(10);
 			    //masterSendNMTstateChange (&TestMaster_Data, 4, NMT_Start_Node);
 			    //vTaskDelay(10);
+			    //
 			    //PD4_bConnected[1] = 0;
                 //masterSendNMTstateChange (&TestMaster_Data, 1, NMT_Start_Node);
                 //vTaskDelay(10);
-			    masterSendNMTstateChange (&TestMaster_Data, 2, NMT_Start_Node);
-			    vTaskDelay(10);
-                masterSendNMTstateChange (&TestMaster_Data, 3, NMT_Start_Node);
-                vTaskDelay(10);
-				setState(&TestMaster_Data, Operational);
-				xSemaphoreGive(g_PD4_Semaphore);
-				break;
+			    //masterSendNMTstateChange (&TestMaster_Data, 2, NMT_Start_Node);
+			    //vTaskDelay(10);
+                //masterSendNMTstateChange (&TestMaster_Data, 3, NMT_Start_Node);
+                //vTaskDelay(10);
+				//setState(&TestMaster_Data, Operational);
+				//xSemaphoreGive(g_PD4_Semaphore);
+				//break;
 			}
         }
     }

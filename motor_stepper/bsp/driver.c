@@ -80,37 +80,38 @@ void driver_init_hardware(void)
     while(!ROM_SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOA)) { }
 
     // SW1..4 inputs
-    ROM_GPIOPinTypeGPIOInput( GPIO_PORTE_BASE, GPIO_PIN_0 );  // SW1
-    ROM_GPIOPinTypeGPIOInput( GPIO_PORTD_BASE, GPIO_PIN_7 );  // SW2
-    ROM_GPIOPinTypeGPIOInput( GPIO_PORTC_BASE, GPIO_PIN_7 );  // SW3
-    ROM_GPIOPinTypeGPIOInput( GPIO_PORTC_BASE, GPIO_PIN_6 );  // SW4
+    //ROM_GPIOPinTypeGPIOInput( GPIO_PORTE_BASE, GPIO_PIN_0 );  // SW1
+    //ROM_GPIOPinTypeGPIOInput( GPIO_PORTD_BASE, GPIO_PIN_7 );  // SW2
+    //ROM_GPIOPinTypeGPIOInput( GPIO_PORTC_BASE, GPIO_PIN_7 );  // SW3
+    //ROM_GPIOPinTypeGPIOInput( GPIO_PORTC_BASE, GPIO_PIN_6 );  // SW4
 
-    ROM_GPIODirModeSet(GPIO_PORTE_BASE, GPIO_PIN_0, GPIO_DIR_MODE_IN );
-    ROM_GPIODirModeSet(GPIO_PORTD_BASE, GPIO_PIN_7, GPIO_DIR_MODE_IN );
-    ROM_GPIODirModeSet(GPIO_PORTC_BASE, GPIO_PIN_7 | GPIO_PIN_6, GPIO_DIR_MODE_IN );
-    ROM_GPIOPadConfigSet(GPIO_PORTE_BASE, GPIO_PIN_0, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
-    ROM_GPIOPadConfigSet(GPIO_PORTD_BASE, GPIO_PIN_7, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
-    ROM_GPIOPadConfigSet(GPIO_PORTC_BASE, GPIO_PIN_7 | GPIO_PIN_6, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
+    //ROM_GPIODirModeSet(GPIO_PORTE_BASE, GPIO_PIN_0, GPIO_DIR_MODE_IN );
+    //ROM_GPIODirModeSet(GPIO_PORTD_BASE, GPIO_PIN_7, GPIO_DIR_MODE_IN );
+    //ROM_GPIODirModeSet(GPIO_PORTC_BASE, GPIO_PIN_7 | GPIO_PIN_6, GPIO_DIR_MODE_IN );
+    //ROM_GPIOPadConfigSet(GPIO_PORTE_BASE, GPIO_PIN_0, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
+    //ROM_GPIOPadConfigSet(GPIO_PORTD_BASE, GPIO_PIN_7, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
+    //ROM_GPIOPadConfigSet(GPIO_PORTC_BASE, GPIO_PIN_7 | GPIO_PIN_6, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
 
-    _address =   (ROM_GPIOPinRead( GPIO_PORTE_BASE, GPIO_PIN_0)==0? 1 : 0 ) |
-                 (ROM_GPIOPinRead( GPIO_PORTD_BASE, GPIO_PIN_7)==0? 2 : 0 ) |
-                 (ROM_GPIOPinRead( GPIO_PORTC_BASE, GPIO_PIN_7)==0? 4 : 0 ) |
-                 (ROM_GPIOPinRead( GPIO_PORTC_BASE, GPIO_PIN_6)==0? 8 : 0 );
+    //_address =   (ROM_GPIOPinRead( GPIO_PORTE_BASE, GPIO_PIN_0)==0? 1 : 0 ) |
+    //             (ROM_GPIOPinRead( GPIO_PORTD_BASE, GPIO_PIN_7)==0? 2 : 0 ) |
+    //             (ROM_GPIOPinRead( GPIO_PORTC_BASE, GPIO_PIN_7)==0? 4 : 0 ) |
+    //             (ROM_GPIOPinRead( GPIO_PORTC_BASE, GPIO_PIN_6)==0? 8 : 0 );
 
 
     ConfigureUART();
 
-    can_init();
+    CO_driver_init();
 
-    encoder_init();
+    //encoder_init();
 
-    sonar_init();
+    //sonar_init();
 
     lights_init();
 
-    step_motor_init();
+    //step_motor_init();
 
-    bumper_init();
+    //bumper_init();
+
     // ************************************************************************************************************
     ROM_SysTickPeriodSet(80000);  // every 1mSec, @ 80Mhz
 }
@@ -120,16 +121,18 @@ inline int driver_get_address(void)
     return _address;
 }
 
+extern void SysTickIntHandler(void);
+
 void driver_init_system(void)
 {
-    can_start_listening();
-
-    encoder_reset(0);
-    encoder_reset(1);
+    CO_start_listening();
+    CO_timer_start();
+    //encoder_reset(0);
+    //encoder_reset(1);
 
     ROM_SysTickEnable();
     ROM_SysTickIntEnable();
-    //SysTickIntRegister(SysTickIntHandler);
+    SysTickIntRegister(SysTickIntHandler);
 
     lights_turn_led_red(1);
     lights_turn_rgb(LIGHTS_RGB_RED);

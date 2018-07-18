@@ -46,6 +46,9 @@
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_16.9.compilerID.OPT_LEVEL.1217709695" name="Optimization level (--opt_level, -O)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_16.9.compilerID.OPT_LEVEL" value="com.ti.ccstudio.buildDefinitions.TMS470_16.9.compilerID.OPT_LEVEL.off" valueType="enumerated"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_16.9.compilerID.INCLUDE_PATH.179023618" name="Add dir to #include search path (--include_path, -I)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_16.9.compilerID.INCLUDE_PATH" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${CG_TOOL_ROOT}/include&quot;"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/third_party/CanFestival/inc"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/third_party/CanFestival/inc/tm4c"/>
 									<listOptionValue builtIn="false" value="${TIVA_DIR}"/>
 								</option>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_16.9.compilerID.ADVICE__POWER.392057346" name="Enable checking of ULP power rules (--advice:power)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_16.9.compilerID.ADVICE__POWER" value="&quot;all&quot;" valueType="string"/>

@@ -9,7 +9,6 @@
 #include "bsp/driver.h"
 #include "task/blinky.h"
 #include "task/stepperctrl.h"
-#include "task/cmdpool.h"
 #include "utils/uartstdio.h"
 #include "bsp/stepmotor.h"
 #include "bsp/Bumper.h"
@@ -20,7 +19,7 @@ int _tick = 0;
 volatile unsigned int _tick_second = 0;
 
 // period: 1ms
-inline void on_sys_period(void)
+void on_sys_period(void)
 {
     stepperctrl_thread();
 
@@ -32,10 +31,10 @@ inline void on_sys_period(void)
 
         _tick_second++;
         //UARTprintf("Tick Time!\n");
-        bumper_print();
+        //bumper_print();
         //step_motor_set_speed(0, _testspeed[_testi], 1750);
         //step_motor_set_speed(1, _testspeed[_testi], 1750);
-        _testi = (_testi + 1) % 4;
+        //_testi = (_testi + 1) % 4;
         //stepperctrl_set_speed(_testspeed[_testi]);
     }
     else

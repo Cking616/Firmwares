@@ -12,4 +12,6 @@ void stepperctrl_thread(void);
 
 // unit: rps, max 50;
 void stepperctrl_set_speed(int speed);
+
+int stepperctrl_set_pos(int pos);
 #endif /* TASK_STEPPERCTRL_H_ */

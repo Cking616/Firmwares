@@ -122,9 +122,8 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // Timer 3 subtimer B
     IntDefaultHandler,                      // I2C1 Master and Slave
     IntDefaultHandler,                      // Quadrature Encoder 1
-    IntDefaultHandler,
     CAN0IntHandler,                         // CAN0
-    //IntDefaultHandler,                      // CAN1
+    IntDefaultHandler,                      // CAN1
     0,                                      // Reserved
     0,                                      // Reserved
     IntDefaultHandler,                      // Hibernate

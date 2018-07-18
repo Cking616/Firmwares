@@ -11,15 +11,15 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-void can_init();
+void CO_driver_init(void);
 
-void can_start_listening();
+void CO_start_listening(void);
 
-void can_write(uint32_t addr, uint32_t Val, uint32_t Val2 );
+void CO_timer_start(void);
 
-extern volatile uint32_t CanMsgIn[2];
-extern volatile bool g_bRXFlag;
-extern volatile uint16_t CanRXAd;
+//extern volatile uint32_t CanMsgIn[2];
+//extern volatile bool g_bRXFlag;
+//extern volatile uint16_t CanRXAd;
 
 #define CANS_PORT GPIO_PORTD_BASE
 #define CANS_PIN GPIO_PIN_6

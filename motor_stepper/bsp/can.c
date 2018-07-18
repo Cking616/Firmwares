@@ -7,16 +7,27 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "can.h"
+#include "inc/hw_gpio.h"
 #include "inc/hw_memmap.h"
 #include "inc/hw_can.h"
 #include "inc/hw_types.h"
 #include "inc/hw_ints.h"
 #include "driverlib/rom.h"
+#include "driverlib/rom_map.h"
 #include "driverlib/can.h"
 #include "driverlib/gpio.h"
 #include "driverlib/sysctl.h"
 #include "driverlib/pin_map.h"
+#include "driverlib/interrupt.h"
+#include "driverlib/timer.h"
+#include "canfestival.h"
+#include "utils/uartstdio.h"
 
+
+#define CANS_PORT GPIO_PORTD_BASE
+#define CANS_PIN GPIO_PIN_6
+
+extern CO_Data ObjDict_Data;
 
 // window ID:3  ID:0  ID:1  ID:2 door
 // wheels: F:  0   2
@@ -24,18 +35,15 @@
 #define CAN_MAX_11BIT_MSG_ID    0x7ff
 
 tCANMsgObject g_sCAN0RxMessage;
+Message g_RxMessage;
+
 tCANMsgObject g_sCAN0TxMessage;
 #define RXOBJECT                6
 #define TXOBJECT                2
-volatile uint32_t CanMsgIn[2];
-volatile uint32_t CamMsgOut[2];
 volatile uint32_t g_ui32ErrFlag = 0;  // A global to keep track of the error flags that have been thrown so they may
-volatile bool g_bRXFlag = 0;   // A flag for the interrupt handler to indicate that a message was received.
-volatile uint16_t CanRXAd;
 
 volatile uint32_t g_ui32RXMsgCount = 0;   // A counter that keeps track of the number of times the TX & RX interrupt has occurred
 volatile uint32_t g_ui32TXMsgCount = 0;
-volatile int gTxComands = 0;
 
 void can_init()
 {
@@ -46,16 +54,16 @@ void can_init()
     ROM_GPIOPinTypeGPIOOutput( CANS_PORT, CANS_PIN );
     ROM_GPIOPinWrite(CANS_PORT, CANS_PIN, 0 );  // S = LOW
 
-    //ROM_IntMasterEnable();   // Enable processor interrupts.
+    ROM_IntMasterEnable();   // Enable processor interrupts.
     ROM_GPIOPinConfigure(GPIO_PB4_CAN0RX);      // Configure the GPIO pin muxing to select CAN0 functions for these pins.
     ROM_GPIOPinConfigure(GPIO_PB5_CAN0TX);
     ROM_GPIOPinTypeCAN(GPIO_PORTB_BASE, GPIO_PIN_4 | GPIO_PIN_5);  // Enable the alternate function on the GPIO pins.
 
     ROM_CANInit(CAN0_BASE);     // Initialize the CAN controller
     ROM_CANBitRateSet(CAN0_BASE, ROM_SysCtlClockGet(), 1000000);  // Set up the bit rate for the CAN bus.
-    //ROM_CANIntEnable(CAN0_BASE, CAN_INT_MASTER | CAN_INT_ERROR | CAN_INT_STATUS);  // Enable interrupts on the CAN peripheral. Name of the handler is in the vector table of startup code.
-   // ROM_IntEnable(INT_CAN0);   // Enable the CAN interrupt on the processor (NVIC).
-    //ROM_CANEnable(CAN0_BASE);   // Enable the CAN for operation.
+    ROM_CANIntEnable(CAN0_BASE, CAN_INT_MASTER | CAN_INT_ERROR | CAN_INT_STATUS);  // Enable interrupts on the CAN peripheral. Name of the handler is in the vector table of startup code.
+    ROM_IntEnable(INT_CAN0);   // Enable the CAN interrupt on the processor (NVIC).
+    ROM_CANEnable(CAN0_BASE);   // Enable the CAN for operation.
 }
 //*****************************************************************************
 //
@@ -176,11 +184,9 @@ CANErrorHandler(void)
 //*****************************************************************************
 //*****************************************************************************
 //*****************************************************************************
-int gCan0Int = 0;
 void CAN0IntHandler(void)
 {
     uint32_t ui32Status;
-    gCan0Int++;
     // Read the CAN interrupt status to find the cause of the interrupt
     // CAN_INT_STS_CAUSE register values
     // 0x0000        = No Interrupt Pending
@@ -209,18 +215,33 @@ void CAN0IntHandler(void)
         // the CAN for receiving messages.  A buffer for storing the
         // received data must also be provided, so set the buffer pointer
         // within the message object.
-        g_sCAN0RxMessage.pui8MsgData = (uint8_t *) CanMsgIn;
-        g_sCAN0RxMessage.ui32MsgLen = sizeof(CanMsgIn);
+
+        g_sCAN0RxMessage.pui8MsgData = (uint8_t *)  g_RxMessage.data;
+        g_sCAN0RxMessage.ui32MsgLen = sizeof(g_RxMessage.data);
 
         // Read the message from the CAN.  Message object RXOBJECT is used
         // (which is not the same thing as CAN ID).  The interrupt clearing
         // flag is not set because this interrupt was already cleared in
         // the interrupt handler.
-        if ( g_bRXFlag == 0 ) {
-            ROM_CANMessageGet(CAN0_BASE, RXOBJECT, &g_sCAN0RxMessage, 0);
-            CanRXAd = g_sCAN0RxMessage.ui32MsgID;
+        //if ( g_bRXFlag == 0 ) {
+        int i = 0;
+        ROM_CANMessageGet(CAN0_BASE, RXOBJECT, &g_sCAN0RxMessage, 0);
+        for(i = 0; i < g_sCAN0RxMessage.ui32MsgLen; i++)
+            g_RxMessage.data[i] =  g_sCAN0RxMessage.pui8MsgData[i];
+        // g_RxMessage.len = g_sCAN0RxMessage.ui32MsgLen;
+        g_RxMessage.len = g_sCAN0RxMessage.ui32MsgLen;
+        if(g_sCAN0RxMessage.ui32Flags & MSG_OBJ_REMOTE_FRAME)
+        {
+            g_RxMessage.rtr = 1;
+        }
+        else
+        {
+            g_RxMessage.rtr = 0;
         }
 
+        g_RxMessage.cob_id = g_sCAN0RxMessage.ui32MsgID;
+
+        canDispatch(&ObjDict_Data, &g_RxMessage);
         // Clear the message object interrupt.
         while(HWREG(CAN0_BASE + CAN_O_IF2CRQ) & CAN_IF1CRQ_BUSY) { }
         // Only change the interrupt pending state by setting only the CAN_IF1CMSK_CLRINTPND bit.
@@ -234,9 +255,6 @@ void CAN0IntHandler(void)
         // received.  In a real application this could be used to set flags to
         // indicate when a message is received.
         g_ui32RXMsgCount++;
-
-        // Set flag to indicate received message is pending.
-        g_bRXFlag = true;
 
         // Since a message was received, clear any error flags.
         // This is done because before the message is received it triggers
@@ -282,7 +300,7 @@ void CAN0IntHandler(void)
 
 //*****************************************************************************
 //*****************************************************************************
-void can_start_listening()
+void CO_start_listening()
 {
     // Initialize a message object to be used for receiving CAN messages with
     // any CAN ID.  In order to receive any CAN ID, the ID and mask must both
@@ -291,7 +309,7 @@ void can_start_listening()
     g_sCAN0RxMessage.ui32MsgID = 0;
     g_sCAN0RxMessage.ui32MsgIDMask = 0; // accept ALL
     g_sCAN0RxMessage.ui32Flags = MSG_OBJ_RX_INT_ENABLE | MSG_OBJ_USE_ID_FILTER;
-    g_sCAN0RxMessage.ui32MsgLen = sizeof(CanMsgIn);
+    g_sCAN0RxMessage.ui32MsgLen = 8;
 
     //
     // Now load the message object into the CAN peripheral.  Once loaded the
@@ -304,16 +322,118 @@ void can_start_listening()
 
 //*****************************************************************************
 //*****************************************************************************
-void can_write(uint32_t addr, uint32_t Val, uint32_t Val2 )
+//*****************************************************************************
+//*****************************************************************************
+void can_write(uint32_t id, uint32_t len,  uint8_t mode, uint8_t* data )
 {
-    CamMsgOut[0] = Val;
-    CamMsgOut[1] = Val2;
-    g_sCAN0TxMessage.ui32MsgID = 0x580 + addr + 8;
+    g_sCAN0TxMessage.ui32MsgID = id;
     g_sCAN0TxMessage.ui32MsgIDMask = 0;
-    g_sCAN0TxMessage.ui32Flags = MSG_OBJ_TX_INT_ENABLE;
-    g_sCAN0TxMessage.ui32MsgLen = sizeof( CamMsgOut );
-    g_sCAN0TxMessage.pui8MsgData = (uint8_t *)&CamMsgOut;
-    ROM_CANRetrySet( CAN0_BASE, 0 );
-    ROM_CANMessageSet(CAN0_BASE, TXOBJECT, &g_sCAN0TxMessage, MSG_OBJ_TYPE_TX);
+    if(mode == 1)
+    {
+        g_sCAN0TxMessage.ui32Flags = MSG_OBJ_TX_INT_ENABLE | MSG_OBJ_REMOTE_FRAME;
+    }
+    else
+    {
+        g_sCAN0TxMessage.ui32Flags = MSG_OBJ_TX_INT_ENABLE;
+    }
+    g_sCAN0TxMessage.ui32MsgLen = len;
+    g_sCAN0TxMessage.pui8MsgData = data;
+    MAP_CANRetrySet( CAN0_BASE, 0 );
+    MAP_CANMessageSet(CAN0_BASE, TXOBJECT, &g_sCAN0TxMessage, MSG_OBJ_TYPE_TX);
+}
 
+unsigned char canSend(CAN_PORT notused, Message *m)
+{
+    can_write(m->cob_id, m->len, m->rtr, m->data);
+    return 0x00;
+}
+
+//*****************************************************************************
+//
+// The interrupt handler for the Timer0B interrupt.
+//
+//*****************************************************************************
+static unsigned int TimeCNT = 0;
+static unsigned int NextTime = 0;
+static unsigned int TIMER_MAX_COUNT = 70000;
+
+void setTimer(TIMEVAL value)
+{
+    NextTime = (TimeCNT + value) % TIMER_MAX_COUNT;
+}
+
+TIMEVAL getElapsedTime(void)
+{
+    static TIMEVAL last_time_set = TIMEVAL_MAX;
+    int ret = 0;
+    ret = TimeCNT > last_time_set ? TimeCNT - last_time_set : TimeCNT + TIMER_MAX_COUNT - last_time_set;
+    last_time_set = TimeCNT;
+    return ret;
+}
+
+void CO_TimerIntHandler(void)
+{
+    //
+    // Clear the timer interrupt.
+    //
+    MAP_TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
+
+    //
+    // Update the interrupt status on the display.
+    //
+    MAP_IntMasterDisable();
+    TimeCNT++;
+    if (TimeCNT >= TIMER_MAX_COUNT)
+    {
+        TimeCNT = 0;
+    }
+    if (TimeCNT == NextTime)
+    {
+        //UARTprintf("OnTimer\n");
+        TimeDispatch();
+    }
+
+    MAP_IntMasterEnable();
+}
+
+void CO_Timerinit(void)
+{
+    //
+    // Enable the peripherals used by this example.
+    //
+    MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
+
+    //
+    // Enable processor interrupts.
+    //
+    IntMasterEnable();
+
+    //
+    // Configure the two 32-bit periodic timers.
+    //
+    MAP_TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);
+    MAP_TimerLoadSet(TIMER0_BASE, TIMER_A, 4000);
+    TimerIntRegister(TIMER0_BASE, TIMER_A, CO_TimerIntHandler);
+    //
+    // Setup the interrupts for the timer timeouts.
+    //
+    IntPrioritySet(INT_TIMER0A, 0xC0);
+    MAP_IntEnable(INT_TIMER0A);
+    MAP_TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
+    MAP_TimerDisable(TIMER0_BASE, TIMER_A);
+}
+
+void CO_driver_init(void)
+{
+    CO_Timerinit();
+
+    can_init();
+}
+
+void CO_timer_start(void)
+{
+    //
+    // Enable the timers.
+    //
+    MAP_TimerEnable(TIMER0_BASE, TIMER_A);
 }

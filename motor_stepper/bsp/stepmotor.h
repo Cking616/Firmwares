@@ -32,5 +32,6 @@ void step_motor_set_speed(int Motor,  int Speed, int Step);
 #define STEP_MOTOR_CW   0
 
 void step_motor_set_dir(int Motor,  int dir);
+int step_motor_get_cur();
 
 #endif /* BSP_STEPMOTOR_H_ */

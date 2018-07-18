@@ -74,7 +74,7 @@ static void CheckSDOAndContinue(CO_Data* d, UNS8 nodeId)
 {
 	UNS32 abortCode;
 	//if (getWriteResultNetworkDict(d, nodeId, &abortCode) != SDO_FINISHED)
-		//UARTprintf("Master : Failed in initializing slave %X, AbortCode :%X, Step:%d\n", nodeId, abortCode, __init_step);
+		//UARTprintf("Master : Failed in initializing slave %X, AbortCode :%X\n", nodeId, abortCode);
 
 	/* Finalise last SDO transfer with this node */
 	closeSDOtransfer(&TestMaster_Data, nodeId, SDO_CLIENT);
@@ -269,7 +269,7 @@ void PD4Master_post_TPDO(CO_Data* d)
 
 void PD4Master_post_SlaveStateChange(CO_Data* d, UNS8 nodeId, e_nodeState newNodeState)
 {
-    //UARTprintf("slave %x, state %x\n", nodeId, newNodeState);
+    UARTprintf("slave %x, state %x\n", nodeId, newNodeState);
 	switch (newNodeState)
 	{
 	case Initialisation:
